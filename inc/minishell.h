@@ -33,6 +33,8 @@
 typedef struct s_mini
 {
 	char	**envp;
+	//temporal
+	char	*input;
 }	t_mini;
 
 #endif

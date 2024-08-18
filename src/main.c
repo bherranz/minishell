@@ -21,8 +21,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)mini;
 	(void)argc;
 	(void)argv;
-	//pone en el subject Cuando sea interactivo: ctrl-D termina el shell.
-	//así que maybe hay que  usar el gnl en vez de while(1)
+	//meter el readline
 	while (1)
 	{
 	}
