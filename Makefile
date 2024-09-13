@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: miparis <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2024/08/20 11:55:32 by miparis          ###   ########.fr        #
+#    Updated: 2024/09/13 09:13:24 by miparis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,39 +28,31 @@ BONUS_OBJS = ${BONUS:.c=.o}
 
 .SILENT: $(OBJS)
 
-LIBFT_DIR = inc/libft
+LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
-PRINTF_DIR = inc/printf 
-PRINTF = $(PRINTF_DIR)/libftprintf.a
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 REMOVE = rm -f
 
-all: $(LIBFT) $(PRINTF) $(MLX_LIB) $(NAME)
+all: $(LIBFT) $(MLX_LIB) $(NAME)
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR) > /dev/null
 	@echo "$(BOLD)$(YELLOW)📚Libft compiled... $(NC)"
 
-$(PRINTF):
-	@make -C $(PRINTF_DIR) > /dev/null
-	@echo "$(BOLD)$(YELLOW)🖨️ Printf compiled... $(NC)"
-
 $(NAME): $(OBJS) $(LIBFT) $(MLX_LIB)
-	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -L$(PRINTF_DIR) -lftprintf -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -o $(NAME)
 	@echo "$(BOLD)$(BLUE)🐚Minishell is now operative$(NC)"
 
 
 clean:
 	@$(REMOVE) $(OBJS)
 	@make -C $(LIBFT_DIR) clean > /dev/null
-	@make -C $(PRINTF_DIR) clean > /dev/null
 
 fclean: clean
 	@$(REMOVE) $(NAME)
 	@make -C $(LIBFT_DIR) fclean > /dev/null
-	@make -C $(PRINTF_DIR) fclean > /dev/null
 	@echo "$(BOLD)$(GREEN)🧹Everything cleaned up!$(NC)"
 
 re: fclean all
