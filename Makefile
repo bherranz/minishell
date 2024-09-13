@@ -42,7 +42,7 @@ $(LIBFT):
 	@echo "$(BOLD)$(YELLOW)📚Libft compiled... $(NC)"
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX_LIB)
-	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -lft -lreadline -o $(NAME)
 	@echo "$(BOLD)$(BLUE)🐚Minishell is now operative$(NC)"
 
 
