@@ -12,6 +12,16 @@
 
 #include "../inc/minishell.h"
 
+//Ctrl + C
+void sigint_handler(int sig)
+{
+    (void)sig;  // Para evitar advertencias
+    printf("\n");
+    rl_on_new_line();    // Marca que hay una nueva línea
+    rl_replace_line("", 0); // Borra la línea actual en readline
+    rl_redisplay();      // Redibuja el prompt
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	mini;
@@ -24,12 +34,14 @@ int	main(int argc, char **argv, char **envp)
 	//meter el readline
 	while (1)
 	{
+		signal(SIGINT, sigint_handler);
 		char *input = readline("MINICONCHAA > ");
 		if (input && *input)
 		    add_history(input);
 		else
 			(void)input;
+		if (ft_strcmp(input, "exit") == 0)
+			break;
 	}
-	write_history(".my_shell_history");
 	return (0);
 }
