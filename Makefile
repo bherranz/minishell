@@ -6,13 +6,14 @@
 #    By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2024/09/13 09:13:24 by miparis          ###   ########.fr        #
+#    Updated: 2024/09/23 09:53:15 by miparis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRCS = src/main.c
+SRCS = src/main.c \
+		src/signals/signals.c
 
 # Define Colors
 GREEN  := \033[1;32m  # Bold Green

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bherranz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/08/18 14:46:40 by bherranz         ###   ########.fr       */
+/*   Updated: 2024/09/23 10:09:43 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <string.h>
 # include "../libft/libft.h"
 
+int g_signal; //global para señales
 
 //tenemos que decidir la estructura
 typedef struct s_mini
@@ -37,5 +38,26 @@ typedef struct s_mini
 	//temporal
 	char	*input;
 }	t_mini;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*			SIGNALS					*/
+void	signals_handler();
+void	sigint_handler(int sig);
+void	sigquit_handler(int sig);
+
 
 #endif
