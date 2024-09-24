@@ -60,7 +60,7 @@ typedef struct s_mini
 	char	**envp;
 	char	*input;
 	int		here_doc;
-	t_cmd	*cmd;
+	t_cmd	**cmd; // comandos
 	int		simple; //comillas simples
 	int		doble; //comillas dobles
 	int		last_status;
@@ -73,6 +73,7 @@ void	sigquit_handler(int sig);
 
 /*			PARSER					*/
 void	parser(t_mini *mini);
+int		check_quotes(t_mini *mini);
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);
