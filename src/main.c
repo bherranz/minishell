@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2024/09/23 10:33:32 by miparis          ###   ########.fr       */
+/*   Updated: 2024/09/24 05:56:25 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	main(int argc, char **argv, char **envp)
 	mini.envp = envp;
 	(void)argc;
 	(void)argv;
-	//meter el readline
 	g_signal = 0;
 	signals_handler();
 	while (1)
@@ -29,14 +28,16 @@ int	main(int argc, char **argv, char **envp)
 		if (mini.input == NULL) //agregado por seg fault al hacer cltr D
 		{
 			printf("\nQuiting progam...\n");
-			break;
+			break ;
 		}
 		if (mini.input)
-		    add_history(mini.input);
-		else
-			(void)mini.input;
+			add_history(mini.input);
+		// esto sirve para algo?
+		// else
+		// 	(void)mini.input;
 		if (ft_strcmp(mini.input, "exit") == 0)
-			break;
+			break ;
+		parser(&mini);
 		free(mini.input);
 	}
 	return (0);
