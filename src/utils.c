@@ -18,5 +18,5 @@ void	print_error(char *msg, int perr, int err)
 		perror(msg);
 	else
 		ft_putendl_fd(msg, 2);
-	exit (err);
+	(void)err;
 }

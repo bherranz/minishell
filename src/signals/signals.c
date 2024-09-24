@@ -21,16 +21,16 @@ void sigint_handler(int sig)
 		write(1, "\n", 1);
     	rl_on_new_line();    // Marca que hay una nueva línea
     	rl_replace_line("", 0); // Borra la línea actual en readline
-    	rl_redisplay();      // Redibuja el prompt
+    	rl_redisplay(); // Redibuja el prompt
 	}
 	if (g_signal == 2) //procesos en segundo plano, do debe interrumpir nada
 		return ;
-	/*else if (g_signal != 130)
+	else if (g_signal != 0)
 	{
+		printf("Bye\n");
 		g_signal = 130; // se establece signal a 130, còdigo de salida en casos de SIGINT
 		write(1, "\n", 1);
-	}*/
-		
+	}
 }
 
 void	sigquit_handler(int sig)

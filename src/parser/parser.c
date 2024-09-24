@@ -32,7 +32,10 @@ void	check_quotes(t_mini *mini)
 		i++;
 	}
 	if (quote)
+	{
 		print_error("Error: unclosed quotes", 0, 258);
+		return ;
+	}
 }
 
 void	parser(t_mini *mini)

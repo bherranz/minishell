@@ -12,6 +12,8 @@
 
 #include "../inc/minishell.h"
 
+int	g_signal; //variable global
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	mini;
@@ -27,16 +29,16 @@ int	main(int argc, char **argv, char **envp)
 		mini.input = readline("MINICONCHAA > ");
 		if (mini.input == NULL) //agregado por seg fault al hacer cltr D
 		{
-			printf("\nQuiting progam...\n");
+			printf("exit\n");
 			break ;
 		}
 		if (mini.input)
 			add_history(mini.input);
-		// esto sirve para algo?
-		// else
-		// 	(void)mini.input;
 		if (ft_strcmp(mini.input, "exit") == 0)
+		{
+			printf("exit\n");
 			break ;
+		}
 		parser(&mini);
 		free(mini.input);
 	}

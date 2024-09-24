@@ -29,7 +29,7 @@
 # include <string.h>
 # include "../libft/libft.h"
 
-int	g_signal; //global para señales
+extern int	g_signal; //global para señales
 
 //los he puesto con nombres porque me parece más intuitivo
 typedef enum e_type
