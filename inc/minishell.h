@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/09/24 05:49:05 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/26 09:36:23 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ typedef struct s_mini
 	char	**envp;
 	char	*input;
 	int		here_doc;
-	t_cmd	**cmd; // comandos
+	char	**cmds;
+	//t_cmd	**cmd; // comandos
 	int		simple; //comillas simples
 	int		doble; //comillas dobles
 	int		last_status;
@@ -74,8 +75,13 @@ void	sigquit_handler(int sig);
 /*			PARSER					*/
 void	parser(t_mini *mini);
 int		check_quotes(t_mini *mini);
+int		count_pipes(t_mini *mini);
+int		tokenize(t_mini *mini);
+void	print_cmd(t_mini *mini, int i);
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);
+int		last_char(char str);
+
 
 #endif

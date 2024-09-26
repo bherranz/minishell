@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/09/24 05:49:17 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/26 09:41:20 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,30 +42,73 @@ int	check_quotes(t_mini *mini)
 void	parser(t_mini *mini)
 {
 	if (check_quotes(mini)) //check comillas cerradas
-		return ; 
+		return ;
+	tokenize(mini); //tokenizar y guardar
+	//count_pipes(mini);
 	//splitear aka tokenizar y guardar
 
 }
 
-/*
-pipe_count
+int	count_pipes(t_mini *mini)
 {
+	int		p_count;
+	int		quote;
+	int		i;
+	char	last_char;
 
-	check_quotes
-	usamos las flags de 
-	si hay pipe y quote esta en 1
-		pipe++;
+	p_count = 0;
+	i = -1;
+	quote = 0;
+	last_char = '\0';
+	while (mini->input[++i])
+	{
+		if (mini->input[i] == '\'' || mini->input[i] == '\"')
+		{
+			if (quote == 0)
+				quote = mini->input[i];
+			else if (quote == mini->input[i])
+				quote = 0;
+		}
+		if (mini->input[i] == '|' && quote == 0)
+		{
+			if (last_char == '|')
+			{
+				print_error("Error: syntax error near token '|'", 0, 258);
+				return (-1);
+			}
+			p_count++;
+		}
+		if (mini->input[i] != ' ')
+			last_char = mini->input[i];
+	}
+	printf("---->>> pipes found: %d\n", p_count);
+	return (p_count);
 }
 
-tokenizar
+int	tokenize(t_mini *mini)
 {
 	int i = 0;
-	contar los pipes no entrecomillados
-	t_cmd cmds = mallloc(cmds, sizeof())
-	while (strcmp != i_pipes && i_pipes >= 0)
+	int pipes;
+	
+	pipes = count_pipes(mini);//contar los pipes no entrecomillados para memoria
+	if (pipes < 0)
+		return (-1);
+	mini->cmds = malloc((pipes + 1) * sizeof(char **));
+	if (!mini->cmds)
 	{
-		t_cmd cmds[i] = spliteas(input, pipe);
-		pipe--;
+		print_error("Error: Problem with memory", 0, 258);
+		return (-1);
+	}
+	mini->cmds = ft_split(mini->input, '|'); //sirve salvo que pipe este entre comillas
+	if (!mini->cmds)
+	{
+		print_error("Error: Problem with cmd split", 0, 258);
+		return (-1);
+	}
+	while (mini->cmds[i])
+	{
+		printf("---->>> cmd[%d]: %s\n", i, mini->cmds[i]);
 		i++;
 	}
-}*/
+	return (0);
+}
