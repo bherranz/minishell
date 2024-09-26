@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2024/09/24 05:56:25 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/26 08:47:04 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,15 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		mini.input = readline("MINICONCHAA > ");
-		if (mini.input == NULL) //agregado por seg fault al hacer cltr D
+		if (!mini.input || ft_strcmp(mini.input, "exit") == 0) //agregado por seg fault al hacer cltr D
 		{
 			printf("exit\n");
+			if (mini.input)
+				free(mini.input);
 			break ;
 		}
 		if (mini.input)
 			add_history(mini.input);
-		if (ft_strcmp(mini.input, "exit") == 0)
-		{
-			printf("exit\n");
-			break ;
-		}
 		parser(&mini);
 		free(mini.input);
 	}
