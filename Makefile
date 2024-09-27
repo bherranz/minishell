@@ -14,6 +14,7 @@ NAME = minishell
 
 SRCS = src/main.c \
 		src/parser/parser.c \
+		src/parser/parser_utils.c \
 		src/utils.c \
 		src/signals/signals.c
 

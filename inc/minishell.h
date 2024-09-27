@@ -25,6 +25,7 @@
 # include <sys/stat.h>
 # include <sys/ioctl.h>
 # include <termios.h>
+# include <stdbool.h>
 # include <termcap.h>
 # include <string.h>
 # include "../libft/libft.h"
@@ -49,7 +50,7 @@ typedef struct s_io_file
 
 typedef struct s_cmd
 {
-	char		*cmd;
+	char		*full_cmd;
 	char		**args;
 	t_io_file	*infile;
 	t_io_file	*outfile;
@@ -61,7 +62,8 @@ typedef struct s_mini
 	char	*input;
 	int		here_doc;
 	char	**cmds;
-	//t_cmd	**cmd; // comandos
+	int		pipes;
+	t_cmd	**cmd; // comandos
 	int		simple; //comillas simples
 	int		doble; //comillas dobles
 	int		last_status;
@@ -77,7 +79,10 @@ void	parser(t_mini *mini);
 int		check_quotes(t_mini *mini);
 int		count_pipes(t_mini *mini);
 int		tokenize(t_mini *mini);
-void	print_cmd(t_mini *mini, int i);
+int		get_cmds(char const *s, char c, t_mini *mini);
+int		is_quote(char c,  int *quote);
+/*void	print_cmd(t_mini *mini, int i);
+int		pipe_count(t_mini *mini);*/
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);

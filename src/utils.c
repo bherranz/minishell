@@ -20,3 +20,6 @@ void	print_error(char *msg, int perr, int err)
 		ft_putendl_fd(msg, 2);
 	(void)err;
 }
+
+
+
