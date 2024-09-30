@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/09/24 05:49:05 by codespace        ###   ########.fr       */
+/*   Updated: 2024/09/26 09:36:23 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/stat.h>
 # include <sys/ioctl.h>
 # include <termios.h>
+# include <stdbool.h>
 # include <termcap.h>
 # include <string.h>
 # include "../libft/libft.h"
@@ -49,7 +50,7 @@ typedef struct s_io_file
 
 typedef struct s_cmd
 {
-	char		*cmd;
+	char		*full_cmd;
 	char		**args;
 	t_io_file	*infile;
 	t_io_file	*outfile;
@@ -60,6 +61,8 @@ typedef struct s_mini
 	char	**envp;
 	char	*input;
 	int		here_doc;
+	char	**cmds;
+	int		pipes;
 	t_cmd	**cmd; // comandos
 	int		simple; //comillas simples
 	int		doble; //comillas dobles
@@ -74,8 +77,16 @@ void	sigquit_handler(int sig);
 /*			PARSER					*/
 void	parser(t_mini *mini);
 int		check_quotes(t_mini *mini);
+int		count_pipes(t_mini *mini);
+int		tokenize(t_mini *mini);
+int		get_cmds(char const *s, char c, t_mini *mini);
+int		is_quote(char c,  int *quote);
+/*void	print_cmd(t_mini *mini, int i);
+int		pipe_count(t_mini *mini);*/
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);
+int		last_char(char str);
+
 
 #endif
