@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/09/26 09:36:23 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/04 08:34:16 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct s_io_file
 typedef struct s_cmd
 {
 	char		*full_cmd;
+	int			simple; //comillas simples
+	int			doble; //comillas dobles
 	char		**args;
 	t_io_file	*infile;
 	t_io_file	*outfile;
@@ -64,8 +66,6 @@ typedef struct s_mini
 	char	**cmds;
 	int		pipes;
 	t_cmd	**cmd; // comandos
-	int		simple; //comillas simples
-	int		doble; //comillas dobles
 	int		last_status;
 }	t_mini;
 
