@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/09/26 09:41:20 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/04 07:47:51 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,26 @@ int	count_pipes(t_mini *mini)
 	int		p_count;
 	int		quote;
 	int		i;
-	char	last_char;
+	char	prev;
 
 	p_count = 0;
 	i = -1;
 	quote = 0;
-	last_char = '|';
+	prev = '|';
 	while (mini->input[++i])
 	{
 		is_quote(mini->input[i], &quote);
 		if (mini->input[i] == '|' && quote == 0)
 		{
-			if (last_char == '|' || mini->input[i + 1] == '\0')
-			{
-				print_error("Error: syntax error near token '|'", 0, 258);
-				return (-1);
-			}
+			if (prev == '|')
+				return (print_error("Error:syntax error near '|'", 0, 258), -1);
 			p_count++;
 		}
 		if (mini->input[i] != ' ')
-			last_char = mini->input[i];
+			prev = mini->input[i];
 	}
+	if (prev == '|')
+		return (print_error("Error: syntax error near token '|'", 0, 258), -1);
 	return (p_count);
 }
 
