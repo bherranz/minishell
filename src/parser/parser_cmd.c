@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/10/08 05:05:43 by codespace        ###   ########.fr       */
+/*   Updated: 2024/10/08 06:09:33 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main_cmd(char *str, t_cmd *cmd)
 	// cmd->args = malloc(sizeof(char) * ft_strlen(str));
 	// cmd->infile = malloc(sizeof(t_io_file) * ft_strlen(str));
 	// cmd->outfile= malloc(sizeof(t_io_file) * ft_strlen(str));
+	printf("str: %s\n", str);
 	if (str)
 		printf("espacio: %i\n", ft_isspace(str[0]));
 	return (0);
@@ -44,8 +45,10 @@ int	parse_cmds(t_mini *mini)
 
 	//para los infiles y outfiles guardar sin comillas, para los comandos, investigar
 	i = 0;
+	printf("command: %s\n", mini->cmd[0]->full_cmd);
 	while (i <= mini->pipes)
 	{
+		printf("command: %s\n", mini->cmd[0]->full_cmd);
 		printf("command %i\n", i);
 		if (main_cmd(mini->cmd[i]->full_cmd, mini->cmd[i]) != 0)
 		 	return (-1);
