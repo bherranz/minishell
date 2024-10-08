@@ -84,7 +84,8 @@ int	get_cmds(char const *s, char c, t_mini *mini)
 {
 	if (!s)
 		return (-1);
-	mini->cmds = (char **)malloc(sizeof(char *) * (mini->pipes + 1));
+	mini->cmds = NULL;
+	mini->cmds = (char **)malloc(sizeof(char *) * (mini->pipes + 2)); // +2 porque hay un comando más que pipes y NULL al final
 	mini->cmds = ft_fill(s, c, mini->cmds, (mini->pipes + 1));
 	if (!mini->cmds)
 	{
@@ -93,4 +94,3 @@ int	get_cmds(char const *s, char c, t_mini *mini)
 	}
 	return (0);
 }
-
