@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/09/26 09:36:23 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/08 05:07:21 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_io_file
 
 typedef struct s_cmd
 {
+	int			index;
 	char		*full_cmd;
 	char		**args;
 	t_io_file	*infile;
@@ -81,6 +82,7 @@ int		count_pipes(t_mini *mini);
 int		tokenize(t_mini *mini);
 int		get_cmds(char const *s, char c, t_mini *mini);
 int		is_quote(char c,  int *quote);
+int		parse_cmds(t_mini *mini);
 /*void	print_cmd(t_mini *mini, int i);
 int		pipe_count(t_mini *mini);*/
 

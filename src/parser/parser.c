@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/08 05:27:07 by codespace        ###   ########.fr       */
+/*   Updated: 2024/10/08 06:02:07 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,17 @@ int	tokenize(t_mini *mini)
 	mini->pipes = count_pipes(mini);//contar los pipes no entrecomillados para memoria
 	if (mini->pipes < 0)
 		return (-1);
-	mini->cmd = malloc((mini->pipes + 1) * sizeof(t_cmd));
+	mini->cmd = malloc((mini->pipes + 1) * sizeof(t_cmd *));
 	if (get_cmds(mini->input, '|', mini) == -1) //sirve salvo que pipe este entre comillas	
 		return (-1);
 	while (x <= mini->pipes)
 	{
+		mini->cmd[x] = malloc(sizeof(t_cmd));
+		if (!mini->cmd[x])
+			return (-1);
 		mini->cmd[x] = &newcmd;
 		mini->cmd[x]->full_cmd = mini->cmds[x];
+		mini->cmd[x]->index = x;
 		printf("--->> Guardado: %s\n", mini->cmd[x]->full_cmd);
 		x++;
 	}
