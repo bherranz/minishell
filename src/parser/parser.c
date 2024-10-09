@@ -65,7 +65,7 @@ int	count_pipes(t_mini *mini)
 		if (mini->input[i] == '|' && quote == 0)
 		{
 			if (prev == '|')
-				return (print_error("Error:syntax error near '|'", 0, 258), -1);
+				return (print_error("Error:syntax error near token '|'", 0, 258), -1);
 			p_count++;
 		}
 		if (mini->input[i] != ' ')
@@ -82,11 +82,11 @@ int	tokenize(t_mini *mini)
 	t_cmd	newcmd;
 	
 	x = 0;
-	mini->pipes = count_pipes(mini);//contar los pipes no entrecomillados para memoria
+	mini->pipes = count_pipes(mini);
 	if (mini->pipes  < 0)
 		return (-1);
 	mini->cmd = malloc((mini->pipes + 1) * sizeof(t_cmd));
-	if (get_cmds(mini->input, '|', mini) == -1) //sirve salvo que pipe este entre comillas	
+	if (get_cmds(mini->input, '|', mini) == -1)
 		return (-1);
 	while (x <= mini->pipes)
 	{
@@ -97,80 +97,3 @@ int	tokenize(t_mini *mini)
 	}
 	return (0);
 }
-/*
-int	pipe_count(t_mini *mini)
-{
-	int	i;
-	int	count;
-	int quote;
-
-	i = 0;
-	count = 0;
-	quote = 0;
-	while (mini->input[i])
-	{
-		//clasificar si estamos dentro de comillas
-		if (mini->input[i] == '\'' || mini->input[i] == '\"')
-		{
-			if (quote == 0)
-				quote = mini->input[i];
-			else if (quote == mini->input[i])
-				quote = 0;	
-		}
-		if (quote == 0 && mini->input[i] == '|')
-			count++;
-		i++;
-	}
-	printf("------------> Pipes nbr: %d \n", count);
-	return (count);
-}
-
-void	tokenize(t_mini *mini)
-{
-	int	i; //iterador posición input
-	int	j; //iterador número de comando
-	int	length;
-	int	quote;
-
-	i = 0;
-	j = 0;
-	length = 0;
-	quote = 0;
-	while (mini->input[i])
-	{
-		if (mini->input[i] == '\'' || mini->input[i] == '\"')
-		{
-			if (quote == 0)
-				quote = mini->input[i];
-			else if (quote == mini->input[i])
-				quote = 0;	
-		}
-		else if (quote == 0 && mini->input[i] == '|')
-		{
-			length = 0;
-			t_cmd newcmd;
-			mini->cmd[j] = &newcmd;
-			mini->cmd[j]->full_cmd = ft_substr(&mini->input[i - length], 0, length);
-			j++;
-		}
-		length++;
-		i++;
-	}
-	//print comands
-	int x = 0;
-	while (mini->cmd[x]->full_cmd)
-	{
-		printf("---->>> cmd[%d]: %s\n", x, mini->cmd[x]->full_cmd);
-		x++;
-	}
-}
-
-void	parser(t_mini *mini)
-{
-	if (check_quotes(mini)) //check comillas cerradas
-		return ;
-	//splitear aka tokenizar y guardar
-	//sumar 1 porque siempre hay un comando más que pipes
-	mini->cmd = malloc((pipe_count(mini) + 1) * sizeof(t_cmd));
-	tokenize(mini);
-}*/

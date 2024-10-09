@@ -51,8 +51,10 @@ typedef struct s_io_file
 typedef struct s_cmd
 {
 	char		*full_cmd;
-	int			simple; //comillas simples
-	int			doble; //comillas dobles
+	bool		simple; //comillas simples
+	bool		doble; //comillas dobles
+	bool		key; // caso {}
+	char 		*e_input; //aqui iria el input a separar luego de expandir las variables
 	char		**args;
 	t_io_file	*infile;
 	t_io_file	*outfile;
