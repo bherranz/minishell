@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/04 07:47:51 by codespace        ###   ########.fr       */
+/*   Updated: 2024/10/10 12:32:18 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ void	parser(t_mini *mini)
 		return ;
 	if (tokenize(mini) == -1) //tokenizar y guardar
 		return ;
+	int i = -1;
+	while (mini->cmd[++i])
+		get_var(mini, mini->cmd[i]);
 }
 
 // falla en caso | echo hola | grep h | cat -> no lo toma como error

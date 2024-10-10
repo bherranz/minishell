@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/04 08:34:16 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/10 12:35:27 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,16 @@ int		get_cmds(char const *s, char c, t_mini *mini);
 int		is_quote(char c,  int *quote);
 /*void	print_cmd(t_mini *mini, int i);
 int		pipe_count(t_mini *mini);*/
+
+
+
+/*				EXPANSOR				*/
+int		get_var(t_mini *mini, t_cmd *cmd);
+void	replace_var(t_cmd *cmd, char *name, char *new_str);
+char	*get_name(int i, t_cmd *cmd);
+char *do_expansion(char *name, t_mini *mini);
+char *str_replace(char *str, const char *old, const char *new);
+char *replace_once(const char *str, const char *old, const char *new);
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);

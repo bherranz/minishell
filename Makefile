@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
+#    By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2024/09/24 05:04:11 by codespace        ###   ########.fr        #
+#    Updated: 2024/10/10 12:32:41 by miparis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,9 @@ SRCS = src/main.c \
 		src/parser/parser.c \
 		src/parser/parser_utils.c \
 		src/utils.c \
-		src/signals/signals.c
+		src/signals/signals.c \
+		src/expansor/expansor.c \
+		src/expansor/expansor_utils.c \
 
 # Define Colors
 GREEN  := \033[1;32m  # Bold Green
