@@ -15,96 +15,109 @@
 int	get_var(t_mini *mini, t_cmd *cmd)
 {
 	int		i;
-	char	*new_str;
+	char	*e_str;
 	char	*name;
+    //char    *str;
 
 	i = 0;
 	cmd->simple = false;
 	cmd->doble = false;
 	cmd->key = false;
-	new_str = NULL;
+    name = NULL;
+	e_str = NULL;
+    //str = NULL;
 	while (cmd->full_cmd[i])
 	{
 		if (cmd->full_cmd[i] == '\'')
 			cmd->simple = !cmd->simple;
 		if (cmd->full_cmd[i] == '$' && !cmd->simple)
 		{
+            //str = ft_substr(cmd->full_cmd, 0 , i); --> MODIFICA FULL CMD
+            //printf("---> Substr : %s\n", str);
 			if (cmd->full_cmd[i + 1] == '?')
 			{
-				printf("Case '$?' : %d\n", cmd->full_cmd[i]);
 				name = "$?";
-				new_str = do_expansion(name, mini);
-				printf("After expansion: %s\n", new_str);
+				e_str = do_expansion(name, mini);
 			}
 			else if (cmd->full_cmd[i + 1] != '\0')
 			{
-				name = get_name(i + 1, cmd);
-				new_str = do_expansion(name, mini);
-				printf("After expansion: %s\n", new_str);
+				name = get_name(i + 1, cmd->full_cmd);
+                printf("Name after function: %s\n", name);
+				e_str = do_expansion(name, mini);
+                printf("---> e_str %s\n", e_str);
 			}
 		}
 		i++;
 	}
-	replace_var(cmd, name, new_str);
+	//replace_var(cmd, str, e_str);
 	printf("Cadena con expansion: %s\n", cmd->full_cmd);
 	return (0);
 }
 
-void	replace_var(t_cmd *cmd, char *name, char *new_str)
+void	replace_var(t_cmd *cmd, char *str, char *e_str)
 {
-	if (new_str)
+    printf("----> Entra en replace var\n");
+	if (e_str)
     {
-        // Si la variable tiene un valor y estamos en comillas dobles o sin comillas
         if (cmd->doble || !cmd->simple)
-            cmd->full_cmd = str_replace(cmd->full_cmd, name, new_str);
+        {
+            //free(cmd->full_cmd);
+            cmd->full_cmd = ft_strjoin(str, e_str);
+        }
     }
-    else
+    else if (!e_str)
     {
-        // Si no tiene valor y no estamos en comillas simples, reemplazamos por ""
         if (!cmd->simple)
-            cmd->full_cmd = str_replace(cmd->full_cmd, name, "");
+        {
+            //free(cmd->full_cmd);
+            cmd->full_cmd = ft_strjoin(str, "");
+        }
     }
-    free(name);
-    if (new_str)
-        free(new_str);
+    /*if (e_str)
+        free(e_str);
+    free(str);*/
 }
 
 
-char	*get_name(int i, t_cmd *cmd)
+char	*get_name(int i, char *cmd)
 {
 	char	*name;
-	size_t	len;
 	int		start;
+    int     name_len;
 
-	printf("Get Name\n");
+    printf("Get Name\n");
 	start = i;
-	while (ft_isalnum(cmd->full_cmd[i]))
-			i++;
-	len = i - start;
-	name = ft_substr(cmd->full_cmd, start, len);
+    name_len = 0;
+	while (cmd[i] && (ft_isalnum(cmd[i]) == 1))
+	{
+        name_len++;
+        i++;
+    }
+    name = ft_substr(cmd, start, name_len);
 	printf("Name found for var. expansion: %s\n", name);
 	if (!name)
 	{
 		printf("Name not found\n");
 		return (NULL);
 	}
+    
 	return (name);
 }
 char *do_expansion(char *name, t_mini *mini)
 {
 	int		x;
 
-	x = -1;
+	x = 0;
+    printf("---> Do expansion: %s\n", name);
 	if (ft_strncmp(name, "$?", ft_strlen(name)) == 0)
 		return(ft_itoa(mini->last_status));
-	if (!name)
+    if (!name)
 		return (NULL);
-	while (mini->envp[++x])
+	while (mini->envp[x])
 	{
-		if (ft_strncmp(name, mini->envp[x], ft_strlen(name) == 0))
-			return (ft_strrchr(mini->envp[x], '=') + 1);
-		else
-			return (NULL);
+		if (ft_strncmp(name, mini->envp[x], ft_strlen(name)) == 0)
+            return (ft_strrchr(mini->envp[x], '=') + 1);
+        x++;
 	}
 	return (NULL);
 }

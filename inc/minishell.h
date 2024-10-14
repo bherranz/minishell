@@ -91,7 +91,7 @@ int		pipe_count(t_mini *mini);*/
 /*				EXPANSOR				*/
 int		get_var(t_mini *mini, t_cmd *cmd);
 void	replace_var(t_cmd *cmd, char *name, char *new_str);
-char	*get_name(int i, t_cmd *cmd);
+char	*get_name(int i, char *cmd);
 char *do_expansion(char *name, t_mini *mini);
 char *str_replace(char *str, const char *old, const char *new);
 char *replace_once(const char *str, const char *old, const char *new);

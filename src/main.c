@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	g_signal = 0;
-	signals_handler();
+	//signals_handler();
 	while (1)
 	{
 		mini.input = readline("MINICONCHAA > ");
