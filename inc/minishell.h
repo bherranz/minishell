@@ -50,8 +50,12 @@ typedef struct s_io_file
 
 typedef struct s_cmd
 {
-	int			index;
+	int 		index;
 	char		*full_cmd;
+	bool		simple; //comillas simples
+	bool		doble; //comillas dobles
+	bool		key; // caso {}
+	char 		*e_input; //aqui iria el input a separar luego de expandir las variables
 	char		**args;
 	t_io_file	*infile;
 	t_io_file	*outfile;
@@ -80,11 +84,10 @@ void	parser(t_mini *mini);
 int		check_quotes(t_mini *mini);
 int		count_pipes(t_mini *mini);
 int		tokenize(t_mini *mini);
+t_cmd 	*init_tcmd();
 int		get_cmds(char const *s, char c, t_mini *mini);
 int		is_quote(char c,  int *quote);
 int		parse_cmds(t_mini *mini);
-/*void	print_cmd(t_mini *mini, int i);
-int		pipe_count(t_mini *mini);*/
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);

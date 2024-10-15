@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 15:38:04 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/08 05:08:40 by codespace        ###   ########.fr       */
+/*   Updated: 2024/10/15 12:37:30 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 int		ft_strcmp(const char *s1, const char *s2);
+void	ft_bzero(void *s, size_t n);
+void	ft_free(char **array_split);
 
 //gnl
 char	*read_buffer(int fd, char *buffer);

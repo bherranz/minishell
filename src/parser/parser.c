@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/08 06:11:22 by codespace        ###   ########.fr       */
+/*   Updated: 2024/10/15 12:32:51 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,14 @@ void	parser(t_mini *mini)
 		return ;
 	if (tokenize(mini) == -1) //tokenizar y guardar
 		return ;
-	if (parse_cmds(mini) == -1) //parsear comandos
-		return ;
+	/*if (parse_cmds(mini) == -1) //parsear comandos
+		return ;*/
+	int x = 0;
+	while (x <= mini->pipes)
+	{
+		printf("--->> Guardado: %s\n", mini->cmd[x]->full_cmd);
+		x++;
+	}
 }
 
 //voy a hacer una función de mierda, 
@@ -90,25 +96,47 @@ int	count_pipes(t_mini *mini)
 int	tokenize(t_mini *mini)
 {
 	int		x;
-	t_cmd	newcmd;
 
 	x = 0;
 	mini->pipes = count_pipes(mini);//contar los pipes no entrecomillados para memoria
 	if (mini->pipes < 0)
 		return (-1);
-	mini->cmd = malloc((mini->pipes + 1) * sizeof(t_cmd *));
+	mini->cmd = (t_cmd **)malloc((mini->pipes + 1) * sizeof(t_cmd *));
+	if (!mini->cmd)
+	{
+		print_error("Error: Problem with allocating commands structs", 0, 258);
+		return (-1);
+	}
 	if (get_cmds(mini->input, '|', mini) == -1) //sirve salvo que pipe este entre comillas	
 		return (-1);
 	while (x <= mini->pipes)
 	{
-		mini->cmd[x] = malloc(sizeof(t_cmd));
+		mini->cmd[x] = init_tcmd();
 		if (!mini->cmd[x])
+		{
+			print_error("Error: Command string null", 0, 258);
 			return (-1);
-		mini->cmd[x] = &newcmd;
+		}
 		mini->cmd[x]->full_cmd = mini->cmds[x];
 		mini->cmd[x]->index = x;
-		printf("--->> Guardado: %s\n", mini->cmd[x]->full_cmd);
 		x++;
 	}
 	return (0);
+}
+
+t_cmd *init_tcmd()
+{
+	t_cmd *cmd;
+	
+	cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	cmd->index = 0;
+	cmd->full_cmd = NULL;
+	cmd->simple = 0;
+	cmd->doble = 0;
+	cmd->key = 0;
+	cmd->e_input = NULL;
+	cmd->args = NULL;
+	cmd->infile = NULL;
+	cmd->outfile = NULL;
+	return (cmd);
 }
