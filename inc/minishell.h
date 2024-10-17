@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/17 12:02:33 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/17 12:05:36 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ t_cmd 	*init_tcmd();
 int		get_cmds(char const *s, char c, t_mini *mini);
 int		is_quote(char c,  int *quote);
 int		parse_cmds(t_mini *mini);
+void	count_err(char *input);
 
 
 
@@ -93,9 +94,9 @@ int		parse_cmds(t_mini *mini);
 int		get_var(t_mini *mini, t_cmd *cmd);
 void	replace_var(t_cmd *cmd, char *name, char *new_str);
 char	*get_name(int i, char *cmd);
-char *do_expansion(char *name, t_mini *mini);
-char *str_replace(char *str, const char *old, const char *new);
-char *replace_once(const char *str, const char *old, const char *new);
+char 	*do_expansion(char *name, t_mini *mini);
+char 	*str_replace(char *str, const char *old, const char *new);
+char 	*replace_once(const char *str, const char *old, const char *new);
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);
