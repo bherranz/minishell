@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+         #
+#    By: miparis <miparis@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2024/10/10 12:32:41 by miparis          ###   ########.fr        #
+#    Updated: 2024/10/17 11:59:45 by miparis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME = minishell
 SRCS = src/main.c \
 		src/parser/parser.c \
 		src/parser/parser_utils.c \
+		src/parser/parser_cmd.c \
 		src/utils.c \
 		src/signals/signals.c \
 		src/expansor/expansor.c \
@@ -38,7 +39,7 @@ LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 REMOVE = rm -f
 
 all: $(LIBFT) $(MLX_LIB) $(NAME)

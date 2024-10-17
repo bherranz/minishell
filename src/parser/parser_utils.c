@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:10:27 by miparis           #+#    #+#             */
-/*   Updated: 2024/09/27 10:10:28 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/15 12:46:17 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,6 @@ static size_t	ft_customstrlen(const char *s, char c)
 	return (i);
 }
 
-static void	ft_free(size_t i, char **array)
-{
-	while (i > 0)
-	{
-		i--;
-		free(array[i]);
-	}
-	free (array);
-}
-
 static char	**ft_fill(const char *s, char c, char **array, size_t substrings)
 {
 	size_t	i;
@@ -70,21 +60,22 @@ static char	**ft_fill(const char *s, char c, char **array, size_t substrings)
 			j++;
 		array[i] = ft_substr(s, j, ft_customstrlen((s + j), c));
 		if (!array[i])
-			return (ft_free(i, array), NULL);
+			return (ft_free(array), NULL);
 		while (s[j] && (s[j] != c || quote))
 		{
 			is_quote(s[j], &quote);
 			j++;
 		}
 	}
-	return (array[i] = NULL , array);
+	return (array);
 }
 
 int	get_cmds(char const *s, char c, t_mini *mini)
 {
 	if (!s)
 		return (-1);
-	mini->cmds = (char **)malloc(sizeof(char *) * (mini->pipes + 1));
+	mini->cmds = NULL;
+	mini->cmds = (char **)malloc(sizeof(char *) * (mini->pipes + 2)); // +2 porque hay un comando más que pipes y NULL al final
 	mini->cmds = ft_fill(s, c, mini->cmds, (mini->pipes + 1));
 	if (!mini->cmds)
 	{
@@ -93,4 +84,3 @@ int	get_cmds(char const *s, char c, t_mini *mini)
 	}
 	return (0);
 }
-

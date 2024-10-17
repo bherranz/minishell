@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/10 12:32:18 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/17 12:02:00 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,14 @@ void	parser(t_mini *mini)
 	int i = -1;
 	while (mini->cmd[++i])
 		get_var(mini, mini->cmd[i]);
+	int x = 0;
+	while (x <= mini->pipes)
+	{
+		printf("--->> Guardado: %s\n", mini->cmd[x]->full_cmd);
+		x++;
+	}
 }
 
-// falla en caso | echo hola | grep h | cat -> no lo toma como error
 int	count_pipes(t_mini *mini)
 {
 	int		p_count;
@@ -74,29 +79,55 @@ int	count_pipes(t_mini *mini)
 		if (mini->input[i] != ' ')
 			prev = mini->input[i];
 	}
-	if (prev == '|')
-		return (print_error("Error: syntax error near token '|'", 0, 258), -1);
+	if (prev == '|') //si solo hay espacios tira error, creo que es mejor devolver control a usuario y ya
+		return (count_err(mini->input), -1);
 	return (p_count);
 }
 
 int	tokenize(t_mini *mini)
 {
 	int		x;
-	t_cmd	newcmd;
-	
+
 	x = 0;
-	mini->pipes = count_pipes(mini);
-	if (mini->pipes  < 0)
+	mini->pipes = count_pipes(mini);//contar los pipes no entrecomillados para memoria
+	if (mini->pipes < 0)
 		return (-1);
-	mini->cmd = malloc((mini->pipes + 1) * sizeof(t_cmd));
-	if (get_cmds(mini->input, '|', mini) == -1)
+	mini->cmd = (t_cmd **)malloc((mini->pipes + 1) * sizeof(t_cmd *));
+	if (!mini->cmd)
+	{
+		print_error("Error: Problem with allocating commands structs", 0, 258);
+		return (-1);
+	}
+	if (get_cmds(mini->input, '|', mini) == -1) //sirve salvo que pipe este entre comillas	
 		return (-1);
 	while (x <= mini->pipes)
 	{
-		mini->cmd[x] = &newcmd;
+		mini->cmd[x] = init_tcmd();
+		if (!mini->cmd[x])
+		{
+			print_error("Error: Command string null", 0, 258);
+			return (-1);
+		}
 		mini->cmd[x]->full_cmd = mini->cmds[x];
-		printf("--->> Guardado: %s\n", mini->cmd[x]->full_cmd);
+		mini->cmd[x]->index = x;
 		x++;
 	}
 	return (0);
+}
+
+t_cmd *init_tcmd()
+{
+	t_cmd *cmd;
+	
+	cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	cmd->index = 0;
+	cmd->full_cmd = NULL;
+	cmd->simple = 0;
+	cmd->doble = 0;
+	cmd->key = 0;
+	cmd->e_input = NULL;
+	cmd->args = NULL;
+	cmd->infile = NULL;
+	cmd->outfile = NULL;
+	return (cmd);
 }

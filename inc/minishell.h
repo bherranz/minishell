@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/10 12:35:27 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/17 12:02:33 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_io_file
 
 typedef struct s_cmd
 {
+	int 		index;
 	char		*full_cmd;
 	bool		simple; //comillas simples
 	bool		doble; //comillas dobles
@@ -81,10 +82,10 @@ void	parser(t_mini *mini);
 int		check_quotes(t_mini *mini);
 int		count_pipes(t_mini *mini);
 int		tokenize(t_mini *mini);
+t_cmd 	*init_tcmd();
 int		get_cmds(char const *s, char c, t_mini *mini);
 int		is_quote(char c,  int *quote);
-/*void	print_cmd(t_mini *mini, int i);
-int		pipe_count(t_mini *mini);*/
+int		parse_cmds(t_mini *mini);
 
 
 
