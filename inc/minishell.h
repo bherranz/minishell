@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/08 05:07:21 by codespace        ###   ########.fr       */
+/*   Updated: 2024/10/17 12:05:36 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ typedef struct s_mini
 	char	**cmds;
 	int		pipes;
 	t_cmd	**cmd; // comandos
-	int		simple; //comillas simples
-	int		doble; //comillas dobles
 	int		last_status;
 }	t_mini;
 
@@ -88,6 +86,17 @@ t_cmd 	*init_tcmd();
 int		get_cmds(char const *s, char c, t_mini *mini);
 int		is_quote(char c,  int *quote);
 int		parse_cmds(t_mini *mini);
+void	count_err(char *input);
+
+
+
+/*				EXPANSOR				*/
+int		get_var(t_mini *mini, t_cmd *cmd);
+void	replace_var(t_cmd *cmd, char *name, char *new_str);
+char	*get_name(int i, char *cmd);
+char 	*do_expansion(char *name, t_mini *mini);
+char 	*str_replace(char *str, const char *old, const char *new);
+char 	*replace_once(const char *str, const char *old, const char *new);
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);

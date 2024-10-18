@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/15 12:32:51 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/17 12:10:49 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,16 @@ void	parser(t_mini *mini)
 		return ;
 	if (tokenize(mini) == -1) //tokenizar y guardar
 		return ;
-	/*if (parse_cmds(mini) == -1) //parsear comandos
-		return ;*/
 	int x = 0;
 	while (x <= mini->pipes)
 	{
 		printf("--->> Guardado: %s\n", mini->cmd[x]->full_cmd);
 		x++;
 	}
+	/*while (mini->cmd[++i])
+	int i = -1;
+		get_var(mini, mini->cmd[i]);*/
 }
-
 //voy a hacer una función de mierda, 
 //luego si se nos ocurre algo mejor se cambia xd
 void	count_err(char *input)
@@ -82,7 +82,7 @@ int	count_pipes(t_mini *mini)
 		if (mini->input[i] == '|' && quote == 0)
 		{
 			if (prev == '|')
-				return (print_error("Error:syntax error near '|'", 0, 258), -1);
+				return (count_err(mini->input), -1);
 			p_count++;
 		}
 		if (mini->input[i] != ' ')
