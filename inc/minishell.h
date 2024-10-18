@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/17 12:05:36 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/18 18:38:25 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	count_err(char *input);
 
 /*				EXPANSOR				*/
 int		get_var(t_mini *mini, t_cmd *cmd);
-void	replace_var(t_cmd *cmd, char *name, char *new_str);
+void	replace_var(t_cmd *cmd, char *str, char *e_str, char *str2);
 char	*get_name(int i, char *cmd);
 char 	*do_expansion(char *name, t_mini *mini);
 char 	*str_replace(char *str, const char *old, const char *new);

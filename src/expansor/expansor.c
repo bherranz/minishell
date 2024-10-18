@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2024/10/14 10:08:59 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/18 18:38:04 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,25 @@
 int	get_var(t_mini *mini, t_cmd *cmd)
 {
 	int		i;
+    int     x;
 	char	*e_str;
 	char	*name;
-    //char    *str;
+    char    *str;
+    char    *str2;
 
 	i = 0;
-	cmd->simple = false;
-	cmd->doble = false;
-	cmd->key = false;
     name = NULL;
 	e_str = NULL;
-    //str = NULL;
+    str = NULL;
+    str2 = NULL;
 	while (cmd->full_cmd[i])
 	{
 		if (cmd->full_cmd[i] == '\'')
 			cmd->simple = !cmd->simple;
 		if (cmd->full_cmd[i] == '$' && !cmd->simple)
 		{
-            //str = ft_substr(cmd->full_cmd, 0 , i); --> MODIFICA FULL CMD
-            //printf("---> Substr : %s\n", str);
+            x = i;
+            str = ft_substr(cmd->full_cmd, 0 , i);
 			if (cmd->full_cmd[i + 1] == '?')
 			{
 				name = "$?";
@@ -42,40 +42,29 @@ int	get_var(t_mini *mini, t_cmd *cmd)
 			else if (cmd->full_cmd[i + 1] != '\0')
 			{
 				name = get_name(i + 1, cmd->full_cmd);
-                printf("Name after function: %s\n", name);
 				e_str = do_expansion(name, mini);
-                printf("---> e_str %s\n", e_str);
 			}
 		}
 		i++;
 	}
-	//replace_var(cmd, str, e_str);
+    str2 = ft_substr(cmd->full_cmd, (x + ft_strlen(name) + 1), ft_strlen(name) + 1);
+    printf("Str2 -> %s\n", str2);
+    replace_var(cmd, str, e_str, str2);
 	printf("Cadena con expansion: %s\n", cmd->full_cmd);
 	return (0);
 }
 
-void	replace_var(t_cmd *cmd, char *str, char *e_str)
+void	replace_var(t_cmd *cmd, char *str, char *e_str, char *str2)
 {
-    printf("----> Entra en replace var\n");
 	if (e_str)
     {
         if (cmd->doble || !cmd->simple)
         {
-            //free(cmd->full_cmd);
+            free(cmd->full_cmd);
             cmd->full_cmd = ft_strjoin(str, e_str);
+            cmd->full_cmd = ft_strjoin(cmd->full_cmd, str2);
         }
     }
-    else if (!e_str)
-    {
-        if (!cmd->simple)
-        {
-            //free(cmd->full_cmd);
-            cmd->full_cmd = ft_strjoin(str, "");
-        }
-    }
-    /*if (e_str)
-        free(e_str);
-    free(str);*/
 }
 
 
