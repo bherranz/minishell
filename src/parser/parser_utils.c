@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:10:27 by miparis           #+#    #+#             */
-/*   Updated: 2024/10/15 12:46:17 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/22 11:34:59 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static char	**ft_fill(const char *s, char c, char **array, size_t substrings)
 			j++;
 		}
 	}
+	array[i] = NULL;
 	return (array);
 }
 

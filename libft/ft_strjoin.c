@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 12:59:37 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/18 18:04:43 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/22 12:20:22 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	while (s2[j])
 		new[i++] = s2[j++];
-	printf("string in join: [%s]\n", new);
 	return (new);
 }
 

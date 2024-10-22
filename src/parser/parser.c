@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/18 17:51:25 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/22 12:51:58 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	parser(t_mini *mini)
 		x++;
 	}
 	int i = 0;
-	while (mini->cmd[i])
+	while (i <= mini->pipes)
 	{
 		get_var(mini, mini->cmd[i]);
 		i++;
@@ -101,7 +101,7 @@ int	tokenize(t_mini *mini)
 	int		x;
 
 	x = 0;
-	mini->pipes = count_pipes(mini);//contar los pipes no entrecomillados para memoria
+	mini->pipes = count_pipes(mini);
 	if (mini->pipes < 0)
 		return (-1);
 	mini->cmd = (t_cmd **)malloc((mini->pipes + 1) * sizeof(t_cmd *));
@@ -110,7 +110,7 @@ int	tokenize(t_mini *mini)
 		print_error("Error: Problem with allocating commands structs", 0, 258);
 		return (-1);
 	}
-	if (get_cmds(mini->input, '|', mini) == -1) //sirve salvo que pipe este entre comillas	
+	if (get_cmds(mini->input, '|', mini) == -1)
 		return (-1);
 	while (x <= mini->pipes)
 	{
@@ -138,6 +138,7 @@ t_cmd *init_tcmd()
 	cmd->doble = 0;
 	cmd->key = 0;
 	cmd->e_input = NULL;
+	cmd->ex_var = NULL;
 	cmd->args = NULL;
 	cmd->infile = NULL;
 	cmd->outfile = NULL;

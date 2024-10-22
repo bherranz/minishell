@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/18 18:38:25 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/22 12:53:08 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_cmd
 	bool		doble; //comillas dobles
 	bool		key; // caso {}
 	char 		*e_input; //aqui iria el input a separar luego de expandir las variables
+	char		*ex_var;
 	char		**args;
 	t_io_file	*infile;
 	t_io_file	*outfile;
@@ -94,9 +95,10 @@ void	count_err(char *input);
 int		get_var(t_mini *mini, t_cmd *cmd);
 void	replace_var(t_cmd *cmd, char *str, char *e_str, char *str2);
 char	*get_name(int i, char *cmd);
-char 	*do_expansion(char *name, t_mini *mini);
+void 	do_expansion(char *name, t_mini *mini, t_cmd *cmd);
 char 	*str_replace(char *str, const char *old, const char *new);
-char 	*replace_once(const char *str, const char *old, const char *new);
+char 	*rest_str(int i, char *name, t_cmd cmd);
+void	handle_expansor(t_mini *mini, t_cmd *cmd, char **str, char **str2, int i);
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);
