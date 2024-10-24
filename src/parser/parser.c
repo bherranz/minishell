@@ -6,11 +6,34 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/22 12:51:58 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/24 11:00:31 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	parser(t_mini *mini)
+{
+	int	i;
+
+	i = 0;
+	if (check_quotes(mini)) //check comillas cerradas
+		return ;
+	if (tokenize(mini) == -1) // separar los comandos por pipes
+		return ;
+	/*NOTE - A sacar es para ver el input original*/
+	int x = 0;
+	while (x <= mini->pipes)
+	{
+		printf("--->> Guardado: %s\n", mini->cmd[x]->full_cmd);
+		x++;
+	}
+	while (i <= mini->pipes)
+	{
+		expand(mini, mini->cmd[i]);
+		i++;
+	}
+}
 
 int	check_quotes(t_mini *mini)
 {
@@ -25,7 +48,6 @@ int	check_quotes(t_mini *mini)
 		{
 			if (quote == 0)
 				quote = mini->input[i];
-			//asegurar que la comilla de cierre es la misma que la de apertura
 			else if (quote == mini->input[i])
 				quote = 0;
 		}
@@ -39,27 +61,7 @@ int	check_quotes(t_mini *mini)
 	return (0);
 }
 
-void	parser(t_mini *mini)
-{
-	if (check_quotes(mini)) //check comillas cerradas
-		return ;
-	if (tokenize(mini) == -1) //tokenizar y guardar
-		return ;
-	int x = 0;
-	while (x <= mini->pipes)
-	{
-		printf("--->> Guardado: %s\n", mini->cmd[x]->full_cmd);
-		x++;
-	}
-	int i = 0;
-	while (i <= mini->pipes)
-	{
-		get_var(mini, mini->cmd[i]);
-		i++;
-	}
-}
-//voy a hacer una función de mierda, 
-//luego si se nos ocurre algo mejor se cambia xd
+/*REVIEW - Se necesita modificar??*/
 void	count_err(char *input)
 {
 	if (ft_strrchr(input, '|') == NULL)
@@ -91,7 +93,7 @@ int	count_pipes(t_mini *mini)
 		if (mini->input[i] != ' ')
 			prev = mini->input[i];
 	}
-	if (prev == '|') //si solo hay espacios tira error, creo que es mejor devolver control a usuario y ya
+	if (prev == '|')
 		return (count_err(mini->input), -1);
 	return (p_count);
 }
@@ -106,41 +108,17 @@ int	tokenize(t_mini *mini)
 		return (-1);
 	mini->cmd = (t_cmd **)malloc((mini->pipes + 1) * sizeof(t_cmd *));
 	if (!mini->cmd)
-	{
-		print_error("Error: Problem with allocating commands structs", 0, 258);
-		return (-1);
-	}
+		return (print_error("Error: Problem allocating structs", 0, 258), -1);
 	if (get_cmds(mini->input, '|', mini) == -1)
 		return (-1);
 	while (x <= mini->pipes)
 	{
 		mini->cmd[x] = init_tcmd();
 		if (!mini->cmd[x])
-		{
-			print_error("Error: Command string null", 0, 258);
-			return (-1);
-		}
+			return (print_error("Error: Command string null", 0, 258), -1);
 		mini->cmd[x]->full_cmd = mini->cmds[x];
 		mini->cmd[x]->index = x;
 		x++;
 	}
 	return (0);
-}
-
-t_cmd *init_tcmd()
-{
-	t_cmd *cmd;
-	
-	cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	cmd->index = 0;
-	cmd->full_cmd = NULL;
-	cmd->simple = 0;
-	cmd->doble = 0;
-	cmd->key = 0;
-	cmd->e_input = NULL;
-	cmd->ex_var = NULL;
-	cmd->args = NULL;
-	cmd->infile = NULL;
-	cmd->outfile = NULL;
-	return (cmd);
 }

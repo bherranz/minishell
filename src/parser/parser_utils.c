@@ -6,11 +6,30 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:10:27 by miparis           #+#    #+#             */
-/*   Updated: 2024/10/22 11:34:59 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/24 10:49:36 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+
+t_cmd	*init_tcmd(void)
+{
+	t_cmd	*cmd;
+
+	cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	cmd->index = 0;
+	cmd->full_cmd = NULL;
+	cmd->simple = 0;
+	cmd->doble = 0;
+	cmd->key = 0;
+	cmd->e_input = NULL;
+	cmd->ex_var = NULL;
+	cmd->args = NULL;
+	cmd->infile = NULL;
+	cmd->outfile = NULL;
+	return (cmd);
+}
 
 int	is_quote(char c,  int *quote)
 {

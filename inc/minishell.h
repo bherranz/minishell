@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/22 12:53:08 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/24 10:55:58 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,26 +83,24 @@ void	parser(t_mini *mini);
 int		check_quotes(t_mini *mini);
 int		count_pipes(t_mini *mini);
 int		tokenize(t_mini *mini);
-t_cmd 	*init_tcmd();
 int		get_cmds(char const *s, char c, t_mini *mini);
 int		is_quote(char c,  int *quote);
 int		parse_cmds(t_mini *mini);
 void	count_err(char *input);
 
-
-
 /*				EXPANSOR				*/
-int		get_var(t_mini *mini, t_cmd *cmd);
-void	replace_var(t_cmd *cmd, char *str, char *e_str, char *str2);
-char	*get_name(int i, char *cmd);
-void 	do_expansion(char *name, t_mini *mini, t_cmd *cmd);
-char 	*str_replace(char *str, const char *old, const char *new);
-char 	*rest_str(int i, char *name, t_cmd cmd);
-void	handle_expansor(t_mini *mini, t_cmd *cmd, char **str, char **str2, int i);
+int		expand(t_mini *mini, t_cmd *cmd);
+void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2);
+char	*get_var(int i, char *cmd);
+void	do_expansion(char *name, t_mini *mini, t_cmd *cmd);
+char	*rest_str(int i, char *name, t_cmd cmd);
+char	*handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i);
+
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);
 int		last_char(char str);
+t_cmd	*init_tcmd(void);
 
 
 #endif
