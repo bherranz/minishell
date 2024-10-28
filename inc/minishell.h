@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/24 10:55:58 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/28 10:45:08 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2);
 char	*get_var(int i, char *cmd);
 void	do_expansion(char *name, t_mini *mini, t_cmd *cmd);
 char	*rest_str(int i, char *name, t_cmd cmd);
-char	*handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i);
+void	handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i);
 
 
 /*			UTILS					*/
