@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2024/10/29 15:59:10 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/29 17:03:56 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2)
 			cmd->full_cmd = ft_strjoin(aux, str2);
 		}
 	}
+
+	// while (1) ;
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/10/29 16:06:31 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/29 17:13:56 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int main_cmd(char *str, t_cmd *cmd)
 	printf(" ------> Spaces = %i\n", space);
 	cmd->args = malloc(sizeof(char *) * space);
 	printf(" ------> Malloqueado = %i\n", space);
-	while (str[i])
+	while (str && str[i])
 	{
 		process_quotes(str[i], cmd);
 		parse_redir(str, &i, cmd);
@@ -155,7 +155,7 @@ int main_cmd(char *str, t_cmd *cmd)
 			}
 			else
 				return (-1);
-			i += ft_strlen(token);
+			i += ft_strlen(token) - 1;
 			free(token);
 			x++;
 		}
