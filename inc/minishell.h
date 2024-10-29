@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/28 11:46:43 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/29 11:58:01 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ typedef struct s_cmd
 	char		*full_cmd;
 	bool		simple; //comillas simples
 	bool		doble; //comillas dobles
-	bool		key; // caso {}
-	char 		*e_input; //aqui iria el input a separar luego de expandir las variables
+	char 		*e_input;
 	char		*ex_var;
 	char		**args;
+	int			args_index;
 	t_io_file	*infile;
 	t_io_file	*outfile;
 }	t_cmd;
@@ -96,6 +96,19 @@ void	do_expansion(char *name, t_mini *mini, t_cmd *cmd);
 char	*rest_str(int i, char *name, t_cmd cmd);
 void	handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i);
 
+
+
+/*				PARSER CMD				 */
+int			main_cmd(char *str, t_cmd *cmd);
+void		process_quotes(char c, t_cmd *cmd);
+char		*get_token(char *str, t_cmd *cmd);
+void		add_arg_to_cmd(t_cmd *cmd, char *arg);
+/*char		*get_token(char *str, t_cmd *cmd);
+void		parse_redir(char *str, int *i, t_cmd *cmd);
+int			is_redir(char *str);
+t_io_file	*create_redir(int redir_type, char *str, int *i, t_cmd *cmd);
+void 		add_arg_to_cmd(t_cmd *cmd, char *token);
+int 		main_cmd(t_cmd *cmd);*/
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);

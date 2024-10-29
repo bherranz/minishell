@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:10:27 by miparis           #+#    #+#             */
-/*   Updated: 2024/10/24 10:49:36 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/29 11:16:08 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ t_cmd	*init_tcmd(void)
 	cmd->full_cmd = NULL;
 	cmd->simple = 0;
 	cmd->doble = 0;
-	cmd->key = 0;
 	cmd->e_input = NULL;
 	cmd->ex_var = NULL;
 	cmd->args = NULL;
 	cmd->infile = NULL;
 	cmd->outfile = NULL;
+	cmd->args_index = 0;
 	return (cmd);
 }
 

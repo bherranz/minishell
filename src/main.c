@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/18 17:48:42 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/29 09:28:23 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	g_signal = 0;
-	//signals_handler();
+	signals_handler();
 	while (1)
 	{
 		mini.input = readline("MINICONCHAA > ");
@@ -39,7 +39,5 @@ int	main(int argc, char **argv, char **envp)
 		parser(&mini);
 		free(mini.input);
 	}
-	free(mini.input);
-	clear_history();
 	return (0);
 }

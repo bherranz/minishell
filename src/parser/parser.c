@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/24 11:00:31 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/29 11:26:59 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,12 @@ void	parser(t_mini *mini)
 	}
 	while (i <= mini->pipes)
 	{
-		expand(mini, mini->cmd[i]);
+		if (expand(mini, mini->cmd[i]) == -1)
+			return ;
 		i++;
 	}
+	if (parse_cmds(mini) == -1)
+		return ;
 }
 
 int	check_quotes(t_mini *mini)

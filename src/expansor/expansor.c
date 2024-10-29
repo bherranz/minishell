@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2024/10/28 11:46:35 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/29 12:59:20 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	expand(t_mini *mini, t_cmd *cmd)
 		i++;
 	}
 	printf("Cadena con expansion: %s\n", cmd->full_cmd);
-	cmd->simple = !cmd->simple;
+	if (cmd->simple == 1)
+		cmd->simple = !cmd->simple;
 	return (0);
 }
 
@@ -44,6 +45,8 @@ void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2)
 				cmd->full_cmd = ft_strjoin(cmd->full_cmd, str2);
 		}
 	}
+	free(str);
+	free(str2);
 }
 
 char	*get_var(int i, char *cmd)
