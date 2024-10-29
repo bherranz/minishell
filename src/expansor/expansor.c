@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2024/10/29 12:59:20 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/29 15:59:10 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,25 @@ int	expand(t_mini *mini, t_cmd *cmd)
 
 void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2)
 {
+	char	*aux;
+
+	aux = NULL;
 	if (e_str)
 	{
 		if (cmd->doble || !cmd->simple)
 		{
 			free(cmd->full_cmd);
 			cmd->full_cmd = ft_strjoin(str, e_str);
-			if (str2 != NULL)
-				cmd->full_cmd = ft_strjoin(cmd->full_cmd, str2);
+		}
+		if (str2 != NULL)
+		{
+			aux = cmd->full_cmd;
+			cmd->full_cmd = ft_strjoin(aux, str2);
 		}
 	}
-	free(str);
-	free(str2);
 }
+
+
 
 char	*get_var(int i, char *cmd)
 {
