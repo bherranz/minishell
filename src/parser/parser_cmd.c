@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/10/29 17:13:56 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/04 10:25:27 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char *get_token(char *str, t_cmd *cmd)
 	while (ft_isspace(str[start]))  // saltar espacios iniciales
 		start++;
 	end = start;
-	while (str[end] && (!ft_isspace(str[end]) || cmd->simple || cmd->doble))
+	while (str[end] && (!ft_isspace(str[end]) || cmd->simple || cmd->doble)) //->cambiar para que pille >/< como separador
 	{
 		if (str[end] == '\'')
 			cmd->simple = !cmd->simple;
@@ -63,6 +63,7 @@ t_io_file *create_redir(int redir_type, char *str, int *i, t_cmd *cmd)
 	t_io_file	*redir;
 	char		*file_token;
 
+	//-> ir al final de la lista y hacer un addback
 	redir = malloc(sizeof(t_io_file));
 	if (!redir)
 		return (NULL);
@@ -73,7 +74,7 @@ t_io_file *create_redir(int redir_type, char *str, int *i, t_cmd *cmd)
 		return (NULL);
 	}
 	redir->type = redir_type;
-	redir->file = file_token;
+	redir->name = file_token;
 	return (redir);
 }
 //falta hacerlo para varios en el mismo comando
@@ -102,26 +103,31 @@ void	process_quotes(char c, t_cmd *cmd)
 
 int count_arguments(const char *str, t_cmd *cmd)
 {
-    int i = 0;
-    int space = 0;
-    bool in_word = false;
+	int		i = 0;
+    int		space = 0;
+    bool	in_word = false;
+	bool	is_redir = false;
 
-    while (str[i])
-    {
-        process_quotes(str[i], cmd);
-        if (!ft_isspace(str[i]) && !cmd->simple && !cmd->doble && !in_word 
-				&& str[i] != '>' && str[i] != '<')
-        {
-            space++;
-            in_word = true;
-        }
-        else if (ft_isspace(str[i]) && !cmd->simple && !cmd->doble)
-        {
+
+	while (str[i])
+	{
+		process_quotes(str[i], cmd);
+		if ((str[i] == '>' || str[i] == '<') && !in_word)
+		{
+			is_redir = true;
+			i++;
+		}
+		if (!ft_isspace(str[i]) && !cmd->simple && !cmd->doble && !in_word 
+				&& !is_redir)
+		{
+			space++;
+			in_word = true;
+		}
+		else if (ft_isspace(str[i]) && !cmd->simple && !cmd->doble)
             in_word = false;
-        }
         i++;
     }
-    return space;
+	return (space);
 }
 
 int main_cmd(char *str, t_cmd *cmd)

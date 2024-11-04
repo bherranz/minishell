@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/29 15:25:19 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/04 10:38:39 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 # include "../libft/libft.h"
 
 extern int	g_signal; //global para señales
-
 //los he puesto con nombres porque me parece más intuitivo
 typedef enum e_type
 {
@@ -43,10 +42,13 @@ typedef enum e_type
 
 typedef struct s_io_file
 {
-	int		fd; //esto no sé si hará falta
-	char	*file;
-	t_type	type;
+	int					fd; //esto no sé si hará falta
+	char				*name;
+	t_type				type;
+	struct t_io_file	*next;
 }	t_io_file;
+
+//ver donde ponemos referencias de stdin y stdout
 
 typedef struct s_cmd
 {
@@ -58,8 +60,8 @@ typedef struct s_cmd
 	char		*ex_var;
 	char		**args;
 	int			args_index;
-	t_io_file	*infile;
-	t_io_file	*outfile;
+	t_io_file	*infile; //->tiene que ser doble
+	t_io_file	*outfile; //-> Same as above
 }	t_cmd;
 
 typedef struct s_mini
