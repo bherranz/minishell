@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/08 05:07:21 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/04 10:38:39 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 # include "../libft/libft.h"
 
 extern int	g_signal; //global para señales
-
 //los he puesto con nombres porque me parece más intuitivo
 typedef enum e_type
 {
@@ -43,18 +42,26 @@ typedef enum e_type
 
 typedef struct s_io_file
 {
-	int		fd; //esto no sé si hará falta
-	char	*file;
-	t_type	type;
+	int					fd; //esto no sé si hará falta
+	char				*name;
+	t_type				type;
+	struct t_io_file	*next;
 }	t_io_file;
+
+//ver donde ponemos referencias de stdin y stdout
 
 typedef struct s_cmd
 {
-	int			index;
+	int 		index;
 	char		*full_cmd;
+	bool		simple; //comillas simples
+	bool		doble; //comillas dobles
+	char 		*e_input;
+	char		*ex_var;
 	char		**args;
-	t_io_file	*infile;
-	t_io_file	*outfile;
+	int			args_index;
+	t_io_file	*infile; //->tiene que ser doble
+	t_io_file	*outfile; //-> Same as above
 }	t_cmd;
 
 typedef struct s_mini
@@ -65,8 +72,6 @@ typedef struct s_mini
 	char	**cmds;
 	int		pipes;
 	t_cmd	**cmd; // comandos
-	int		simple; //comillas simples
-	int		doble; //comillas dobles
 	int		last_status;
 }	t_mini;
 
@@ -83,12 +88,34 @@ int		tokenize(t_mini *mini);
 int		get_cmds(char const *s, char c, t_mini *mini);
 int		is_quote(char c,  int *quote);
 int		parse_cmds(t_mini *mini);
-/*void	print_cmd(t_mini *mini, int i);
-int		pipe_count(t_mini *mini);*/
+void	count_err(char *input);
+
+/*				EXPANSOR				*/
+int		expand(t_mini *mini, t_cmd *cmd);
+void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2);
+char	*get_var(int i, char *cmd);
+void	do_expansion(char *name, t_mini *mini, t_cmd *cmd);
+char	*rest_str(int i, char *name, t_cmd cmd);
+void	handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i);
+
+
+
+/*				PARSER CMD				 */
+int			main_cmd(char *str, t_cmd *cmd);
+void		process_quotes(char c, t_cmd *cmd);
+char		*get_token(char *str, t_cmd *cmd);
+void		add_arg_to_cmd(t_cmd *cmd, char *arg);
+/*char		*get_token(char *str, t_cmd *cmd);
+void		parse_redir(char *str, int *i, t_cmd *cmd);
+int			is_redir(char *str);
+t_io_file	*create_redir(int redir_type, char *str, int *i, t_cmd *cmd);
+void 		add_arg_to_cmd(t_cmd *cmd, char *token);
+int 		main_cmd(t_cmd *cmd);*/
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);
 int		last_char(char str);
+t_cmd	*init_tcmd(void);
 
 
 #endif

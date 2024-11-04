@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/08 06:02:07 by codespace        ###   ########.fr       */
+/*   Updated: 2024/10/29 11:26:59 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	parser(t_mini *mini)
+{
+	int	i;
+
+	i = 0;
+	if (check_quotes(mini)) //check comillas cerradas
+		return ;
+	if (tokenize(mini) == -1) // separar los comandos por pipes
+		return ;
+	/*NOTE - A sacar es para ver el input original*/
+	int x = 0;
+	while (x <= mini->pipes)
+	{
+		printf("--->> Guardado: %s\n", mini->cmd[x]->full_cmd);
+		x++;
+	}
+	while (i <= mini->pipes)
+	{
+		if (expand(mini, mini->cmd[i]) == -1)
+			return ;
+		i++;
+	}
+	if (parse_cmds(mini) == -1)
+		return ;
+}
 
 int	check_quotes(t_mini *mini)
 {
@@ -25,7 +51,6 @@ int	check_quotes(t_mini *mini)
 		{
 			if (quote == 0)
 				quote = mini->input[i];
-			//asegurar que la comilla de cierre es la misma que la de apertura
 			else if (quote == mini->input[i])
 				quote = 0;
 		}
@@ -39,18 +64,7 @@ int	check_quotes(t_mini *mini)
 	return (0);
 }
 
-void	parser(t_mini *mini)
-{
-	if (check_quotes(mini)) //check comillas cerradas
-		return ;
-	if (tokenize(mini) == -1) //tokenizar y guardar
-		return ;
-	if (parse_cmds(mini) == -1) //parsear comandos
-		return ;
-}
-
-//voy a hacer una función de mierda, 
-//luego si se nos ocurre algo mejor se cambia xd
+/*REVIEW - Se necesita modificar??*/
 void	count_err(char *input)
 {
 	if (ft_strrchr(input, '|') == NULL)
@@ -76,13 +90,13 @@ int	count_pipes(t_mini *mini)
 		if (mini->input[i] == '|' && quote == 0)
 		{
 			if (prev == '|')
-				return (print_error("Error:syntax error near '|'", 0, 258), -1);
+				return (count_err(mini->input), -1);
 			p_count++;
 		}
 		if (mini->input[i] != ' ')
 			prev = mini->input[i];
 	}
-	if (prev == '|') //si solo hay espacios tira error, creo que es mejor devolver control a usuario y ya
+	if (prev == '|')
 		return (count_err(mini->input), -1);
 	return (p_count);
 }
@@ -90,24 +104,23 @@ int	count_pipes(t_mini *mini)
 int	tokenize(t_mini *mini)
 {
 	int		x;
-	t_cmd	newcmd;
 
 	x = 0;
-	mini->pipes = count_pipes(mini);//contar los pipes no entrecomillados para memoria
+	mini->pipes = count_pipes(mini);
 	if (mini->pipes < 0)
 		return (-1);
-	mini->cmd = malloc((mini->pipes + 1) * sizeof(t_cmd *));
-	if (get_cmds(mini->input, '|', mini) == -1) //sirve salvo que pipe este entre comillas	
+	mini->cmd = (t_cmd **)malloc((mini->pipes + 1) * sizeof(t_cmd *));
+	if (!mini->cmd)
+		return (print_error("Error: Problem allocating structs", 0, 258), -1);
+	if (get_cmds(mini->input, '|', mini) == -1)
 		return (-1);
 	while (x <= mini->pipes)
 	{
-		mini->cmd[x] = malloc(sizeof(t_cmd));
+		mini->cmd[x] = init_tcmd();
 		if (!mini->cmd[x])
-			return (-1);
-		mini->cmd[x] = &newcmd;
+			return (print_error("Error: Command string null", 0, 258), -1);
 		mini->cmd[x]->full_cmd = mini->cmds[x];
 		mini->cmd[x]->index = x;
-		printf("--->> Guardado: %s\n", mini->cmd[x]->full_cmd);
 		x++;
 	}
 	return (0);

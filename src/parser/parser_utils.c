@@ -3,14 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:10:27 by miparis           #+#    #+#             */
-/*   Updated: 2024/09/27 10:10:28 by miparis          ###   ########.fr       */
+/*   Updated: 2024/10/29 11:16:08 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+
+t_cmd	*init_tcmd(void)
+{
+	t_cmd	*cmd;
+
+	cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	cmd->index = 0;
+	cmd->full_cmd = NULL;
+	cmd->simple = 0;
+	cmd->doble = 0;
+	cmd->e_input = NULL;
+	cmd->ex_var = NULL;
+	cmd->args = NULL;
+	cmd->infile = NULL;
+	cmd->outfile = NULL;
+	cmd->args_index = 0;
+	return (cmd);
+}
 
 int	is_quote(char c,  int *quote)
 {
@@ -45,16 +64,6 @@ static size_t	ft_customstrlen(const char *s, char c)
 	return (i);
 }
 
-static void	ft_free(size_t i, char **array)
-{
-	while (i > 0)
-	{
-		i--;
-		free(array[i]);
-	}
-	free (array);
-}
-
 static char	**ft_fill(const char *s, char c, char **array, size_t substrings)
 {
 	size_t	i;
@@ -70,14 +79,15 @@ static char	**ft_fill(const char *s, char c, char **array, size_t substrings)
 			j++;
 		array[i] = ft_substr(s, j, ft_customstrlen((s + j), c));
 		if (!array[i])
-			return (ft_free(i, array), NULL);
+			return (ft_free(array), NULL);
 		while (s[j] && (s[j] != c || quote))
 		{
 			is_quote(s[j], &quote);
 			j++;
 		}
 	}
-	return (array[i] = NULL , array);
+	array[i] = NULL;
+	return (array);
 }
 
 int	get_cmds(char const *s, char c, t_mini *mini)
