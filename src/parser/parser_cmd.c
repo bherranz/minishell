@@ -6,12 +6,15 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/04 14:23:05 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/05 03:51:17 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// create list
+// change space detection because now it's not detecting redirections not separated by spaces
+// cat >output>output2
 
 char *get_token(char *str, t_cmd *cmd)
 {
@@ -58,16 +61,39 @@ int	is_redir(char *str)
 	return (0);
 }
 
+void	print_list(t_io_file *list)
+{
+	while (list)
+	{
+		printf("%s ", list->name);
+		list = list->next;
+	}
+	printf("\n");
+}
+
+void	list_addback(t_io_file *node, t_io_file **list)
+{
+	if (!list || !(*list))
+	{
+		list = malloc(sizeof(t_io_file));
+		*list = node;
+		printf("aa%s\n", (*list)->name);
+		return ;
+	}
+	while ((*list)->next)
+		*list = (*list)->next;
+	(*list)->next = node;
+}
+
 t_io_file *create_redir(int redir_type, char *str, int *i, t_cmd *cmd)
 {
 	t_io_file	*redir;
 	char		*file_token;
 
-	//-> ir al final de la lista y hacer un addback
 	redir = malloc(sizeof(t_io_file));
 	if (!redir)
 		return (NULL);
-	file_token = get_token(&str[*i], cmd);
+	file_token = get_token(&str[*(i + 1)], cmd);
 	if (!file_token)
 	{
 		free(redir);
@@ -75,6 +101,12 @@ t_io_file *create_redir(int redir_type, char *str, int *i, t_cmd *cmd)
 	}
 	redir->type = redir_type;
 	redir->name = file_token;
+	if (redir->type < 3)
+		list_addback(redir, &cmd->infile);
+	else
+		list_addback(redir, &cmd->outfile);
+	print_list(cmd->infile);
+	print_list(cmd->outfile);
 	return (redir);
 }
 //falta hacerlo para varios en el mismo comando

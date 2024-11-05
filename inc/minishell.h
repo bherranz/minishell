@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/04 10:38:39 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/05 03:13:44 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_io_file
 	int					fd; //esto no sé si hará falta
 	char				*name;
 	t_type				type;
-	struct t_io_file	*next;
+	struct s_io_file	*next;
 }	t_io_file;
 
 //ver donde ponemos referencias de stdin y stdout
