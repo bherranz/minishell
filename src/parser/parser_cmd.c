@@ -6,58 +6,56 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/05 03:51:17 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/08 01:10:34 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-// create list
-// change space detection because now it's not detecting redirections not separated by spaces
-// cat >output>output2
-
 char *get_token(char *str, t_cmd *cmd)
 {
-	int		start;
-	int		end;
-	char	*token;
+	int start;
+	int end;
+	char *token;
 
 	start = 0;
-	end = 0;
-	cmd->simple = false;
-	cmd->doble = false;
 	while (ft_isspace(str[start]))  // saltar espacios iniciales
 		start++;
 	end = start;
-	while (str[end] && (!ft_isspace(str[end]) || cmd->simple || cmd->doble)) //->cambiar para que pille >/< como separador
+	while (str[end] && (!ft_isspace(str[end]) || cmd->simple || cmd->doble))
 	{
 		if (str[end] == '\'')
 			cmd->simple = !cmd->simple;
 		else if (str[end] == '"')
 			cmd->doble = !cmd->doble;
+		else if (!cmd->simple && !cmd->doble && (str[end] == '<' || str[end] == '>'))
+		{
+			if (end == start) // Si el redireccionamiento está al principio
+			{
+				if (str[end + 1] == str[end]) // Manejar << o >>
+					end++;
+				end++;
+			}
+			break;
+		}
 		end++;
 	}
 	if (end == start)
 		return NULL;
-	token = (char *)malloc(end - start + 1);
-	if (!token)
-		return NULL;
-	ft_strlcpy(token, &str[start], end - start + 1);
-	token[end - start] = '\0';
-	printf(" ===> TOKEN FOUND: %s\n", token);
+	token = ft_substr(str, start, end - start);
 	return (token);
 }
 
 int	is_redir(char *str)
 {
-	if (ft_strncmp(str, "<", 1) == 0)
-		return (1);
-	else if (ft_strncmp(str, "<<", 2) == 0)
+	if (ft_strncmp(str, "<<", 2) == 0)
 		return (2);
-	else if (ft_strncmp(str, ">", 1) == 0)
-		return (3);
+	else if (ft_strncmp(str, "<", 1) == 0)
+		return (1);
 	else if (ft_strncmp(str, ">>", 2) == 0)
 		return (4);
+	else if (ft_strncmp(str, ">", 1) == 0)
+		return (3);
 	return (0);
 }
 
@@ -71,57 +69,75 @@ void	print_list(t_io_file *list)
 	printf("\n");
 }
 
-void	list_addback(t_io_file *node, t_io_file **list)
+t_io_file	*check_file_quotes(t_io_file *node)
 {
-	if (!list || !(*list))
-	{
-		list = malloc(sizeof(t_io_file));
-		*list = node;
-		printf("aa%s\n", (*list)->name);
-		return ;
-	}
-	while ((*list)->next)
-		*list = (*list)->next;
-	(*list)->next = node;
+	if (!node)
+		return (NULL);
+	if (node->name[0] == '\'' || node->name[0] == '"')
+		node->name = ft_substr(node->name, 1, ft_strlen(node->name) - 2);
+	return (node);
 }
 
-t_io_file *create_redir(int redir_type, char *str, int *i, t_cmd *cmd)
+void	list_addback(t_io_file *node, t_io_file **list)
 {
-	t_io_file	*redir;
-	char		*file_token;
+	t_io_file	*tmp;
+
+	node = check_file_quotes(node);
+	if (!list || !node)
+		return ;
+	if (!(*list))
+	{
+		*list = node;
+		return ;
+	}
+	tmp = *list;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = node;
+}
+
+void	create_redir(int redir_type, char *str, int i, t_cmd *cmd)
+{
+	t_io_file *redir;
+	char *file_token;
 
 	redir = malloc(sizeof(t_io_file));
 	if (!redir)
-		return (NULL);
-	file_token = get_token(&str[*(i + 1)], cmd);
+		return ;
+	redir->type = redir_type;
+	redir->next = NULL;
+	if (str[i + 1] == str[i])
+		file_token = get_token(&str[i + 2], cmd);
+	else
+		file_token = get_token(&str[i + 1], cmd);
 	if (!file_token)
 	{
 		free(redir);
-		return (NULL);
+		return ;
 	}
-	redir->type = redir_type;
 	redir->name = file_token;
 	if (redir->type < 3)
 		list_addback(redir, &cmd->infile);
 	else
 		list_addback(redir, &cmd->outfile);
-	print_list(cmd->infile);
-	print_list(cmd->outfile);
-	return (redir);
 }
-//falta hacerlo para varios en el mismo comando
-// cambiar estructura infile outfile a array, poner un índice
-void	parse_redir(char *str, int *i, t_cmd *cmd)
+
+void	parse_redir(char *str, t_cmd *cmd)
 {
 	int	redir_type;
+	int i;
 
-	redir_type = is_redir(&str[*i]);
-	if (redir_type > 0)
+	i = 0;
+	while (str[i])
 	{
-		if (redir_type == 1 || redir_type == 2) // "<" o "<<"
-			cmd->infile = create_redir(redir_type, str, i, cmd);
-		else if (redir_type == 3 || redir_type == 4) // ">" o ">>"
-			cmd->outfile = create_redir(redir_type, str, i, cmd);
+		redir_type = is_redir(&str[i]);
+		if (redir_type > 0)
+		{
+			create_redir(redir_type, str, i, cmd);
+			if (redir_type == 2 || redir_type == 4)
+				i++;
+		}
+		i++;
 	}
 }
 
@@ -133,33 +149,52 @@ void	process_quotes(char c, t_cmd *cmd)
 		cmd->doble = !cmd->doble;
 }
 
-int count_arguments(const char *str, t_cmd *cmd)
+void skip_not_args(char *str, int *i, t_cmd *cmd)
 {
-	int		i = 0;
-    int		space = 0;
-    bool	in_word = false;
-	bool	is_redir = false;
-
-
-	while (str[i])
-	{
-		process_quotes(str[i], cmd);
-		if ((str[i] == '>' || str[i] == '<') && !in_word)
-		{
-			is_redir = true;
-			i++;
-		}
-		if (!ft_isspace(str[i]) && !cmd->simple && !cmd->doble && !in_word 
-				&& !is_redir)
-		{
-			space++;
-			in_word = true;
-		}
-		else if (ft_isspace(str[i]) && !cmd->simple && !cmd->doble)
-            in_word = false;
-        i++;
+    while (ft_isspace(str[*i]))
+        (*i)++;
+    process_quotes(str[*i], cmd);
+    while ((str[*i] == '<' || str[*i] == '>') || (cmd->simple || cmd->doble))
+    {
+        if (str[*i + 1] == str[*i])
+            (*i) += 2;
+        else
+            (*i)++;
+        while (ft_isspace(str[*i]))
+            (*i)++;
+        while (str[*i] && (!ft_isspace(str[*i]) || cmd->simple || cmd->doble) && str[*i] != '<' && str[*i] != '>')
+        {
+            process_quotes(str[*i], cmd);
+            (*i)++;
+        }
+        while (ft_isspace(str[*i]))
+            (*i)++;
     }
-	return (space);
+}
+
+int count_arguments(char *str, t_cmd *cmd)
+{
+    int count = 0;
+    char *token;
+    int i = 0;
+
+    while (str[i])
+    {
+		skip_not_args(str, &i, cmd);
+		printf("str: %s\n", &str[i]);
+        if (str[i])
+        {
+            token = get_token(&str[i], cmd);
+            if (token)
+            {
+                count++;
+                i += ft_strlen(token) - 1;
+                free(token);
+            }
+			i++;
+        }
+    }
+    return count;
 }
 
 int main_cmd(char *str, t_cmd *cmd)
@@ -174,30 +209,30 @@ int main_cmd(char *str, t_cmd *cmd)
 	x = 0;
 	cmd->simple = false;
 	cmd->doble = false;
-	//bucle para contar cuantos argumentos hay
 	space = count_arguments(str, cmd);
 	printf(" ------> Spaces = %i\n", space);
 	cmd->args = malloc(sizeof(char *) * space);
 	printf(" ------> Malloqueado = %i\n", space);
+	parse_redir(str, cmd);
+	printf("Infiles: ");
+	print_list(cmd->infile);
+	printf("Outfiles: ");
+	print_list(cmd->outfile);
 	while (str && str[i])
 	{
-		process_quotes(str[i], cmd);
-		parse_redir(str, &i, cmd);
-		if (!ft_isspace(str[i]))
+		skip_not_args(str, &i, cmd);
+		if (str[i])
 		{
 			token = get_token(&str[i], cmd);
 			if (token)
 			{
 				cmd->args[x] = token;
-				printf(" ===> ARG[%i]: %s\n", x, cmd->args[x]);
+				printf("ARG[%i] = %s\n", x, cmd->args[x]);
+				x++;
+				i += ft_strlen(token) - 1;
 			}
-			else
-				return (-1);
-			i += ft_strlen(token) - 1;
-			free(token);
-			x++;
+			i++;
 		}
-		i++;
 	}
 	return (0);
 }
@@ -206,15 +241,12 @@ int	parse_cmds(t_mini *mini)
 {
 	int i;
 
-	//para los infiles y outfiles guardar sin comillas, para los comandos, investigar
 	i = 0;
 	while (i <= mini->pipes)
 	{
 		printf("command: %s\n", mini->cmd[i]->full_cmd);
-		printf("command %i\n", i);
 		if (main_cmd(mini->cmd[i]->full_cmd, mini->cmd[i]) != 0)
 		 	return (-1);
-		//printf("error %i\n", main_cmd(mini->cmd[i]->full_cmd, mini->cmd[i]));
 		i++;
 	}
 	return (0);

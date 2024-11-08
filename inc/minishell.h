@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/05 03:13:44 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/07 04:20:48 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include "../libft/libft.h"
 
 extern int	g_signal; //global para señales
-//los he puesto con nombres porque me parece más intuitivo
+
 typedef enum e_type
 {
 	INFILE,
