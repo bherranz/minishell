@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/07 04:20:48 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/09 16:00:26 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int			is_redir(char *str);
 t_io_file	*create_redir(int redir_type, char *str, int *i, t_cmd *cmd);
 void 		add_arg_to_cmd(t_cmd *cmd, char *token);
 int 		main_cmd(t_cmd *cmd);*/
+void		process_quotes2(char c, t_cmd *cmd);
 
 /*			UTILS					*/
 void	print_error(char *msg, int perr, int err);

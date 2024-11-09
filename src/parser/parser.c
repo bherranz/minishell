@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/10/29 11:26:59 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/09 12:25:58 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,17 @@ void	parser(t_mini *mini)
 	if (tokenize(mini) == -1) // separar los comandos por pipes
 		return ;
 	/*NOTE - A sacar es para ver el input original*/
-	int x = 0;
-	while (x <= mini->pipes)
-	{
-		printf("--->> Guardado: %s\n", mini->cmd[x]->full_cmd);
-		x++;
-	}
 	while (i <= mini->pipes)
 	{
 		if (expand(mini, mini->cmd[i]) == -1)
 			return ;
 		i++;
+	}
+	int x = 0;
+	while (x <= mini->pipes)
+	{
+		printf("---> Guardado: %s\n", mini->cmd[x]->full_cmd);
+		x++;
 	}
 	if (parse_cmds(mini) == -1)
 		return ;

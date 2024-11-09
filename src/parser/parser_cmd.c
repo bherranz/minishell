@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/08 01:10:34 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/09 16:00:37 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,11 +141,19 @@ void	parse_redir(char *str, t_cmd *cmd)
 	}
 }
 
-void	process_quotes(char c, t_cmd *cmd)
+/*void	process_quotes(char c, t_cmd *cmd)
 {
 	if (c == '\'')
 		cmd->simple = !cmd->simple;
 	else if (c == '"')
+		cmd->doble = !cmd->doble;
+}*/
+void	process_quotes(char c, t_cmd *cmd)
+{
+	
+	if (c == '\'' && !cmd->simple)
+		cmd->simple = !cmd->simple;
+	else if (c == '"' && !cmd->simple)
 		cmd->doble = !cmd->doble;
 }
 
@@ -153,7 +161,7 @@ void skip_not_args(char *str, int *i, t_cmd *cmd)
 {
     while (ft_isspace(str[*i]))
         (*i)++;
-    process_quotes(str[*i], cmd);
+    //process_quotes(str[*i], cmd);
     while ((str[*i] == '<' || str[*i] == '>') || (cmd->simple || cmd->doble))
     {
         if (str[*i + 1] == str[*i])
