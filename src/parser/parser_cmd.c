@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/09 16:00:37 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/12 11:07:56 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	create_redir(int redir_type, char *str, int i, t_cmd *cmd)
 	else
 		list_addback(redir, &cmd->outfile);
 }
-
+/*
 void	parse_redir(char *str, t_cmd *cmd)
 {
 	int	redir_type;
@@ -130,6 +130,10 @@ void	parse_redir(char *str, t_cmd *cmd)
 	i = 0;
 	while (str[i])
 	{
+		//-> tiene que tomarlo como redir si no esta entre comillas
+		process_quotes(str[i], cmd);
+		if (cmd->doble || cmd->simple)
+			return ;
 		redir_type = is_redir(&str[i]);
 		if (redir_type > 0)
 		{
@@ -139,29 +143,90 @@ void	parse_redir(char *str, t_cmd *cmd)
 		}
 		i++;
 	}
+}*/
+
+void parse_redir(char *str, t_cmd *cmd)
+{
+    int redir_type;
+    int i = 0;
+
+    while (str[i])
+	{
+        // Actualizamos el estado de comillas para el carácter actual
+        process_quotes(str[i], cmd);
+
+        // Si estamos fuera de comillas, verificamos redirecciones
+        if (!(cmd->doble || cmd->simple))
+		{
+            // Detectamos si hay una redirección en la posición actual
+            redir_type = is_redir(&str[i]);
+            if (redir_type > 0)
+			{
+                // Llamamos a create_redir para manejar la redirección
+                create_redir(redir_type, str, i, cmd);
+
+                // Avanzamos `i` según el tipo de redirección detectado
+                if (redir_type == 2 || redir_type == 4)
+                    i += 2; // Avanzar dos posiciones para `<<` o `>>`
+                else
+                    i += 1; // Avanzar una posición para `<` o `>`
+            } 
+			else
+                i++;
+        } 
+		else
+            i++;
+    }
 }
 
-/*void	process_quotes(char c, t_cmd *cmd)
+
+void	process_quotes(char c, t_cmd *cmd)
 {
 	if (c == '\'')
 		cmd->simple = !cmd->simple;
 	else if (c == '"')
 		cmd->doble = !cmd->doble;
-}*/
-void	process_quotes(char c, t_cmd *cmd)
+}
+/*void	process_quotes(char c, t_cmd *cmd)
 {
-	
+
 	if (c == '\'' && !cmd->simple)
 		cmd->simple = !cmd->simple;
 	else if (c == '"' && !cmd->simple)
 		cmd->doble = !cmd->doble;
-}
+}*/
 
 void skip_not_args(char *str, int *i, t_cmd *cmd)
 {
+	//para malloc funciona okay
+	printf("--> SKIP NOT ARGS\n");
     while (ft_isspace(str[*i]))
         (*i)++;
-    //process_quotes(str[*i], cmd);
+   // process_quotes(str[*i], cmd);
+    while ((str[*i] == '<' || str[*i] == '>') || (cmd->simple || cmd->doble))
+    {
+        if (str[*i + 1] == str[*i])
+            (*i) += 2;
+        else
+            (*i)++;
+        while (ft_isspace(str[*i]))
+            (*i)++;
+        while (str[*i] && (!ft_isspace(str[*i]) || cmd->simple || cmd->doble) && str[*i] != '<' && str[*i] != '>')
+        {
+            process_quotes(str[*i], cmd);
+            (*i)++;
+        }
+        while (ft_isspace(str[*i]))
+            (*i)++;
+    }
+}
+
+void skip_not_args2(char *str, int *i, t_cmd *cmd)
+{
+	printf("--> SKIP NOT ARGS2\n");
+     while (ft_isspace(str[*i]))
+        (*i)++;
+    process_quotes(str[*i], cmd);
     while ((str[*i] == '<' || str[*i] == '>') || (cmd->simple || cmd->doble))
     {
         if (str[*i + 1] == str[*i])
@@ -228,9 +293,12 @@ int main_cmd(char *str, t_cmd *cmd)
 	print_list(cmd->outfile);
 	while (str && str[i])
 	{
-		skip_not_args(str, &i, cmd);
+		printf("----> HELLOU\n");
+		skip_not_args2(str, &i, cmd);
+		printf("----> i = %d\n", i);
 		if (str[i])
 		{
+			printf("---> IF TOKEN\n");
 			token = get_token(&str[i], cmd);
 			if (token)
 			{
