@@ -6,7 +6,7 @@
 #    By: miparis <miparis@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2024/10/18 17:59:37 by miparis          ###   ########.fr        #
+#    Updated: 2024/11/13 11:38:29 by miparis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRCS = src/main.c \
 		src/parser/parser.c \
 		src/parser/parser_utils.c \
 		src/parser/parser_cmd.c \
+		src/parser/parser_fds.c \
 		src/utils.c \
 		src/signals/signals.c \
 		src/expansor/expansor.c \

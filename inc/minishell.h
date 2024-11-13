@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/09 16:00:26 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/13 11:37:12 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,23 +100,28 @@ void	handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i);
 
 
 
-/*				PARSER CMD				 */
+/*				PARSER CMD										 */
+int			parse_cmds(t_mini *mini);
 int			main_cmd(char *str, t_cmd *cmd);
 void		process_quotes(char c, t_cmd *cmd);
+void 		process_args(char *str, int *i, t_cmd *cmd);
 char		*get_token(char *str, t_cmd *cmd);
+void 		skip_not_args(char *str, int *i, t_cmd *cmd);
+int 		count_arguments(char *str, t_cmd *cmd);
 void		add_arg_to_cmd(t_cmd *cmd, char *arg);
-/*char		*get_token(char *str, t_cmd *cmd);
-void		parse_redir(char *str, int *i, t_cmd *cmd);
-int			is_redir(char *str);
-t_io_file	*create_redir(int redir_type, char *str, int *i, t_cmd *cmd);
-void 		add_arg_to_cmd(t_cmd *cmd, char *token);
-int 		main_cmd(t_cmd *cmd);*/
-void		process_quotes2(char c, t_cmd *cmd);
 
-/*			UTILS					*/
-void	print_error(char *msg, int perr, int err);
-int		last_char(char str);
-t_cmd	*init_tcmd(void);
+/*				PARSER REDIR										 */
+void		parse_redir(char *str, t_cmd *cmd);
+void		create_redir(int redir_type, char *str, int i, t_cmd *cmd);
+void		list_addback(t_io_file *node, t_io_file **list);
+t_io_file	*check_file_quotes(t_io_file *node);
+void		print_list(t_io_file *list);
+int			is_redir(char *str);
+
+/*										UTILS					*/
+void		print_error(char *msg, int perr, int err);
+int			last_char(char str);
+t_cmd		*init_tcmd(void);
 
 
 #endif
