@@ -3,14 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/13 11:32:00 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/18 16:35:25 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+char *clear_token(char *str, t_cmd *cmd, int len)
+{
+	char *clean_token;
+	int clean_index;
+	int i;
+
+	clean_index = 0;
+	i = 0;
+	clean_token = ft_calloc(len + 1, sizeof(char));
+	cmd->simple = false;
+	cmd->doble = false;
+	while (i < len)
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			if ((str[i] == '\'' && !cmd->doble) || (str[i] == '"' && !cmd->simple))
+				process_quotes(str[i], cmd);
+			else
+				clean_token[clean_index++] = str[i];
+		}
+		else
+			clean_token[clean_index++] = str[i];
+		i++;
+	}
+	clean_token[clean_index] = '\0';
+	return (clean_token);
+}
 
 char *get_token(char *str, t_cmd *cmd)
 {
@@ -46,7 +74,6 @@ char *get_token(char *str, t_cmd *cmd)
 	return (token);
 }
 
-
 void	process_quotes(char c, t_cmd *cmd)
 {
 	if (c == '\'')
@@ -57,7 +84,6 @@ void	process_quotes(char c, t_cmd *cmd)
 
 void process_args(char *str, int *i, t_cmd *cmd)
 {
-	//para malloc funciona okay
     while (ft_isspace(str[*i]))
         (*i)++;
    // process_quotes(str[*i], cmd);
@@ -81,7 +107,8 @@ void process_args(char *str, int *i, t_cmd *cmd)
 
 void skip_not_args(char *str, int *i, t_cmd *cmd)
 {
-	//printf("--> SKIP NOT ARGS2\n");
+	cmd->simple = false;
+	cmd->doble = false;
      while (ft_isspace(str[*i]))
         (*i)++;
     //process_quotes(str[*i], cmd);
@@ -91,6 +118,8 @@ void skip_not_args(char *str, int *i, t_cmd *cmd)
             (*i) += 2;
         else
             (*i)++;
+		if (!str[*i])
+			break;
         while (ft_isspace(str[*i]))
             (*i)++;
         while (str[*i] && (!ft_isspace(str[*i]) || cmd->simple || cmd->doble) && str[*i] != '<' && str[*i] != '>')
@@ -108,19 +137,23 @@ int count_arguments(char *str, t_cmd *cmd)
     int count = 0;
     char *token;
     int i = 0;
+	char *clean;
 
     while (str[i])
     {
 		process_args(str, &i, cmd);
-		printf("str: %s\n", &str[i]);
         if (str[i])
         {
-            token = get_token(&str[i], cmd);
-            if (token)
+			token = get_token(&str[i], cmd);
+			if (!token)
+				break;
+			clean = clear_token(token, cmd, ft_strlen(token));
+            if (clean)
             {
                 count++;
                 i += ft_strlen(token) - 1;
                 free(token);
+				free(clean);
             }
 			i++;
         }
@@ -155,12 +188,17 @@ int main_cmd(char *str, t_cmd *cmd)
 		if (str[i])
 		{
 			token = get_token(&str[i], cmd);
-			if (token)
+			if (!token || !*token)
+				break;
+			char *clean = clear_token(token, cmd, ft_strlen(token));
+			if (clean)
 			{
-				cmd->args[x] = token;
+				cmd->args[x] = clean;
 				printf("ARG[%i] = %s\n", x, cmd->args[x]);
 				x++;
 				i += ft_strlen(token) - 1;
+				free(clean);
+				free(token);
 			}
 			i++;
 		}

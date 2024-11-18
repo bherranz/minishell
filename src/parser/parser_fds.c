@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_fds.c                                        :+:      :+:    :+:   */
+/*   parser_fds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:33:36 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/13 11:36:11 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/18 13:10:42 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,10 @@ void	print_list(t_io_file *list)
 	printf("\n");
 }
 
-t_io_file	*check_file_quotes(t_io_file *node)
-{
-	if (!node)
-		return (NULL);
-	if (node->name[0] == '\'' || node->name[0] == '"')
-		node->name = ft_substr(node->name, 1, ft_strlen(node->name) - 2);
-	return (node);
-}
-
 void	list_addback(t_io_file *node, t_io_file **list)
 {
 	t_io_file	*tmp;
 
-	node = check_file_quotes(node);
 	if (!list || !node)
 		return ;
 	if (!(*list))
@@ -66,6 +56,7 @@ void	create_redir(int redir_type, char *str, int i, t_cmd *cmd)
 {
 	t_io_file *redir;
 	char *file_token;
+	char *clean_name;
 
 	redir = malloc(sizeof(t_io_file));
 	if (!redir)
@@ -81,7 +72,14 @@ void	create_redir(int redir_type, char *str, int i, t_cmd *cmd)
 		free(redir);
 		return ;
 	}
-	redir->name = file_token;
+	clean_name = clear_token(file_token, cmd, ft_strlen(file_token));
+	if (!clean_name)
+	{
+		free(redir);
+		free(file_token);
+		return ;
+	}
+	redir->name = clean_name;
 	if (redir->type < 3)
 		list_addback(redir, &cmd->infile);
 	else

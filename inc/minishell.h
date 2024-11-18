@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/13 11:37:12 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/18 11:21:42 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ char		*get_token(char *str, t_cmd *cmd);
 void 		skip_not_args(char *str, int *i, t_cmd *cmd);
 int 		count_arguments(char *str, t_cmd *cmd);
 void		add_arg_to_cmd(t_cmd *cmd, char *arg);
+char		*clear_token(char *str, t_cmd *cmd, int len);
 
 /*				PARSER REDIR										 */
 void		parse_redir(char *str, t_cmd *cmd);
