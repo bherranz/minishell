@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/09 12:25:58 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/19 11:15:53 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ void	parser(t_mini *mini)
 			return ;
 		i++;
 	}
-	int x = 0;
-	while (x <= mini->pipes)
+	i = 0;
+	while (i <= mini->pipes)
 	{
-		printf("---> Guardado: %s\n", mini->cmd[x]->full_cmd);
-		x++;
+		printf("command: %s\n", mini->cmd[i]->full_cmd);
+		if (main_cmd(mini->cmd[i]->full_cmd, mini->cmd[i]) == -1)
+		 	return ;
+		i++;
 	}
-	if (parse_cmds(mini) == -1)
-		return ;
 }
 
 int	check_quotes(t_mini *mini)
@@ -58,7 +58,7 @@ int	check_quotes(t_mini *mini)
 	}
 	if (quote)
 	{
-		print_error("Error: unclosed quotes", 0, 258);
+		print_error("Error: unclosed quotes", "" ,0, 258);
 		return (1);
 	}
 	return (0);
@@ -69,7 +69,7 @@ void	count_err(char *input)
 {
 	if (ft_strrchr(input, '|') == NULL)
 		return ;
-	print_error("Error: syntax error near '|'", 0, 258);
+	print_error("Error: syntax error near '|'", "", 0, 258);
 	return ;
 }
 
@@ -111,14 +111,14 @@ int	tokenize(t_mini *mini)
 		return (-1);
 	mini->cmd = (t_cmd **)malloc((mini->pipes + 1) * sizeof(t_cmd *));
 	if (!mini->cmd)
-		return (print_error("Error: Problem allocating structs", 0, 258), -1);
+		return (print_error("Error: Problem allocating structs", "", 0, 258), -1);
 	if (get_cmds(mini->input, '|', mini) == -1)
 		return (-1);
 	while (x <= mini->pipes)
 	{
 		mini->cmd[x] = init_tcmd();
 		if (!mini->cmd[x])
-			return (print_error("Error: Command string null", 0, 258), -1);
+			return (print_error("Error: Command string null", "", 0, 258), -1);
 		mini->cmd[x]->full_cmd = mini->cmds[x];
 		mini->cmd[x]->index = x;
 		x++;

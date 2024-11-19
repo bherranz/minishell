@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: miparis <miparis@student.42.fr>            +#+  +:+       +#+         #
+#    By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2024/11/13 11:38:29 by miparis          ###   ########.fr        #
+#    Updated: 2024/11/19 11:35:03 by miparis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,9 @@ NAME = minishell
 
 SRCS = src/main.c \
 		src/parser/parser.c \
-		src/parser/parser_utils.c \
+		src/parser/first_parser_utils.c \
 		src/parser/parser_cmd.c \
+		src/parser/cmd_parser_utils.c \
 		src/parser/parser_fds.c \
 		src/utils.c \
 		src/signals/signals.c \

@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   first_parse_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:10:27 by miparis           #+#    #+#             */
-/*   Updated: 2024/10/29 11:16:08 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/19 11:35:16 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
 
 t_cmd	*init_tcmd(void)
 {
@@ -99,7 +98,7 @@ int	get_cmds(char const *s, char c, t_mini *mini)
 	mini->cmds = ft_fill(s, c, mini->cmds, (mini->pipes + 1));
 	if (!mini->cmds)
 	{
-		print_error("Error: Problem with getting commands", 0, 258);
+		print_error("Error: Problem with getting commands", "", 0, 258);
 		return (-1);
 	}
 	return (0);

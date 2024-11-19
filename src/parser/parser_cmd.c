@@ -3,42 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/18 16:35:25 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/19 11:30:13 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-char *clear_token(char *str, t_cmd *cmd, int len)
-{
-	char *clean_token;
-	int clean_index;
-	int i;
-
-	clean_index = 0;
-	i = 0;
-	clean_token = ft_calloc(len + 1, sizeof(char));
-	cmd->simple = false;
-	cmd->doble = false;
-	while (i < len)
-	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			if ((str[i] == '\'' && !cmd->doble) || (str[i] == '"' && !cmd->simple))
-				process_quotes(str[i], cmd);
-			else
-				clean_token[clean_index++] = str[i];
-		}
-		else
-			clean_token[clean_index++] = str[i];
-		i++;
-	}
-	clean_token[clean_index] = '\0';
-	return (clean_token);
-}
 
 char *get_token(char *str, t_cmd *cmd)
 {
@@ -52,11 +24,13 @@ char *get_token(char *str, t_cmd *cmd)
 	end = start;
 	while (str[end] && (!ft_isspace(str[end]) || cmd->simple || cmd->doble))
 	{
-		if (str[end] == '\'')
+		process_quotes(str[end], cmd);
+		/*if (str[end] == '\'')
 			cmd->simple = !cmd->simple;
 		else if (str[end] == '"')
-			cmd->doble = !cmd->doble;
-		else if (!cmd->simple && !cmd->doble && (str[end] == '<' || str[end] == '>'))
+			cmd->doble = !cmd->doble;*/
+		//la siguiente era un else if ante
+		if (!cmd->simple && !cmd->doble && (str[end] == '<' || str[end] == '>'))
 		{
 			if (end == start) // Si el redireccionamiento está al principio
 			{
@@ -69,24 +43,15 @@ char *get_token(char *str, t_cmd *cmd)
 		end++;
 	}
 	if (end == start)
-		return NULL;
+		return (NULL);
 	token = ft_substr(str, start, end - start);
 	return (token);
-}
-
-void	process_quotes(char c, t_cmd *cmd)
-{
-	if (c == '\'')
-		cmd->simple = !cmd->simple;
-	else if (c == '"')
-		cmd->doble = !cmd->doble;
 }
 
 void process_args(char *str, int *i, t_cmd *cmd)
 {
     while (ft_isspace(str[*i]))
         (*i)++;
-   // process_quotes(str[*i], cmd);
     while ((str[*i] == '<' || str[*i] == '>') || (cmd->simple || cmd->doble))
     {
         if (str[*i + 1] == str[*i])
@@ -111,7 +76,6 @@ void skip_not_args(char *str, int *i, t_cmd *cmd)
 	cmd->doble = false;
      while (ft_isspace(str[*i]))
         (*i)++;
-    //process_quotes(str[*i], cmd);
     while ((str[*i] == '<' || str[*i] == '>') || (cmd->simple || cmd->doble))
     {
         if (str[*i + 1] == str[*i])
@@ -134,11 +98,13 @@ void skip_not_args(char *str, int *i, t_cmd *cmd)
 
 int count_arguments(char *str, t_cmd *cmd)
 {
-    int count = 0;
-    char *token;
-    int i = 0;
-	char *clean;
+	int		count;
+	char	*token;
+	int		i;
+	char	*clean;
 
+	count = 0;
+	i = 0;
     while (str[i])
     {
 		process_args(str, &i, cmd);
@@ -158,15 +124,16 @@ int count_arguments(char *str, t_cmd *cmd)
 			i++;
         }
     }
-    return count;
+    return (count);
 }
 
 int main_cmd(char *str, t_cmd *cmd)
 {
-	int i;
-	char *token;
-	int space;
-	int x;
+	int		i;
+	char	*token;
+	int		space;
+	int		x;
+	char	*clean;
 
 	i = 0;
 	space = 0;
@@ -177,7 +144,8 @@ int main_cmd(char *str, t_cmd *cmd)
 	printf(" ------> Spaces = %i\n", space);
 	cmd->args = malloc(sizeof(char *) * space);
 	printf(" ------> Malloqueado = %i\n", space);
-	parse_redir(str, cmd);
+	if (parse_redir(str, cmd))
+		return (-1); //liberar cmd->args aca
 	printf("Infiles: ");
 	print_list(cmd->infile);
 	printf("Outfiles: ");
@@ -190,7 +158,7 @@ int main_cmd(char *str, t_cmd *cmd)
 			token = get_token(&str[i], cmd);
 			if (!token || !*token)
 				break;
-			char *clean = clear_token(token, cmd, ft_strlen(token));
+			clean = clear_token(token, cmd, ft_strlen(token));
 			if (clean)
 			{
 				cmd->args[x] = clean;
@@ -206,18 +174,4 @@ int main_cmd(char *str, t_cmd *cmd)
 	return (0);
 }
 
-int	parse_cmds(t_mini *mini)
-{
-	int i;
-
-	i = 0;
-	while (i <= mini->pipes)
-	{
-		printf("command: %s\n", mini->cmd[i]->full_cmd);
-		if (main_cmd(mini->cmd[i]->full_cmd, mini->cmd[i]) != 0)
-		 	return (-1);
-		i++;
-	}
-	return (0);
-}
 

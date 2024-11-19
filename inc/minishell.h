@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/18 11:21:42 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/19 10:51:56 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,15 +112,18 @@ void		add_arg_to_cmd(t_cmd *cmd, char *arg);
 char		*clear_token(char *str, t_cmd *cmd, int len);
 
 /*				PARSER REDIR										 */
-void		parse_redir(char *str, t_cmd *cmd);
-void		create_redir(int redir_type, char *str, int i, t_cmd *cmd);
+//void		parse_redir(char *str, t_cmd *cmd);
+int			parse_redir(char *str, t_cmd *cmd);
+//void		create_redir(int redir_type, char *str, int i, t_cmd *cmd);
+int			create_redir(int redir_type, char *str, int i, t_cmd *cmd);
 void		list_addback(t_io_file *node, t_io_file **list);
 t_io_file	*check_file_quotes(t_io_file *node);
 void		print_list(t_io_file *list);
 int			is_redir(char *str);
 
 /*										UTILS					*/
-void		print_error(char *msg, int perr, int err);
+//void		print_error(char *msg, int perr, int err);
+void	print_error(char *msg, char *var, int perr, int err);
 int			last_char(char str);
 t_cmd		*init_tcmd(void);
 
