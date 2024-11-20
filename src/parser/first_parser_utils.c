@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   first_parse_utils.c                                :+:      :+:    :+:   */
+/*   first_parser_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:10:27 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/19 11:35:16 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/20 11:20:20 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_cmd	*init_tcmd(void)
 {
 	t_cmd	*cmd;
 
-	cmd = (t_cmd *)malloc(sizeof(t_cmd));
+	cmd = (t_cmd *)malloc(sizeof(t_cmd)); //leak
 	cmd->index = 0;
 	cmd->full_cmd = NULL;
 	cmd->simple = 0;
@@ -69,14 +69,14 @@ static char	**ft_fill(const char *s, char c, char **array, size_t substrings)
 	size_t	j;
 	int		quote;
 
-	i = -1;
+	i = 0;
 	j = 0;
 	quote = 0;
-	while (++i < substrings)
+	while (i < substrings)
 	{
 		while (s[j] && s[j] == c && !quote)
 			j++;
-		array[i] = ft_substr(s, j, ft_customstrlen((s + j), c));
+		array[i] = ft_substr(s, j, ft_customstrlen((s + j), c));// leak
 		if (!array[i])
 			return (ft_free(array), NULL);
 		while (s[j] && (s[j] != c || quote))
@@ -84,6 +84,7 @@ static char	**ft_fill(const char *s, char c, char **array, size_t substrings)
 			is_quote(s[j], &quote);
 			j++;
 		}
+		i++;
 	}
 	array[i] = NULL;
 	return (array);
@@ -94,8 +95,8 @@ int	get_cmds(char const *s, char c, t_mini *mini)
 	if (!s)
 		return (-1);
 	mini->cmds = NULL;
-	mini->cmds = (char **)malloc(sizeof(char *) * (mini->pipes + 2)); // +2 porque hay un comando más que pipes y NULL al final
-	mini->cmds = ft_fill(s, c, mini->cmds, (mini->pipes + 1));
+	mini->cmds = (char **)malloc(sizeof(char *) * (mini->pipes + 2)); // leaks
+	mini->cmds = ft_fill(s, c, mini->cmds, (mini->pipes + 1)); //leak
 	if (!mini->cmds)
 	{
 		print_error("Error: Problem with getting commands", "", 0, 258);

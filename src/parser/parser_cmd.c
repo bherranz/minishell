@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/19 11:30:13 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/20 11:25:20 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char *get_token(char *str, t_cmd *cmd)
 	token = ft_substr(str, start, end - start);
 	return (token);
 }
-
+//echo "$USERE" | echo 'hola $0' "$PATH/caminoo" | cat >"out'file.txt"
 void process_args(char *str, int *i, t_cmd *cmd)
 {
     while (ft_isspace(str[*i]))
@@ -142,7 +142,7 @@ int main_cmd(char *str, t_cmd *cmd)
 	cmd->doble = false;
 	space = count_arguments(str, cmd);
 	printf(" ------> Spaces = %i\n", space);
-	cmd->args = malloc(sizeof(char *) * space);
+	cmd->args = malloc(sizeof(char *) * space); //leak
 	printf(" ------> Malloqueado = %i\n", space);
 	if (parse_redir(str, cmd))
 		return (-1); //liberar cmd->args aca

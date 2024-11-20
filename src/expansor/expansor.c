@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/09 12:26:50 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/20 10:37:33 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	expand(t_mini *mini, t_cmd *cmd)
 			handle_expansion(mini, cmd, &str2, i);
 		i++;
 	}
+	if (cmd->ex_var)
+		free(cmd->ex_var);
 	if (cmd->simple == 1)
 		cmd->simple = !cmd->simple;
 	return (0);
@@ -47,12 +49,14 @@ void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2)
 		if (str2 != NULL)
 		{
 			aux = cmd->full_cmd;
-			cmd->full_cmd = ft_strjoin(aux, str2);
+			cmd->full_cmd = ft_strjoin(aux, str2); //leak
 		}
 	}
+	if (aux)
+		free(aux);
+	if (str2)
+		free(str2);
 }
-
-
 
 char	*get_var(int i, char *cmd)
 {
@@ -117,6 +121,7 @@ void	handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i)
 		cmd->ex_var = "$";
 		*str2 = rest_str(i, cmd->ex_var, *cmd);
 		replace_input(cmd, str, cmd->e_input, *str2);
+		free(str2);
 	}
 	else if (cmd->full_cmd[i + 1] != '\0')
 	{
@@ -125,4 +130,5 @@ void	handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i)
 		do_expansion(cmd->ex_var, mini, cmd);
 		replace_input(cmd, str, cmd->e_input, *str2);
 	}
+	free(str);
 }
