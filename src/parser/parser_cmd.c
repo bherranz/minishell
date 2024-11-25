@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/25 05:20:42 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/25 07:30:37 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,8 @@ int main_cmd(char *str, t_cmd *cmd)
 	x = 0;
 	space = count_arguments(str, cmd);
 	printf(" ------> Spaces = %i\n", space);
-	cmd->args = malloc(sizeof(char *) * space);
+	cmd->args = malloc(sizeof(char *) * (space + 1));
+	cmd->args[space] = NULL;
 	printf(" ------> Malloqueado = %i\n", space);
 	if (parse_redir(str, cmd))
 		return (-1);
@@ -176,7 +177,6 @@ int main_cmd(char *str, t_cmd *cmd)
 				printf("ARG[%i] = %s\n", x, cmd->args[x]);
 				x++;
 				i += ft_strlen(token) - 1;
-				free(clean);
 				free(token);
 			}
 			i++;

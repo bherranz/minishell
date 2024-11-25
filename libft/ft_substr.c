@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bherranz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 13:17:01 by bherranz          #+#    #+#             */
-/*   Updated: 2023/09/26 13:17:03 by bherranz         ###   ########.fr       */
+/*   Updated: 2024/11/25 07:26:03 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,29 @@
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t	lenght;
-	size_t	len_substr;
-	char	*substr;
+	char	*memory;
+	size_t	count;
+	size_t	s_length;
 
+	count = 0;
 	if (!s)
 		return (NULL);
-	lenght = ft_strlen(s) + 1;
-	if ((start >= lenght) || (len == 0))
-		len_substr = 1;
-	else if (len >= lenght - start)
-		len_substr = lenght - start;
-	else
-		len_substr = len + 1;
-	substr = malloc(sizeof(char) * (len_substr));
-	if (substr == NULL)
+	s_length = ft_strlen(s);
+	if (start >= s_length)
+		return (ft_strdup(""));
+	if (s_length < len)
+		len = s_length;
+	if (len > (ft_strlen(s) - start))
+		len = ft_strlen(s) - start;
+	memory = (char *) malloc((len + 1) * sizeof(char));
+	if (!memory)
 		return (NULL);
-	if (lenght > start)
-		ft_strlcpy(substr, s + start, len_substr);
-	else
-		substr[0] = '\0';
-	return (substr);
+	while (count < len && s[start])
+	{
+		memory[count] = s[start];
+		count++;
+		start++;
+	}
+	memory[count] = '\0';
+	return (memory);
 }

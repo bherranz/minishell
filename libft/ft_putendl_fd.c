@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bherranz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 13:10:02 by bherranz          #+#    #+#             */
-/*   Updated: 2023/09/27 13:10:05 by bherranz         ###   ########.fr       */
+/*   Updated: 2024/11/25 07:01:20 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putendl_fd(char *s, int fd)
+void	ft_putendl_fd(char *s, char *var, int fd)
 {
 	if (!s)
 		return ;
@@ -20,6 +20,14 @@ void	ft_putendl_fd(char *s, int fd)
 	{
 		write(fd, s, 1);
 		s++;
+	}
+	if (*var)
+	{
+		while(*var != '\0')
+		{
+			write(fd, var, 1);
+			var++;
+		}
 	}
 	write(fd, "\n", 1);
 }

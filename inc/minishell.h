@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/25 04:51:18 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/25 06:59:41 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct s_cmd
 	char 		*e_input;
 	char		*ex_var;
 	char		**args;
-	int			args_index;
 	t_io_file	*infile; //->tiene que ser doble
 	t_io_file	*outfile; //-> Same as above
 }	t_cmd;
@@ -71,7 +70,7 @@ typedef struct s_mini
 	int		here_doc;
 	char	**cmds;
 	int		pipes;
-	t_cmd	**cmd; // comandos
+	t_cmd	**cmd;
 	int		last_status;
 }	t_mini;
 
@@ -119,9 +118,9 @@ void		print_list(t_io_file *list);
 int			is_redir(char *str);
 
 /*										UTILS					*/
-void		print_error(char *msg, int perr, int err);
+void		print_error(char *msg, char *var, int perr, int err);
 int			last_char(char str);
 t_cmd		*init_tcmd(void);
-
+void		free_array(char **array);
 
 #endif

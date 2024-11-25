@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:33:36 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/25 04:01:23 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/25 07:40:15 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,18 @@ int	create_redir(int redir_type, char *str, int i, t_cmd *cmd)
 		file_token = get_token(&str[i + 1], cmd);
 	if (!file_token)
 	{
-		print_error("Error: syntax error near unexpected token 'newline\'", 0, 258);
+		print_error("Error: syntax error near unexpected token 'newline\'", "", 0, 258);
 		free(redir);
+		free(file_token);
 		return (-1);
 	}
 	clean_name = clear_token(file_token, cmd, ft_strlen(file_token));
+	free(file_token);
 	if (!clean_name || is_redir(clean_name))
 	{
-		print_error("Error: syntax error near unexpected token", 0, 258);
+		print_error("Error: syntax error near unexpected token",clean_name, 0, 258);
 		free(redir);
-		free(file_token);
+		free(clean_name);
 		return (-1);
 	}
 	redir->name = clean_name;
