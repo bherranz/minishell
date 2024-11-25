@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:33:36 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/18 13:10:42 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/25 04:01:23 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,15 @@ void	list_addback(t_io_file *node, t_io_file **list)
 	tmp->next = node;
 }
 
-void	create_redir(int redir_type, char *str, int i, t_cmd *cmd)
+int	create_redir(int redir_type, char *str, int i, t_cmd *cmd)
 {
-	t_io_file *redir;
-	char *file_token;
-	char *clean_name;
+	t_io_file	*redir;
+	char		*file_token;
+	char		*clean_name;
 
 	redir = malloc(sizeof(t_io_file));
 	if (!redir)
-		return ;
+		return (-1);
 	redir->type = redir_type;
 	redir->next = NULL;
 	if (str[i + 1] == str[i])
@@ -69,29 +69,34 @@ void	create_redir(int redir_type, char *str, int i, t_cmd *cmd)
 		file_token = get_token(&str[i + 1], cmd);
 	if (!file_token)
 	{
+		print_error("Error: syntax error near unexpected token 'newline\'", 0, 258);
 		free(redir);
-		return ;
+		return (-1);
 	}
 	clean_name = clear_token(file_token, cmd, ft_strlen(file_token));
-	if (!clean_name)
+	if (!clean_name || is_redir(clean_name))
 	{
+		print_error("Error: syntax error near unexpected token", 0, 258);
 		free(redir);
 		free(file_token);
-		return ;
+		return (-1);
 	}
 	redir->name = clean_name;
 	if (redir->type < 3)
 		list_addback(redir, &cmd->infile);
 	else
 		list_addback(redir, &cmd->outfile);
+	return (0);
 }
 
-void	parse_redir(char *str, t_cmd *cmd)
+int	parse_redir(char *str, t_cmd *cmd)
 {
 	int		redir_type;
 	int		i;
 
 	i = 0;
+	cmd->simple = false;
+	cmd->doble = false;
     while (str[i])
 	{
 		process_quotes(str[i], cmd); // Actualizamos el estado de comillas para el carácter actual
@@ -100,7 +105,8 @@ void	parse_redir(char *str, t_cmd *cmd)
 			redir_type = is_redir(&str[i]); // Detectamos si hay una redirección en la posición actual
 			if (redir_type > 0)
 			{
-				create_redir(redir_type, str, i, cmd);// Llamamos a create_redir para manejar la redirección
+				if (create_redir(redir_type, str, i, cmd))
+					return (-1);// Llamamos a create_redir para manejar la redirección
 				if (redir_type == 2 || redir_type == 4) // Avanzamos `i` según el tipo de redirección detectado
 					i += 2; // Avanzar dos posiciones para `<<` o `>>`
 				else
@@ -112,4 +118,5 @@ void	parse_redir(char *str, t_cmd *cmd)
 		else
 		i++;
 	}
+	return (0);
 }

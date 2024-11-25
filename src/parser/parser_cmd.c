@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/18 16:35:25 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/25 05:20:42 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,9 @@ char *get_token(char *str, t_cmd *cmd)
 	end = start;
 	while (str[end] && (!ft_isspace(str[end]) || cmd->simple || cmd->doble))
 	{
-		if (str[end] == '\'')
-			cmd->simple = !cmd->simple;
-		else if (str[end] == '"')
-			cmd->doble = !cmd->doble;
-		else if (!cmd->simple && !cmd->doble && (str[end] == '<' || str[end] == '>'))
+		process_quotes(str[end], cmd);
+		if ((str[end] != '\'' && str[end] != '"') && !cmd->simple && !cmd->doble
+				&& (str[end] == '<' || str[end] == '>'))
 		{
 			if (end == start) // Si el redireccionamiento está al principio
 			{
@@ -64,12 +62,12 @@ char *get_token(char *str, t_cmd *cmd)
 					end++;
 				end++;
 			}
-			break;
+			break ;
 		}
 		end++;
 	}
 	if (end == start)
-		return NULL;
+		return (NULL);
 	token = ft_substr(str, start, end - start);
 	return (token);
 }
@@ -77,88 +75,70 @@ char *get_token(char *str, t_cmd *cmd)
 void	process_quotes(char c, t_cmd *cmd)
 {
 	if (c == '\'')
-		cmd->simple = !cmd->simple;
+	{
+		if (!cmd->doble)
+			cmd->simple = !cmd->simple;		
+	}
 	else if (c == '"')
-		cmd->doble = !cmd->doble;
-}
-
-void process_args(char *str, int *i, t_cmd *cmd)
-{
-    while (ft_isspace(str[*i]))
-        (*i)++;
-   // process_quotes(str[*i], cmd);
-    while ((str[*i] == '<' || str[*i] == '>') || (cmd->simple || cmd->doble))
-    {
-        if (str[*i + 1] == str[*i])
-            (*i) += 2;
-        else
-            (*i)++;
-        while (ft_isspace(str[*i]))
-            (*i)++;
-        while (str[*i] && (!ft_isspace(str[*i]) || cmd->simple || cmd->doble) && str[*i] != '<' && str[*i] != '>')
-        {
-            process_quotes(str[*i], cmd);
-            (*i)++;
-        }
-        while (ft_isspace(str[*i]))
-            (*i)++;
-    }
+	{
+		if (!cmd->simple)
+			cmd->doble = !cmd->doble;
+	}
 }
 
 void skip_not_args(char *str, int *i, t_cmd *cmd)
 {
 	cmd->simple = false;
 	cmd->doble = false;
-     while (ft_isspace(str[*i]))
-        (*i)++;
-    //process_quotes(str[*i], cmd);
-    while ((str[*i] == '<' || str[*i] == '>') || (cmd->simple || cmd->doble))
-    {
-        if (str[*i + 1] == str[*i])
-            (*i) += 2;
-        else
-            (*i)++;
+	while (ft_isspace(str[*i]))
+		(*i)++;
+	while (str[*i] && ((str[*i] == '<' || str[*i] == '>') || (cmd->simple || cmd->doble)))
+	{
+		if (str[*i + 1] && (str[*i + 1] == str[*i]))
+			(*i) += 2;
+		else
+			(*i)++;
 		if (!str[*i])
 			break;
-        while (ft_isspace(str[*i]))
-            (*i)++;
-        while (str[*i] && (!ft_isspace(str[*i]) || cmd->simple || cmd->doble) && str[*i] != '<' && str[*i] != '>')
-        {
-            process_quotes(str[*i], cmd);
-            (*i)++;
-        }
-        while (ft_isspace(str[*i]))
-            (*i)++;
-    }
+		while (ft_isspace(str[*i]))
+			(*i)++;
+		while (str[*i] && (!ft_isspace(str[*i]) || cmd->simple || cmd->doble) && str[*i] != '<' && str[*i] != '>')
+		{
+			process_quotes(str[*i], cmd);
+			(*i)++;
+		}
+		while (ft_isspace(str[*i]))
+			(*i)++;
+	}
 }
 
 int count_arguments(char *str, t_cmd *cmd)
 {
-    int count = 0;
-    char *token;
-    int i = 0;
-	char *clean;
+	int		count = 0;
+	char	*token;
+	int		i = 0;
+	char	*clean;
 
-    while (str[i])
-    {
-		process_args(str, &i, cmd);
-        if (str[i])
-        {
+	while (str[i])
+	{
+		skip_not_args(str, &i, cmd);
+		if (str[i])
+		{
 			token = get_token(&str[i], cmd);
 			if (!token)
 				break;
 			clean = clear_token(token, cmd, ft_strlen(token));
-            if (clean)
-            {
-                count++;
-                i += ft_strlen(token) - 1;
-                free(token);
+			if (clean)
+			{
+				count++;
+				i += ft_strlen(token) - 1;
+				free(token);
 				free(clean);
-            }
+			}
 			i++;
-        }
-    }
-    return count;
+		}
+	}
+	return (count);
 }
 
 int main_cmd(char *str, t_cmd *cmd)
@@ -171,13 +151,12 @@ int main_cmd(char *str, t_cmd *cmd)
 	i = 0;
 	space = 0;
 	x = 0;
-	cmd->simple = false;
-	cmd->doble = false;
 	space = count_arguments(str, cmd);
 	printf(" ------> Spaces = %i\n", space);
 	cmd->args = malloc(sizeof(char *) * space);
 	printf(" ------> Malloqueado = %i\n", space);
-	parse_redir(str, cmd);
+	if (parse_redir(str, cmd))
+		return (-1);
 	printf("Infiles: ");
 	print_list(cmd->infile);
 	printf("Outfiles: ");
@@ -220,4 +199,3 @@ int	parse_cmds(t_mini *mini)
 	}
 	return (0);
 }
-

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/18 11:21:42 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/25 04:51:18 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void	handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i);
 int			parse_cmds(t_mini *mini);
 int			main_cmd(char *str, t_cmd *cmd);
 void		process_quotes(char c, t_cmd *cmd);
-void 		process_args(char *str, int *i, t_cmd *cmd);
 char		*get_token(char *str, t_cmd *cmd);
 void 		skip_not_args(char *str, int *i, t_cmd *cmd);
 int 		count_arguments(char *str, t_cmd *cmd);
@@ -112,8 +111,8 @@ void		add_arg_to_cmd(t_cmd *cmd, char *arg);
 char		*clear_token(char *str, t_cmd *cmd, int len);
 
 /*				PARSER REDIR										 */
-void		parse_redir(char *str, t_cmd *cmd);
-void		create_redir(int redir_type, char *str, int i, t_cmd *cmd);
+int			parse_redir(char *str, t_cmd *cmd);
+int			create_redir(int redir_type, char *str, int i, t_cmd *cmd);
 void		list_addback(t_io_file *node, t_io_file **list);
 t_io_file	*check_file_quotes(t_io_file *node);
 void		print_list(t_io_file *list);
