@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/26 10:06:24 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/27 11:57:32 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,26 @@
 # include <termcap.h>
 # include <string.h>
 # include "../libft/libft.h"
-# include "../src/executor/pipex.h"
 
+# ifndef READ
+#  define READ 0
+# endif
+
+# ifndef WRITE
+#  define WRITE 1
+# endif
 
 extern int	g_signal; //global para señales
+
+typedef struct pipe
+{
+	int		cmds_num;
+	int		cmd_index;
+	int		status;
+	int		old_pipe[2];
+	int		new_pipe[2];
+	pid_t	last_pid;
+}				t_struct;
 
 typedef enum e_type
 {
@@ -124,5 +140,49 @@ void		print_error(char *msg, char *var, int perr, int err);
 int			last_char(char str);
 t_cmd		*init_tcmd(void);
 void		free_array(char **array);
+
+/* 					EXECUTOR									*/
+
+int		executor(t_mini *mini);
+int		open_files(t_cmd *cmd);
+int 	infiles(t_io_file *infiles);
+int 	outfiles(t_io_file *outfiles);
+int 	fd_control(t_io_file *current);
+int		process_here_doc(t_io_file *current);
+
+
+
+
+
+
+/*					Processes										*/
+void	father(char **argv, char **envp);
+void	first_child(int pipes[], char *argv[], char *envp[]);
+void	second_child(int pipes[], char *argv[], char **envp);
+pid_t	create_process(void);
+
+/*					Paths & args									*/
+char	*find_path(char *command, char *envp[]);
+char	**retrieve_paths(char *envp[]);
+char	*get_env_path(char *path, char *envp[]);
+char	**get_args(char argv[]);
+
+/*				FILES & ARGS PROCESSING								*/
+int		heredoc_mode(int argc, char *argv[], t_struct *t_struct, char *envp[]);
+int		infile_mode(int argc, char *argv[], t_struct *t_struct, char *envp[]);
+
+
+/*				PROCCESSES FUNCTIONS								*/
+void	multiple_processes(t_struct *t_struct, char **envp, int argc);
+void	first_process(t_struct *t_struct, char **envp);
+void	middle_process(t_struct *t_struct, char **envp);
+void	last_process(t_struct *t_struct, char **envp, int argc);
+void	to_excve(t_struct *t_struct, char *argv[], char **envp);
+
+/*				UTILS												*/
+void	set_struct(t_struct *t_struct, char *argv[]);
+void	set_cmds_num(t_struct *t_struct, int argc);
+void	control(t_struct *t_struct);
+
 
 #endif

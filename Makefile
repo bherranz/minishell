@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+         #
+#    By: miparis <miparis@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2024/11/26 10:13:04 by miparis          ###   ########.fr        #
+#    Updated: 2024/11/27 10:38:32 by miparis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,8 @@ SRCS = src/main.c \
 		src/executor/paths_args.c \
 		src/executor/processes_utils.c \
 		src/executor/processes.c \
+		src/executor/executor.c \
+
 
 
 # Define Colors

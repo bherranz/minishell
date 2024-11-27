@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:49:59 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/26 10:14:54 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/27 10:48:36 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../../inc/minishell.h"
 
+/*
 pid_t	create_process(void)
 {
 	pid_t	pid;
@@ -101,4 +102,4 @@ void	second_child(int pipes[], char *argv[], char **envp)
 		perror("Execve failed 1");
 		exit(127);
 	}
-}
+}*/

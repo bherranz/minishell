@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   processes_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:10:06 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/26 10:03:11 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/27 10:48:30 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-
+#include "../../inc/minishell.h"
+/*
 void	set_struct(t_struct *t_struct, char *argv[])
 {
 	t_struct->is_here_doc = false;
@@ -56,4 +56,4 @@ void	control(t_struct *t_struct)
 		free(t_struct);
 		exit(1);
 	}
-}
+}*/

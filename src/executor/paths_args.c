@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   paths_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 09:46:13 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/26 10:14:07 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/27 10:48:00 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../../inc/minishell.h"
 
 char	*find_path(char *command, char *envp[])
 {

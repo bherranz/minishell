@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   multiple_processes.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:27:55 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/26 10:11:17 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/27 10:48:50 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../../inc/minishell.h"
 
+/*
 void	multiple_processes(t_struct *t_struct, char **envp, int argc)
 {
 	pid_t	current_child;
@@ -122,4 +123,4 @@ void	to_excve(t_struct *t_struct, char *argv[], char **envp)
 		exit(127);
 	}
 	ft_free(t_struct->arguments);
-}
+}*/
