@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:47:28 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/27 11:58:59 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/27 13:18:21 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,25 @@
 
 int	executor(t_mini *mini)
 {
-	t_struct		*t_struct;
+	t_pipe		*pipes;
 	int				i;
 
-	t_struct = malloc(sizeof(*t_struct));
+	pipes = malloc(sizeof(*pipe));
+	set_struct(pipes);
 	i = 0;
 	while (i < (mini->pipes + 1) && mini->cmd[i])
 	{
-		open_files(mini->cmd[i]);
+		if (open_files(mini->cmd[i]))
+			return (-1);
+		/*if (mini->cmd[i]->index == 0 && is_builtin(mini->cmd[i]->args[0]) == 1)
+			//execute built_in in father*/
+		multiple_processes(mini->cmd[i], mini, pipes);
+		if (mini->cmd[i]->index == 0)
+			
 		//case_setter -> modificar setter dependiendo el indice del comando
 		i++;
 	}
-	free(t_struct);
+	free(pipe);
 	return (0);
 }
 
@@ -62,13 +69,13 @@ int 	outfiles(t_io_file *outfiles)
 	current = outfiles;
 	while (current)
 	{
-		if (current->type == 3) //fd normal >
+		if (current->type == 3) // >
 		{
 			current->fd = open(current->name,  O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (fd_control(current))
 				return (-1);	
 		}
-		if (current->type == 4)
+		if (current->type == 4) // >> 
 		{
 			current->fd = open(current->name,  O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (fd_control(current))
@@ -86,16 +93,17 @@ int 	infiles(t_io_file *infiles)
 	current = infiles;
 	while (current)
 	{
-		if (current->type == 2)
+		if (current->type == 2) // <<
 		{
 			if (process_here_doc(current))
 				return (-1);
 			if (fd_control(current))
 				return (-1);
+			unlink("/tmp/temp_file"); //-> agregado por si quitan ppermisos
 		}
 		else
 		{
-			current->fd = open(current->name, O_RDONLY);
+			current->fd = open(current->name, O_RDONLY); // <
 			if (fd_control(current))
 				return (-1);
 		}

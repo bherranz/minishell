@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/27 11:57:32 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/27 13:16:40 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 
 extern int	g_signal; //global para señales
 
-typedef struct pipe
+typedef struct s_pipe
 {
 	int		cmds_num;
 	int		cmd_index;
@@ -48,7 +48,7 @@ typedef struct pipe
 	int		old_pipe[2];
 	int		new_pipe[2];
 	pid_t	last_pid;
-}				t_struct;
+}				t_pipe;
 
 typedef enum e_type
 {
@@ -83,6 +83,8 @@ typedef struct s_cmd
 
 typedef struct s_mini
 {
+	int 	stdin;
+	int 	stdout;
 	char	**envp;
 	char	*input;
 	int		here_doc;
@@ -150,39 +152,36 @@ int 	outfiles(t_io_file *outfiles);
 int 	fd_control(t_io_file *current);
 int		process_here_doc(t_io_file *current);
 
+void	multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipe);
+void	set_struct(t_pipe *t_struct);
+void	set_cmds_num(t_pipe *t_struct, int argc);
+int		control(t_pipe *pipe);
 
 
 
 
-
-/*					Processes										*/
+/*					Processes										
 void	father(char **argv, char **envp);
 void	first_child(int pipes[], char *argv[], char *envp[]);
 void	second_child(int pipes[], char *argv[], char **envp);
 pid_t	create_process(void);
 
-/*					Paths & args									*/
+/*					Paths & args									
 char	*find_path(char *command, char *envp[]);
 char	**retrieve_paths(char *envp[]);
 char	*get_env_path(char *path, char *envp[]);
 char	**get_args(char argv[]);
 
-/*				FILES & ARGS PROCESSING								*/
+/*				FILES & ARGS PROCESSING								
 int		heredoc_mode(int argc, char *argv[], t_struct *t_struct, char *envp[]);
 int		infile_mode(int argc, char *argv[], t_struct *t_struct, char *envp[]);
 
 
-/*				PROCCESSES FUNCTIONS								*/
-void	multiple_processes(t_struct *t_struct, char **envp, int argc);
+/*				PROCCESSES FUNCTIONS								
 void	first_process(t_struct *t_struct, char **envp);
 void	middle_process(t_struct *t_struct, char **envp);
 void	last_process(t_struct *t_struct, char **envp, int argc);
-void	to_excve(t_struct *t_struct, char *argv[], char **envp);
-
-/*				UTILS												*/
-void	set_struct(t_struct *t_struct, char *argv[]);
-void	set_cmds_num(t_struct *t_struct, int argc);
-void	control(t_struct *t_struct);
+void	to_excve(t_struct *t_struct, char *argv[], char **envp);*/
 
 
 #endif

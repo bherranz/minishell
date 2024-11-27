@@ -6,27 +6,22 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:10:06 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/27 10:48:30 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/27 13:19:17 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-/*
-void	set_struct(t_struct *t_struct, char *argv[])
+
+void	set_struct(t_pipe *t_struct)
 {
-	t_struct->is_here_doc = false;
-	t_struct->infile = -1;
-	t_struct->outfile = -1;
 	t_struct->cmds_num = 0;
 	t_struct->cmd_index = 0;
-	t_struct->arguments = NULL;
-	t_struct->argv = argv;
 	t_struct->old_pipe[0] = 0;
 	t_struct->old_pipe[1] = 0;
 	t_struct->new_pipe[0] = 0;
 	t_struct->new_pipe[1] = 0;
 }
-
+/*
 void	set_cmds_num(t_struct *t_struct, int argc)
 {
 	if (t_struct->is_here_doc)
@@ -37,23 +32,17 @@ void	set_cmds_num(t_struct *t_struct, int argc)
 		t_struct->cmd_index = 3;
 	else
 		t_struct->cmd_index = 2;
-}
+}*/
 
-void	control(t_struct *t_struct)
+int	control(t_pipe *pipes)
 {
-	if (pipe(t_struct->old_pipe) == -1)
+	if (pipe(pipes->old_pipe) == -1)
 	{
 		perror("Problem creating pipe\n");
-		close(t_struct->new_pipe[WRITE]);
-		close(t_struct->new_pipe[READ]);
-		free(t_struct);
-		exit(1);
+		close(pipes->new_pipe[WRITE]);
+		close(pipes->new_pipe[READ]);
+		free(pipes);
+		return (1);
 	}
-	if (t_struct->infile == -1)
-	{
-		perror(t_struct->argv[1]);
-		close(t_struct->old_pipe[WRITE]);
-		free(t_struct);
-		exit(1);
-	}
-}*/
+	return (0);
+}

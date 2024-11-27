@@ -6,21 +6,21 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:27:55 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/27 10:48:50 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/27 13:18:45 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-/*
-void	multiple_processes(t_struct *t_struct, char **envp, int argc)
+void	multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipes)
 {
 	pid_t	current_child;
 	int		status;
 
-	control(t_struct);
-	set_cmds_num(t_struct, argc);
-	first_process(t_struct, envp);
+	if (control(pipes))
+			return (-1);
+	//set_cmds_num(t_struct, argc);
+	/*first_process(t_struct, envp);
 	while (t_struct->cmds_num > 1 && t_struct->cmd_index < argc - 2)
 	{
 		middle_process(t_struct, envp);
@@ -36,9 +36,9 @@ void	multiple_processes(t_struct *t_struct, char **envp, int argc)
 		if (current_child == t_struct->last_pid)
 			t_struct->status = status;
 	}
-	close(t_struct->old_pipe[READ]);
+	close(t_struct->old_pipe[READ]);*/
 }
-
+/*
 void	first_process(t_struct *t_struct, char **envp)
 {
 	pid_t	pid;
