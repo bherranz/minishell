@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:47:28 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/27 13:18:21 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/28 10:37:15 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,33 @@
 int	executor(t_mini *mini)
 {
 	t_pipe		*pipes;
-	int				i;
+	pid_t		current_child;
+	int			i;
+	int			status;
 
-	pipes = malloc(sizeof(*pipe));
+	pipes = malloc(sizeof(*pipes));
 	set_struct(pipes);
+	if (control(pipes))
+			return (-1);
 	i = 0;
 	while (i < (mini->pipes + 1) && mini->cmd[i])
 	{
 		if (open_files(mini->cmd[i]))
 			return (-1);
-		/*if (mini->cmd[i]->index == 0 && is_builtin(mini->cmd[i]->args[0]) == 1)
-			//execute built_in in father*/
-		multiple_processes(mini->cmd[i], mini, pipes);
-		if (mini->cmd[i]->index == 0)
-			
 		//case_setter -> modificar setter dependiendo el indice del comando
+		multiple_processes(mini->cmd[i], mini, pipes);
 		i++;
 	}
-	free(pipe);
+	while (1)
+	{
+		current_child = waitpid(-1, &status, 0);
+		if (current_child == -1)
+			break ;
+		if (current_child == pipes->last_pid)
+			pipes->status = status;
+	}
+	close(pipes->old_pipe[READ]);
+	free(pipes);
 	return (0);
 }
 
@@ -81,6 +90,7 @@ int 	outfiles(t_io_file *outfiles)
 			if (fd_control(current))
 				return (-1);
 		}
+		current->last_in = (current->next == NULL);
 		current = current->next;
 	}
 	return (0);
@@ -107,6 +117,7 @@ int 	infiles(t_io_file *infiles)
 			if (fd_control(current))
 				return (-1);
 		}
+		current->last_in = (current->next == NULL);
 		current = current->next;
 	}
 	return (0);

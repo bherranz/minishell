@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiple_processes.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:27:55 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/27 13:18:45 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/28 11:18:54 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,51 +14,91 @@
 
 void	multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipes)
 {
-	pid_t	current_child;
-	int		status;
+	int		n_cmds;
 
-	if (control(pipes))
-			return (-1);
-	//set_cmds_num(t_struct, argc);
-	/*first_process(t_struct, envp);
-	while (t_struct->cmds_num > 1 && t_struct->cmd_index < argc - 2)
+	n_cmds = mini->pipes + 1;
+	printf("->> Cmd Index == %d\n", cmd->index);
+	/*if (cmd->index == 0 && (is_builtin(mini->cmd[i]->args[0]) == 1))
+			//execute built_in in father*/
+	if (cmd->index == 0)
 	{
-		middle_process(t_struct, envp);
-		t_struct->cmd_index++;
+		printf("---> First process...\n");
+		first_process(cmd, pipes, mini);
 	}
-	if (t_struct->cmds_num == 1)
-		last_process(t_struct, envp, argc);
-	while (1)
+	if (cmd->index > 0 && cmd->index < n_cmds - 1)
 	{
-		current_child = waitpid(-1, &status, 0);
-		if (current_child == -1)
-			break ;
-		if (current_child == t_struct->last_pid)
-			t_struct->status = status;
+		printf("---> Midle process...\n");
+		//middle_process(cmd, mini, pipe);
 	}
-	close(t_struct->old_pipe[READ]);*/
+	if (cmd->index == n_cmds - 1)
+	{
+		printf("---> Last process...\n");
+		//last_process(cmd, mini, pipe);
+	}
 }
-/*
-void	first_process(t_struct *t_struct, char **envp)
-{
-	pid_t	pid;
 
+void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
+{
+	pid_t		pid;
+	t_io_file 	*infile;
+	t_io_file 	*outfile;
+
+	infile = cmd->infile;
+	outfile = cmd->outfile;
 	pid = create_process();
 	if (pid == 0)
 	{
-		dup2(t_struct->infile, STDIN_FILENO);
-		close(t_struct->infile);
-		dup2(t_struct->old_pipe[WRITE], STDOUT_FILENO);
-		close(t_struct->old_pipe[WRITE]);
-		close(t_struct->old_pipe[READ]);
-		to_excve(t_struct, t_struct->argv, envp);
+		//hacer dup2 del ULTIMO infile en la lista
+		if (infile)
+		{
+			while (infile)
+			{
+				if(infile->last_in)
+				{
+					dup2(infile->fd, STDIN_FILENO);
+					break;
+				}
+				close(infile->fd);
+				infile = infile->next;
+			}
+		}
+		if (outfile)
+		{
+			while (outfile)
+			{
+				if(outfile->last_in)
+				{
+					dup2(outfile->fd, STDOUT_FILENO);
+					break;
+				}
+				close(outfile->fd);
+				outfile = outfile->next;
+			}
+		}
+		if (!cmd->outfile)
+		{
+			//ver si hace falta control de error en dup2
+			if (dup2(pipes->old_pipe[WRITE], STDOUT_FILENO) == -1)
+			{
+                perror("dup2 pipe");
+                exit(1);
+            }
+		}
+		close(pipes->old_pipe[WRITE]);
+		close(pipes->old_pipe[READ]);
+		to_excve(cmd, mini->envp);
 	}
-	t_struct->cmd_index++;
-	t_struct->cmds_num--;
-	close(t_struct->infile);
-	close(t_struct->old_pipe[WRITE]);
+	if (cmd->infile)
+	{ // Cerrar infiles en el proceso padre
+        while (cmd->infile)
+		{
+            close(cmd->infile->fd);
+            cmd->infile = cmd->infile->next;
+        }
+    }
+    close(pipes->old_pipe[WRITE]);
 }
-
+/*
 void	middle_process(t_struct *t_struct, char **envp)
 {
 	pid_t	pid;
@@ -109,18 +149,21 @@ void	last_process(t_struct *t_struct, char **envp, int argc)
 	t_struct->cmds_num--;
 	t_struct->last_pid = pid;
 	close(t_struct->outfile);
-}
+}*/
 
-void	to_excve(t_struct *t_struct, char *argv[], char **envp)
+void	to_excve(t_cmd *cmd, char **envp)
 {
 	char	*command_path;
 
-	t_struct->arguments = get_args(argv[t_struct->cmd_index]);
-	command_path = find_path(t_struct->arguments[0], envp);
-	if (execve(command_path, t_struct->arguments, envp) == -1)
+	command_path = find_path(cmd->args[0], envp);
+	free(cmd->args[0]);
+	cmd->args[0] = command_path;
+	/*if (is_builtin(cmd->args[0]))
+		builtin(cmd->args[0])*/
+	if (execve(cmd->args[0], cmd->args, envp) == -1)
 	{
 		perror("Execve failed 1");
 		exit(127);
 	}
-	ft_free(t_struct->arguments);
-}*/
+	ft_free(cmd->args);
+}

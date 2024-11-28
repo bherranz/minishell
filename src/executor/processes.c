@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:49:59 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/27 10:48:36 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/28 11:16:52 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-/*
+
 pid_t	create_process(void)
 {
 	pid_t	pid;
@@ -26,7 +26,7 @@ pid_t	create_process(void)
 	else
 		return (pid);
 }
-
+/*
 void	father(char *argv[], char **envp)
 {
 	int		pipes[2];

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/25 07:30:37 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/28 10:24:24 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,10 +152,8 @@ int main_cmd(char *str, t_cmd *cmd)
 	space = 0;
 	x = 0;
 	space = count_arguments(str, cmd);
-	printf(" ------> Spaces = %i\n", space);
 	cmd->args = malloc(sizeof(char *) * (space + 1));
 	cmd->args[space] = NULL;
-	printf(" ------> Malloqueado = %i\n", space);
 	if (parse_redir(str, cmd))
 		return (-1);
 	printf("Infiles: ");

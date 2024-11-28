@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/27 13:16:40 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/28 11:18:46 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_io_file
 	int					fd; //esto no sé si hará falta
 	char				*name;
 	t_type				type;
+	bool				last_in;
 	struct s_io_file	*next;
 }	t_io_file;
 
@@ -156,28 +157,31 @@ void	multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipe);
 void	set_struct(t_pipe *t_struct);
 void	set_cmds_num(t_pipe *t_struct, int argc);
 int		control(t_pipe *pipe);
-
-
-
-
-/*					Processes										
-void	father(char **argv, char **envp);
-void	first_child(int pipes[], char *argv[], char *envp[]);
-void	second_child(int pipes[], char *argv[], char **envp);
+void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
+void	to_excve(t_cmd *cmd, char **envp);
 pid_t	create_process(void);
 
-/*					Paths & args									
+//Paths & args									
 char	*find_path(char *command, char *envp[]);
 char	**retrieve_paths(char *envp[]);
 char	*get_env_path(char *path, char *envp[]);
+
+/*
+Processes										
+void	father(char **argv, char **envp);
+void	first_child(int pipes[], char *argv[], char *envp[]);
+void	second_child(int pipes[], char *argv[], char **envp);
+
+
+
 char	**get_args(char argv[]);
 
-/*				FILES & ARGS PROCESSING								
+FILES & ARGS PROCESSING								
 int		heredoc_mode(int argc, char *argv[], t_struct *t_struct, char *envp[]);
 int		infile_mode(int argc, char *argv[], t_struct *t_struct, char *envp[]);
 
 
-/*				PROCCESSES FUNCTIONS								
+PROCCESSES FUNCTIONS								
 void	first_process(t_struct *t_struct, char **envp);
 void	middle_process(t_struct *t_struct, char **envp);
 void	last_process(t_struct *t_struct, char **envp, int argc);
