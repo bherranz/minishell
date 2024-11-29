@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/09 12:26:50 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/25 10:31:17 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ int	expand(t_mini *mini, t_cmd *cmd)
 	str2 = NULL;
 	while (cmd->full_cmd[i])
 	{
-		if (cmd->full_cmd[i] == '\'')
+		if (cmd->full_cmd[i] == '\'' && !cmd->doble)
 			cmd->simple = !cmd->simple;
-		if (cmd->full_cmd[i] == '$' && !cmd->simple)
+		if (cmd->full_cmd[i] == '\"' && !cmd->simple)
+			cmd->doble = !cmd->doble;
+		if (cmd->full_cmd[i] == '$' && (!cmd->simple || (cmd->simple && cmd->doble)))
 			handle_expansion(mini, cmd, &str2, i);
 		i++;
 	}
@@ -51,8 +53,6 @@ void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2)
 		}
 	}
 }
-
-
 
 char	*get_var(int i, char *cmd)
 {

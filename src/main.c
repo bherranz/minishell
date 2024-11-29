@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/25 07:37:40 by codespace        ###   ########.fr       */
+/*   Updated: 2024/11/29 01:40:46 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,16 @@ void free_cmd(t_cmd *cmd)
 		free_io_files(cmd->infile);
 	if (cmd->outfile)
 		free_io_files(cmd->outfile);
-	free(cmd->full_cmd);
-	free(cmd->e_input);
-	free(cmd->ex_var);
+	/*if (cmd->full_cmd)
+		free(cmd->full_cmd);*/
+	if (cmd->e_input)
+		free(cmd->e_input);
+	if (cmd->ex_var)
+		free(cmd->ex_var);
 	if (cmd->args)
 		free_array(cmd->args);
-	free(cmd);
+	if (cmd)
+		free(cmd);
 }
 
 void free_structs(t_mini *mini)
@@ -54,7 +58,8 @@ void free_structs(t_mini *mini)
 	{
 		while (i <= mini->pipes)
 		{
-			free_cmd(mini->cmd[i]);
+			if (mini->cmd[i])
+				free_cmd(mini->cmd[i]);
 			i++;		
 		}
 		free(mini->cmd);
@@ -76,7 +81,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		mini.input = readline("MINICONCHAA > ");
-		if (!mini.input || ft_strcmp(mini.input, "exit") == 0) //agregado por seg fault al hacer cltr D
+		if (!mini.input || ft_strcmp(mini.input, "exit") == 0)
 		{
 			printf("exit\n");
 			if (mini.input)
