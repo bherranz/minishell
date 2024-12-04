@@ -1,40 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   config_envp.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 05:02:34 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/03 02:30:06 by codespace        ###   ########.fr       */
+/*   Created: 2024/12/03 04:04:56 by codespace         #+#    #+#             */
+/*   Updated: 2024/12/04 05:01:37 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-void	free_array(char **array)
+char	**copy_envp(char **envp)
 {
-	int i;
+	int		i;
+	char	**new;
 
 	i = 0;
-	if (!array)
-		return ;
-	while (array[i])
+	while (envp[i])
+		i++;
+	new = (char **)ft_calloc(i + 1, sizeof(char *));
+	i = 0;
+	while (envp[i])
 	{
-		free(array[i]);
+		new[i] = ft_strdup(envp[i]);
 		i++;
 	}
-	free(array);
+	return (new);
 }
 
-void	print_error(char *msg, char *var, int perr, int err)
+void	set_envp(t_mini *mini, char **envp)
 {
-	if (perr)
-		perror(msg);
-	else
-		ft_putendl_fd(msg, var, 2);
-	(void)err;
+	mini->envp = copy_envp(envp);
 }
-
-
 

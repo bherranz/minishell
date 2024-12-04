@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/25 06:59:41 by codespace        ###   ########.fr       */
+/*   Updated: 2024/12/03 08:24:48 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@
 # include <termcap.h>
 # include <string.h>
 # include "../libft/libft.h"
+# include <limits.h>
+# include <errno.h>
+
+# ifndef PATH_MAX
+#  define PATH_MAX 4096
+# endif
+
 
 extern int	g_signal; //global para señales
 
@@ -88,6 +95,7 @@ int		get_cmds(char const *s, char c, t_mini *mini);
 int		is_quote(char c,  int *quote);
 int		parse_cmds(t_mini *mini);
 void	count_err(char *input);
+void	set_envp(t_mini *mini, char **envp);
 
 /*				EXPANSOR				*/
 int		expand(t_mini *mini, t_cmd *cmd);
@@ -122,5 +130,14 @@ void		print_error(char *msg, char *var, int perr, int err);
 int			last_char(char str);
 t_cmd		*init_tcmd(void);
 void		free_array(char **array);
+
+/*						BUILT-INS					*/
+int			main_builtins(t_cmd *cmd, t_mini *mini);
+int			ft_echo(t_cmd *cmd);
+int			ft_cd(t_cmd *cmd, char **envp);
+char		*ft_getenv(char *name, char **envp);
+int			ft_pwd(void);
+int			ft_env(char **envp);
+void		ft_export(t_mini *mini, char **var);
 
 #endif

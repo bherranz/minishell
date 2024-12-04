@@ -1,40 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 05:02:34 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/03 02:30:06 by codespace        ###   ########.fr       */
+/*   Created: 2024/12/03 01:39:13 by codespace         #+#    #+#             */
+/*   Updated: 2024/12/03 02:47:11 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-void	free_array(char **array)
+int	ft_pwd(void)
 {
-	int i;
+	char	*path;
 
-	i = 0;
-	if (!array)
-		return ;
-	while (array[i])
+	path = getcwd(NULL, PATH_MAX);
+	if (!path)
 	{
-		free(array[i]);
-		i++;
+		perror("pwd");
+		free(path);
+		return (1);
 	}
-	free(array);
+	printf("%s\n", path);
+	free(path);
+	return (0);
 }
-
-void	print_error(char *msg, char *var, int perr, int err)
-{
-	if (perr)
-		perror(msg);
-	else
-		ft_putendl_fd(msg, var, 2);
-	(void)err;
-}
-
-
-

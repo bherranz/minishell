@@ -1,40 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 05:02:34 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/03 02:30:06 by codespace        ###   ########.fr       */
+/*   Created: 2024/12/03 03:55:45 by codespace         #+#    #+#             */
+/*   Updated: 2024/12/03 04:00:45 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-void	free_array(char **array)
+int	ft_env(char **envp)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	if (!array)
-		return ;
-	while (array[i])
+	while (envp[i])
 	{
-		free(array[i]);
+		printf("%s\n", envp[i]);
 		i++;
 	}
-	free(array);
+	return (0);
 }
-
-void	print_error(char *msg, char *var, int perr, int err)
-{
-	if (perr)
-		perror(msg);
-	else
-		ft_putendl_fd(msg, var, 2);
-	(void)err;
-}
-
-
-

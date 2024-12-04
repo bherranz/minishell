@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/25 07:30:37 by codespace        ###   ########.fr       */
+/*   Updated: 2024/12/03 01:59:13 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ int main_cmd(char *str, t_cmd *cmd)
 	char *token;
 	int space;
 	int x;
+	char	*clean;
 
 	i = 0;
 	space = 0;
@@ -170,7 +171,7 @@ int main_cmd(char *str, t_cmd *cmd)
 			token = get_token(&str[i], cmd);
 			if (!token || !*token)
 				break;
-			char *clean = clear_token(token, cmd, ft_strlen(token));
+			clean = clear_token(token, cmd, ft_strlen(token));
 			if (clean)
 			{
 				cmd->args[x] = clean;

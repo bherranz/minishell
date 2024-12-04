@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/29 01:40:46 by codespace        ###   ########.fr       */
+/*   Updated: 2024/12/04 04:57:22 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void free_cmd(t_cmd *cmd)
 	/*if (cmd->full_cmd)
 		free(cmd->full_cmd);*/
 	if (cmd->e_input)
-		free(cmd->e_input);
+		free(cmd->e_input);	
 	if (cmd->ex_var)
 		free(cmd->ex_var);
 	if (cmd->args)
@@ -60,7 +60,7 @@ void free_structs(t_mini *mini)
 		{
 			if (mini->cmd[i])
 				free_cmd(mini->cmd[i]);
-			i++;		
+			i++;	
 		}
 		free(mini->cmd);
 	}
@@ -73,7 +73,7 @@ int	main(int argc, char **argv, char **envp)
 	t_mini	mini;
 
 	ft_bzero(&mini, sizeof(t_mini));
-	mini.envp = envp;
+	set_envp(&mini, envp);
 	(void)argc;
 	(void)argv;
 	g_signal = 0;
@@ -86,13 +86,20 @@ int	main(int argc, char **argv, char **envp)
 			printf("exit\n");
 			if (mini.input)
 				free(mini.input);
+			if (mini.envp)
+				free_array(mini.envp);
 			break ;
 		}
 		if (mini.input)
 			add_history(mini.input);
 		parser(&mini);
-		free(mini.input);
+		int i = 0;
+		while (i <= mini.pipes)
+		{
+			main_builtins(mini.cmd[i], &mini);
+			i++;
+		}
+		free_structs(&mini);
 	}
-	free_structs(&mini);
 	return (0);
 }
