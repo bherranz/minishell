@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:47:28 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/28 10:37:15 by miparis          ###   ########.fr       */
+/*   Updated: 2024/11/29 17:29:20 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	executor(t_mini *mini)
 	{
 		current_child = waitpid(-1, &status, 0);
 		if (current_child == -1)
-			break ;
+			break ; //aqui agreagar liberacion de memoria
 		if (current_child == pipes->last_pid)
 			pipes->status = status;
 	}

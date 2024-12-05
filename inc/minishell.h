@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/28 11:18:46 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/03 16:45:57 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,9 @@ void	set_struct(t_pipe *t_struct);
 void	set_cmds_num(t_pipe *t_struct, int argc);
 int		control(t_pipe *pipe);
 void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
+void	middle_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
+void	last_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
+void	single_process(t_cmd *cmd, t_mini *mini);
 void	to_excve(t_cmd *cmd, char **envp);
 pid_t	create_process(void);
 
