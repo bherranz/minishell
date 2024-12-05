@@ -6,7 +6,7 @@
 #    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2024/12/03 04:13:27 by codespace        ###   ########.fr        #
+#    Updated: 2024/12/05 04:13:11 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,8 @@ SRCS = src/main.c \
 		src/built-in/ft_pwd.c \
 		src/built-in/ft_export.c \
 		src/built-in/ft_env.c \
+		src/built-in/ft_unset.c \
+		src/built-in/ft_exit.c \
 		src/parser/config_envp.c \
 
 # Define Colors

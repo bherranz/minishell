@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2024/12/04 04:57:22 by codespace        ###   ########.fr       */
+/*   Updated: 2024/12/05 08:16:47 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void free_structs(t_mini *mini)
 	free(mini->input);
 }
 
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	mini;
@@ -81,11 +80,9 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		mini.input = readline("MINICONCHAA > ");
-		if (!mini.input || ft_strcmp(mini.input, "exit") == 0)
+		if (!mini.input)
 		{
 			printf("exit\n");
-			if (mini.input)
-				free(mini.input);
 			if (mini.envp)
 				free_array(mini.envp);
 			break ;
@@ -99,7 +96,10 @@ int	main(int argc, char **argv, char **envp)
 			main_builtins(mini.cmd[i], &mini);
 			i++;
 		}
-		free_structs(&mini);
+		if (mini.input[0] != '\0')
+			free_structs(&mini);
+		else
+			free(mini.input);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 02:47:51 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/04 05:01:20 by codespace        ###   ########.fr       */
+/*   Updated: 2024/12/05 07:35:19 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	order_envp(char **envp)
 		printf("declare -x \"%s\"\n", envp[i++]);
 }
 
-int is_in_envp(char **envp, char *var)
+int	is_in_envp(char **envp, char *var)
 {
 	int		i;
 	char	**temp;
@@ -66,25 +66,15 @@ int is_in_envp(char **envp, char *var)
 	return (-1);
 }
 
-char **new_envp(int count, t_mini *mini, char **var)
+char	**add_new_vars(char **new, char **var, int i, t_mini *mini)
 {
-	int     i, j, idx;
-	char    **new;
+	int		j;
+	int		idx;
 
-	i = 0;
-	while (mini->envp[i])
-		i++;
-	new = (char **)ft_calloc(i + count + 1, sizeof(char *));
-	i = 0;
-	while (mini->envp[i])
-	{
-		new[i] = ft_strdup(mini->envp[i]);
-		i++;
-	}
 	j = 0;
 	while (var[j])
 	{
-		if (ft_strchr(var[j], '='))
+		if (ft_strchr(var[j], '=') && ft_isalpha(var[j][0]))
 		{
 			idx = is_in_envp(mini->envp, var[j]);
 			if (idx < 0)
@@ -100,6 +90,25 @@ char **new_envp(int count, t_mini *mini, char **var)
 		}
 		j++;
 	}
+	return (new);
+}
+
+char	**new_envp(int count, t_mini *mini, char **var)
+{
+	int		i;
+	char	**new;
+
+	i = 0;
+	while (mini->envp[i])
+		i++;
+	new = (char **)ft_calloc(i + count + 1, sizeof(char *));
+	i = 0;
+	while (mini->envp[i])
+	{
+		new[i] = ft_strdup(mini->envp[i]);
+		i++;
+	}
+	add_new_vars(new, var, i, mini);
 	free_array(mini->envp);
 	return (new);
 }

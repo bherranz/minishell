@@ -1,36 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   config_envp.c                                      :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 04:04:56 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/05 08:15:31 by codespace        ###   ########.fr       */
+/*   Created: 2024/12/05 04:14:04 by codespace         #+#    #+#             */
+/*   Updated: 2024/12/05 05:36:00 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char	**copy_envp(char **envp)
+int	ft_exit(t_mini *mini, char **var)
 {
-	int		i;
-	char	**new;
+	int	i;
 
+	if (!var[1])
+		exit(mini->last_status);
 	i = 0;
-	while (envp[i])
-		i++;
-	new = (char **)ft_calloc(i + 1, sizeof(char *));
-	i = 0;
-	while (envp[i])
+	while (var[1][i])
 	{
-		new[i] = ft_strdup(envp[i]);
+		if (!ft_isdigit(var[1][i]))
+		{
+			ft_putstr_fd("exit\nminishell: exit: ", 2);
+			ft_putstr_fd(var[1], 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
+			exit(255);
+		}
 		i++;
 	}
-	return (new);
-}
-
-void	set_envp(t_mini *mini, char **envp)
-{
-	mini->envp = copy_envp(envp);
+	if (var[2])
+	{
+		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
+		return (1);
+	}
+	printf("exit\n");
+	exit(ft_atoi(var[1]));
 }
