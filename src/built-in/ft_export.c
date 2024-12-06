@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 02:47:51 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/06 05:06:51 by codespace        ###   ########.fr       */
+/*   Updated: 2024/12/06 05:44:57 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,10 +132,7 @@ void	ft_export(t_mini *mini, char **var)
 		if (ft_strchr(var[i], '='))
 		{
 			if (*temp && is_in_envp(mini->envp, temp[0]))
-			{
-				//printf("check\n");
 				new++;
-			}
 		}
 		free_array(temp);
 		i++;

@@ -6,17 +6,17 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/03 01:59:13 by codespace        ###   ########.fr       */
+/*   Updated: 2024/12/06 06:01:43 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char *clear_token(char *str, t_cmd *cmd, int len)
+char	*clear_token(char *str, t_cmd *cmd, int len)
 {
-	char *clean_token;
-	int clean_index;
-	int i;
+	char	*clean_token;
+	int		clean_index;
+	int		i;
 
 	clean_index = 0;
 	i = 0;
@@ -27,7 +27,8 @@ char *clear_token(char *str, t_cmd *cmd, int len)
 	{
 		if (str[i] == '\'' || str[i] == '"')
 		{
-			if ((str[i] == '\'' && !cmd->doble) || (str[i] == '"' && !cmd->simple))
+			if ((str[i] == '\'' && !cmd->doble) || (str[i] == '"'
+					&& !cmd->simple))
 				process_quotes(str[i], cmd);
 			else
 				clean_token[clean_index++] = str[i];
@@ -40,21 +41,21 @@ char *clear_token(char *str, t_cmd *cmd, int len)
 	return (clean_token);
 }
 
-char *get_token(char *str, t_cmd *cmd)
+char	*get_token(char *str, t_cmd *cmd)
 {
 	int		start;
 	int		end;
 	char	*token;
 
 	start = 0;
-	while (ft_isspace(str[start]))  // saltar espacios iniciales
+	while (ft_isspace(str[start])) // saltar espacios iniciales
 		start++;
 	end = start;
 	while (str[end] && (!ft_isspace(str[end]) || cmd->simple || cmd->doble))
 	{
 		process_quotes(str[end], cmd);
 		if ((str[end] != '\'' && str[end] != '"') && !cmd->simple && !cmd->doble
-				&& (str[end] == '<' || str[end] == '>'))
+			&& (str[end] == '<' || str[end] == '>'))
 		{
 			if (end == start) // Si el redireccionamiento está al principio
 			{
@@ -77,7 +78,7 @@ void	process_quotes(char c, t_cmd *cmd)
 	if (c == '\'')
 	{
 		if (!cmd->doble)
-			cmd->simple = !cmd->simple;		
+			cmd->simple = !cmd->simple;
 	}
 	else if (c == '"')
 	{
@@ -86,23 +87,25 @@ void	process_quotes(char c, t_cmd *cmd)
 	}
 }
 
-void skip_not_args(char *str, int *i, t_cmd *cmd)
+void	skip_not_args(char *str, int *i, t_cmd *cmd)
 {
 	cmd->simple = false;
 	cmd->doble = false;
 	while (ft_isspace(str[*i]))
 		(*i)++;
-	while (str[*i] && ((str[*i] == '<' || str[*i] == '>') || (cmd->simple || cmd->doble)))
+	while (str[*i] && ((str[*i] == '<' || str[*i] == '>')
+			|| (cmd->simple || cmd->doble)))
 	{
 		if (str[*i + 1] && (str[*i + 1] == str[*i]))
 			(*i) += 2;
 		else
 			(*i)++;
 		if (!str[*i])
-			break;
+			break ;
 		while (ft_isspace(str[*i]))
 			(*i)++;
-		while (str[*i] && (!ft_isspace(str[*i]) || cmd->simple || cmd->doble) && str[*i] != '<' && str[*i] != '>')
+		while (str[*i] && (!ft_isspace(str[*i]) || cmd->simple || cmd->doble)
+			&& str[*i] != '<' && str[*i] != '>')
 		{
 			process_quotes(str[*i], cmd);
 			(*i)++;
@@ -112,13 +115,15 @@ void skip_not_args(char *str, int *i, t_cmd *cmd)
 	}
 }
 
-int count_arguments(char *str, t_cmd *cmd)
+int	count_arguments(char *str, t_cmd *cmd)
 {
-	int		count = 0;
+	int		count;
 	char	*token;
-	int		i = 0;
+	int		i;
 	char	*clean;
 
+	count = 0;
+	i = 0;
 	while (str[i])
 	{
 		skip_not_args(str, &i, cmd);
@@ -126,7 +131,7 @@ int count_arguments(char *str, t_cmd *cmd)
 		{
 			token = get_token(&str[i], cmd);
 			if (!token)
-				break;
+				break ;
 			clean = clear_token(token, cmd, ft_strlen(token));
 			if (clean)
 			{
@@ -141,12 +146,12 @@ int count_arguments(char *str, t_cmd *cmd)
 	return (count);
 }
 
-int main_cmd(char *str, t_cmd *cmd)
+int	main_cmd(char *str, t_cmd *cmd)
 {
-	int i;
-	char *token;
-	int space;
-	int x;
+	int		i;
+	char	*token;
+	int		space;
+	int		x;
 	char	*clean;
 
 	i = 0;
@@ -170,7 +175,7 @@ int main_cmd(char *str, t_cmd *cmd)
 		{
 			token = get_token(&str[i], cmd);
 			if (!token || !*token)
-				break;
+				break ;
 			clean = clear_token(token, cmd, ft_strlen(token));
 			if (clean)
 			{
@@ -188,14 +193,14 @@ int main_cmd(char *str, t_cmd *cmd)
 
 int	parse_cmds(t_mini *mini)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i <= mini->pipes)
 	{
 		printf("command: %s\n", mini->cmd[i]->full_cmd);
 		if (main_cmd(mini->cmd[i]->full_cmd, mini->cmd[i]) != 0)
-		 	return (-1);
+			return (-1);
 		i++;
 	}
 	return (0);

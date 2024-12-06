@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/25 07:03:58 by codespace        ###   ########.fr       */
+/*   Updated: 2024/12/06 05:55:09 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	parser(t_mini *mini)
 {
 	int	i;
+	int	x;
 
 	i = 0;
 	if (check_quotes(mini)) //check comillas cerradas
@@ -28,7 +29,7 @@ void	parser(t_mini *mini)
 			return ;
 		i++;
 	}
-	int x = 0;
+	x = 0;
 	while (x <= mini->pipes)
 	{
 		printf("---> Guardado: %s\n", mini->cmd[x]->full_cmd);
@@ -58,7 +59,7 @@ int	check_quotes(t_mini *mini)
 	}
 	if (quote)
 	{
-		print_error("Error: unclosed quotes", "" ,0, 258);
+		print_error("Error: unclosed quotes", "", 0, 258);
 		return (1);
 	}
 	return (0);
@@ -69,7 +70,7 @@ void	count_err(char *input)
 {
 	if (ft_strrchr(input, '|') == NULL)
 		return ;
-	print_error("Error: syntax error near '|'","", 0, 258);
+	print_error("Error: syntax error near '|'", "", 0, 258);
 	return ;
 }
 
@@ -111,14 +112,14 @@ int	tokenize(t_mini *mini)
 		return (-1);
 	mini->cmd = (t_cmd **)malloc((mini->pipes + 1) * sizeof(t_cmd *));
 	if (!mini->cmd)
-		return (print_error("Error: Problem allocating structs","", 0, 258), -1);
+		return (print_error("Error: Problem allocating structs", "", 0, 258), -1);
 	if (get_cmds(mini->input, '|', mini) == -1)
 		return (-1);
 	while (x <= mini->pipes)
 	{
 		mini->cmd[x] = init_tcmd();
 		if (!mini->cmd[x])
-			return (print_error("Error: Command string null","", 0, 258), -1);
+			return (print_error("Error: Command string null", "", 0, 258), -1);
 		mini->cmd[x]->full_cmd = mini->cmds[x];
 		mini->cmd[x]->index = x;
 		x++;

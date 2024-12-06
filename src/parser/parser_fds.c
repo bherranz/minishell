@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:33:36 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/29 01:39:47 by codespace        ###   ########.fr       */
+/*   Updated: 2024/12/06 05:54:26 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	create_redir(int redir_type, char *str, int i, t_cmd *cmd)
 	free(file_token);
 	if (!clean_name || is_redir(clean_name))
 	{
-		print_error("Error: syntax error near unexpected token ",clean_name, 0, 258);
+		print_error("Error: syntax error near unexpected token ", clean_name, 0, 258);
 		free(redir);
 		free(clean_name);
 		return (-1);
@@ -99,10 +99,10 @@ int	parse_redir(char *str, t_cmd *cmd)
 	i = 0;
 	cmd->simple = false;
 	cmd->doble = false;
-    while (str[i])
+	while (str[i])
 	{
 		process_quotes(str[i], cmd); // Actualizamos el estado de comillas para el carácter actual
-		if (!(cmd->doble || cmd->simple))  // Si estamos fuera de comillas, verificamos redirecciones
+		if (!(cmd->doble || cmd->simple)) // Si estamos fuera de comillas, verificamos redirecciones
 		{
 			redir_type = is_redir(&str[i]); // Detectamos si hay una redirección en la posición actual
 			if (redir_type > 0)
@@ -118,7 +118,7 @@ int	parse_redir(char *str, t_cmd *cmd)
 				i++;
 		}
 		else
-		i++;
+			i++;
 	}
 	return (0);
 }

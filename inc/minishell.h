@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/12/05 06:02:06 by codespace        ###   ########.fr       */
+/*   Updated: 2024/12/06 05:44:23 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@
 #  define PATH_MAX 4096
 # endif
 
-
 extern int	g_signal; //global para señales
 
 typedef enum e_type
@@ -59,11 +58,11 @@ typedef struct s_io_file
 
 typedef struct s_cmd
 {
-	int 		index;
+	int			index;
 	char		*full_cmd;
 	bool		simple; //comillas simples
 	bool		doble; //comillas dobles
-	char 		*e_input;
+	char		*e_input;
 	char		*ex_var;
 	char		**args;
 	t_io_file	*infile; //->tiene que ser doble
@@ -82,38 +81,36 @@ typedef struct s_mini
 }	t_mini;
 
 /*			SIGNALS					*/
-void	signals_handler(void);
-void	sigint_handler(int sig);
-void	sigquit_handler(int sig);
+void		signals_handler(void);
+void		sigint_handler(int sig);
+void		sigquit_handler(int sig);
 
 /*			PARSER					*/
-void	parser(t_mini *mini);
-int		check_quotes(t_mini *mini);
-int		count_pipes(t_mini *mini);
-int		tokenize(t_mini *mini);
-int		get_cmds(char const *s, char c, t_mini *mini);
-int		is_quote(char c,  int *quote);
-int		parse_cmds(t_mini *mini);
-void	count_err(char *input);
-void	set_envp(t_mini *mini, char **envp);
+void		parser(t_mini *mini);
+int			check_quotes(t_mini *mini);
+int			count_pipes(t_mini *mini);
+int			tokenize(t_mini *mini);
+int			get_cmds(char const *s, char c, t_mini *mini);
+int			is_quote(char c, int *quote);
+int			parse_cmds(t_mini *mini);
+void		count_err(char *input);
+void		set_envp(t_mini *mini, char **envp);
 
 /*				EXPANSOR				*/
-int		expand(t_mini *mini, t_cmd *cmd);
-void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2);
-char	*get_var(int i, char *cmd);
-void	do_expansion(char *name, t_mini *mini, t_cmd *cmd);
-char	*rest_str(int i, char *name, t_cmd cmd);
-void	handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i);
-
-
+int			expand(t_mini *mini, t_cmd *cmd);
+void		replace_input(t_cmd *cmd, char *str, char *e_str, char *str2);
+char		*get_var(int i, char *cmd);
+void		do_expansion(char *name, t_mini *mini, t_cmd *cmd);
+char		*rest_str(int i, char *name, t_cmd cmd);
+void		handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i);
 
 /*				PARSER CMD										 */
 int			parse_cmds(t_mini *mini);
 int			main_cmd(char *str, t_cmd *cmd);
 void		process_quotes(char c, t_cmd *cmd);
 char		*get_token(char *str, t_cmd *cmd);
-void 		skip_not_args(char *str, int *i, t_cmd *cmd);
-int 		count_arguments(char *str, t_cmd *cmd);
+void		skip_not_args(char *str, int *i, t_cmd *cmd);
+int			count_arguments(char *str, t_cmd *cmd);
 void		add_arg_to_cmd(t_cmd *cmd, char *arg);
 char		*clear_token(char *str, t_cmd *cmd, int len);
 

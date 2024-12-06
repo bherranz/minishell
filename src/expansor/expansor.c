@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/25 10:31:17 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/06 05:48:24 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	expand(t_mini *mini, t_cmd *cmd)
 			cmd->simple = !cmd->simple;
 		if (cmd->full_cmd[i] == '\"' && !cmd->simple)
 			cmd->doble = !cmd->doble;
-		if (cmd->full_cmd[i] == '$' && (!cmd->simple || (cmd->simple && cmd->doble)))
+		if (cmd->full_cmd[i] == '$'
+			&& (!cmd->simple || (cmd->simple && cmd->doble)))
 			handle_expansion(mini, cmd, &str2, i);
 		i++;
 	}

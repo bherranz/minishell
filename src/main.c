@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2024/12/05 08:16:47 by codespace        ###   ########.fr       */
+/*   Updated: 2024/12/06 06:05:28 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	free_io_files(t_io_file *file_list)
 	}
 }
 
-void free_cmd(t_cmd *cmd)
+void	free_cmd(t_cmd *cmd)
 {
 	if (!cmd)
 		return ;
@@ -35,10 +35,8 @@ void free_cmd(t_cmd *cmd)
 		free_io_files(cmd->infile);
 	if (cmd->outfile)
 		free_io_files(cmd->outfile);
-	/*if (cmd->full_cmd)
-		free(cmd->full_cmd);*/
 	if (cmd->e_input)
-		free(cmd->e_input);	
+		free(cmd->e_input);
 	if (cmd->ex_var)
 		free(cmd->ex_var);
 	if (cmd->args)
@@ -47,7 +45,7 @@ void free_cmd(t_cmd *cmd)
 		free(cmd);
 }
 
-void free_structs(t_mini *mini)
+void	free_structs(t_mini *mini)
 {
 	int	i;
 
@@ -60,7 +58,7 @@ void free_structs(t_mini *mini)
 		{
 			if (mini->cmd[i])
 				free_cmd(mini->cmd[i]);
-			i++;	
+			i++;
 		}
 		free(mini->cmd);
 	}
@@ -70,6 +68,7 @@ void free_structs(t_mini *mini)
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	mini;
+	int		i;
 
 	ft_bzero(&mini, sizeof(t_mini));
 	set_envp(&mini, envp);
@@ -90,7 +89,7 @@ int	main(int argc, char **argv, char **envp)
 		if (mini.input)
 			add_history(mini.input);
 		parser(&mini);
-		int i = 0;
+		i = 0;
 		while (i <= mini.pipes)
 		{
 			main_builtins(mini.cmd[i], &mini);
