@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:27:55 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/05 19:06:06 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/09 11:51:45 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,50 +53,15 @@ void	single_process(t_cmd *cmd, t_mini *mini)
 	if (pid == 0)
 	{
 		if (infile)
-		{
-			while (infile)
-			{
-				if(infile->last_in)
-				{
-					dup2(infile->fd, STDIN_FILENO);
-					break ;
-				}
-				close(infile->fd);
-				infile = infile->next;
-			}
-		}
+			replace_dup2(infile, STDIN_FILENO);
 		if (outfile)
-		{
-			while (outfile)
-			{
-				if(outfile->last_in)
-				{
-					dup2(outfile->fd, STDOUT_FILENO);
-					break;
-				}
-				close(outfile->fd);
-				outfile = outfile->next;
-			}
-		}
-		to_excve(cmd, mini->envp);
+			replace_dup2(outfile, STDOUT_FILENO);
+        to_excve(cmd, mini);
 	}
-	if (cmd->infile)
-	{
-        while (cmd->infile)
-		{
-            close(cmd->infile->fd);
-            cmd->infile = cmd->infile->next;
-        }
-    }
-    if (cmd->outfile)
-	{
-        while (cmd->outfile)
-		{
-            close(cmd->outfile->fd);
-            cmd->outfile = cmd->outfile->next;
-        }
-    }
+	close_fds(cmd->infile);
+	close_fds(cmd->outfile);
 	waitpid(pid, NULL, 0);
+	mini->last_status = WEXITSTATUS(pid);
 }
 
 void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
@@ -148,7 +113,7 @@ void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 		}
 		close(pipes->old_pipe[WRITE]);
 		close(pipes->old_pipe[READ]);
-		to_excve(cmd, mini->envp);
+        to_excve(cmd, mini);
 	}
 	if (cmd->infile)
 	{ // Cerrar infiles en el proceso padre
@@ -221,13 +186,10 @@ void	middle_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
                 exit(1);
             }
 		}
-		//dup2(t_struct->old_pipe[READ], STDIN_FILENO);
 		close(pipes->old_pipe[READ]);
-		//close(pipes->old_pipe[WRITE]);
-		//dup2(pipes->new_pipe[WRITE], STDOUT_FILENO);
 		close(pipes->new_pipe[READ]);
 		close(pipes->new_pipe[WRITE]);
-		to_excve(cmd, mini->envp);
+        to_excve(cmd, mini);
 	}
 	close(pipes->old_pipe[READ]);
 	pipes->old_pipe[READ] = pipes->new_pipe[READ];
@@ -291,7 +253,7 @@ void	last_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
         // Cerrar descriptores no necesarios
         close(pipes->old_pipe[READ]);
         close(pipes->old_pipe[WRITE]);
-        to_excve(cmd, mini->envp);
+        to_excve(cmd, mini);
     }
     // En el proceso padre, cerrar descriptores de infile y outfile
     if (cmd->infile)
@@ -314,19 +276,27 @@ void	last_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 	pipes->last_pid = pid;
 }
 
-void	to_excve(t_cmd *cmd, char **envp)
+void	to_excve(t_cmd *cmd, t_mini *mini)
 {
 	char	*command_path;
 
-	command_path = find_path(cmd->args[0], envp);
+	command_path = find_path(cmd->args[0], mini->envp);
+	if (!command_path)
+	{
+		print_error("Error: command not found ", "", 0, 127);
+		close_fds(cmd->infile);
+		close_fds(cmd->outfile);
+		exit(127);
+	}
 	free(cmd->args[0]);
 	cmd->args[0] = command_path;
 	/*if (is_builtin(cmd->args[0]))
 		builtin(cmd->args[0])*/
-	if (execve(cmd->args[0], cmd->args, envp) == -1)
+	if (execve(cmd->args[0], cmd->args, mini->envp) == -1)
 	{
-		//arreglar mensaje de error y redir a outfile si tiene
-		perror("Execve failed 1");
+		print_error("Error: command not found ", "", 0, 127);
+		close_fds(cmd->infile);
+		close_fds(cmd->outfile);
 		exit(127);
 	}
 	ft_free(cmd->args);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: miparis <miparis@student.42.fr>            +#+  +:+       +#+         #
+#    By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2024/11/27 10:38:32 by miparis          ###   ########.fr        #
+#    Updated: 2024/12/09 11:00:11 by miparis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,14 +21,12 @@ SRCS = src/main.c \
 		src/signals/signals.c \
 		src/expansor/expansor.c \
 		src/expansor/expansor_utils.c \
-		src/executor/case_setter.c \
+		src/executor/executor.c \
+		src/executor/fds_utils.c \
 		src/executor/multiple_processes.c \
 		src/executor/paths_args.c \
-		src/executor/processes_utils.c \
-		src/executor/processes.c \
-		src/executor/executor.c \
-
-
+		src/executor/process_utils.c \
+		src/executor/utils.c \
 
 # Define Colors
 GREEN  := \033[1;32m  # Bold Green

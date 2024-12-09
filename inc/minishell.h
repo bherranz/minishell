@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/12/03 16:45:57 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/09 11:05:04 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,34 +161,15 @@ void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
 void	middle_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
 void	last_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
 void	single_process(t_cmd *cmd, t_mini *mini);
-void	to_excve(t_cmd *cmd, char **envp);
+void	to_excve(t_cmd *cmd, t_mini *mini);
 pid_t	create_process(void);
+
+void	close_fds(t_io_file *fds);
+void	replace_dup2(t_io_file *fds, int type);
 
 //Paths & args									
 char	*find_path(char *command, char *envp[]);
 char	**retrieve_paths(char *envp[]);
 char	*get_env_path(char *path, char *envp[]);
-
-/*
-Processes										
-void	father(char **argv, char **envp);
-void	first_child(int pipes[], char *argv[], char *envp[]);
-void	second_child(int pipes[], char *argv[], char **envp);
-
-
-
-char	**get_args(char argv[]);
-
-FILES & ARGS PROCESSING								
-int		heredoc_mode(int argc, char *argv[], t_struct *t_struct, char *envp[]);
-int		infile_mode(int argc, char *argv[], t_struct *t_struct, char *envp[]);
-
-
-PROCCESSES FUNCTIONS								
-void	first_process(t_struct *t_struct, char **envp);
-void	middle_process(t_struct *t_struct, char **envp);
-void	last_process(t_struct *t_struct, char **envp, int argc);
-void	to_excve(t_struct *t_struct, char *argv[], char **envp);*/
-
 
 #endif

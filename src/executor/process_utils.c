@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   processes_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:10:06 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/27 13:19:17 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/09 10:53:08 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+pid_t	create_process(void)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("Problem creating process\n");
+		exit(1);
+	}
+	else
+		return (pid);
+}
 
 void	set_struct(t_pipe *t_struct)
 {
@@ -21,18 +35,6 @@ void	set_struct(t_pipe *t_struct)
 	t_struct->new_pipe[0] = 0;
 	t_struct->new_pipe[1] = 0;
 }
-/*
-void	set_cmds_num(t_struct *t_struct, int argc)
-{
-	if (t_struct->is_here_doc)
-		t_struct->cmds_num = argc - 4;
-	else
-		t_struct->cmds_num = argc - 3;
-	if (t_struct->is_here_doc == true)
-		t_struct->cmd_index = 3;
-	else
-		t_struct->cmd_index = 2;
-}*/
 
 int	control(t_pipe *pipes)
 {

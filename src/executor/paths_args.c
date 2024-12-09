@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 09:46:13 by miparis           #+#    #+#             */
-/*   Updated: 2024/11/28 11:17:45 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/09 10:49:02 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,20 +67,4 @@ char	*get_env_path(char *path, char *envp[])
 		i++;
 	}
 	return (NULL);
-}
-
-char	**get_args(char argv[])
-{
-	char	**arguments;
-
-	arguments = ft_split(argv, ' ');
-	if (!arguments)
-	{
-		if (!arguments)
-		{
-			printf("Problem getting args\n");
-			return (NULL);
-		}
-	}
-	return (arguments);
 }
