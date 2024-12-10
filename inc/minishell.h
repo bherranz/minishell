@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/12/09 11:05:04 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/10 10:48:17 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,9 @@ void	to_excve(t_cmd *cmd, t_mini *mini);
 pid_t	create_process(void);
 
 void	close_fds(t_io_file *fds);
-void	replace_dup2(t_io_file *fds, int type);
+void	replace_dup2(t_io_file *fds, int pipe_fd, int type);
+void	create_pipe(t_pipe *pipes);
+void	process_status(t_pipe *pipes, t_mini *mini);
 
 //Paths & args									
 char	*find_path(char *command, char *envp[]);

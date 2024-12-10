@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:49:59 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/09 11:45:06 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/10 09:54:33 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	close_fds(t_io_file *fds)
 	}
 }
 
-void	replace_dup2(t_io_file *fds, int type)
+void	replace_dup2(t_io_file *fds, int pipe_fd, int type)
 {
 	t_io_file	*current;
 
@@ -44,5 +44,13 @@ void	replace_dup2(t_io_file *fds, int type)
 		}
 		close(current->fd);
 		current = current->next;
+	}
+	if (!current && pipe_fd >= 0)
+	{
+		if (dup2(pipe_fd, type) == -1)
+		{
+			print_error("Error: dup2", "", 0, -1);
+			exit(-1); //ver como hago pa liberar
+		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:27:55 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/09 11:51:45 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/10 10:55:57 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,14 @@ void	single_process(t_cmd *cmd, t_mini *mini)
 	if (pid == 0)
 	{
 		if (infile)
-			replace_dup2(infile, STDIN_FILENO);
+			replace_dup2(infile, 0, STDIN_FILENO);
 		if (outfile)
-			replace_dup2(outfile, STDOUT_FILENO);
+			replace_dup2(outfile, 0, STDOUT_FILENO);
         to_excve(cmd, mini);
 	}
 	close_fds(cmd->infile);
 	close_fds(cmd->outfile);
 	waitpid(pid, NULL, 0);
-	mini->last_status = WEXITSTATUS(pid);
 }
 
 void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
@@ -75,54 +74,20 @@ void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 	pid = create_process();
 	if (pid == 0)
 	{
-		//hacer dup2 del ULTIMO infile en la lista
 		if (infile)
-		{
-			while (infile)
-			{
-				if(infile->last_in)
-				{
-					dup2(infile->fd, STDIN_FILENO);
-					break ;
-				}
-				close(infile->fd);
-				infile = infile->next;
-			}
-		}
+			replace_dup2(infile, 0, STDIN_FILENO);
 		if (outfile)
-		{
-			while (outfile)
-			{
-				if(outfile->last_in)
-				{
-					dup2(outfile->fd, STDOUT_FILENO);
-					break;
-				}
-				close(outfile->fd);
-				outfile = outfile->next;
-			}
-		}
+			replace_dup2(outfile, 0, STDOUT_FILENO);
 		else if (!outfile)
-		{
-			//ver si hace falta control de error en dup2
-			if (dup2(pipes->old_pipe[WRITE], STDOUT_FILENO) == -1)
-			{
-                perror("dup2 pipe");
-                exit(1);
-            }
-		}
+			replace_dup2(NULL, pipes->old_pipe[WRITE], STDOUT_FILENO);
 		close(pipes->old_pipe[WRITE]);
 		close(pipes->old_pipe[READ]);
         to_excve(cmd, mini);
 	}
 	if (cmd->infile)
-	{ // Cerrar infiles en el proceso padre
-        while (cmd->infile)
-		{
-            close(cmd->infile->fd);
-            cmd->infile = cmd->infile->next;
-        }
-    }
+		close_fds(cmd->infile);
+	if (cmd->outfile)
+		close_fds(cmd->outfile);
     close(pipes->old_pipe[WRITE]);
 }
 
@@ -134,58 +99,18 @@ void	middle_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 
 	infile = cmd->infile;
 	outfile = cmd->outfile;
-	if (pipe(pipes->new_pipe) < 0)
-	{
-		printf("Problem with pipe\n");
-		exit (1);
-	}
+	create_pipe(pipes);
 	pid = create_process();
 	if (pid == 0)
 	{
 		if (infile)
-		{
-			while (infile)
-			{
-				if(infile->last_in)
-				{
-					dup2(infile->fd, STDIN_FILENO);
-					break ;
-				}
-				close(infile->fd);
-				infile = infile->next;
-			}
-		}
-		else
-		{
-			//ver si hace falta control de error en dup2
-			if (dup2(pipes->old_pipe[READ], STDIN_FILENO) == -1)
-			{
-                perror("dup2 pipe");
-                exit(1);
-            }
-		}
+			replace_dup2(infile, 0, STDIN_FILENO);
+		else if (!infile)
+			replace_dup2(NULL, pipes->old_pipe[READ], STDIN_FILENO);
 		if (outfile)
-		{
-			while (outfile)
-			{
-				if(outfile->last_in)
-				{
-					dup2(outfile->fd, STDOUT_FILENO);
-					break;
-				}
-				close(outfile->fd);
-				outfile = outfile->next;
-			}
-		}
-		else
-		{
-			//ver si hace falta control de error en dup2
-			if (dup2(pipes->new_pipe[WRITE], STDOUT_FILENO) == -1)
-			{
-                perror("dup2 pipe");
-                exit(1);
-            }
-		}
+			replace_dup2(outfile, 0, STDOUT_FILENO);
+		else if (!outfile)
+			replace_dup2(NULL, pipes->new_pipe[WRITE], STDOUT_FILENO);
 		close(pipes->old_pipe[READ]);
 		close(pipes->new_pipe[READ]);
 		close(pipes->new_pipe[WRITE]);
@@ -205,73 +130,18 @@ void	last_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
     pid = create_process();
     if (pid == 0)
     {
-        // Redirigir STDIN
         if (infile)
-        {
-            while (infile)
-            {
-                if (infile->last_in)
-                {
-                    if (dup2(infile->fd, STDIN_FILENO) == -1)
-                    {
-                        perror("dup2 infile");
-                        exit(1);
-                    }
-                    break;
-                }
-                close(infile->fd);
-                infile = infile->next;
-            }
-        }
-        else
-        {
-            if (dup2(pipes->old_pipe[READ], STDIN_FILENO) == -1)
-            {
-                perror("dup2 old_pipe[READ]");
-                exit(1);
-            }
-        }
-
-        // Redirigir STDOUT
+			replace_dup2(infile, 0, STDIN_FILENO);
+        else if (!infile)
+			replace_dup2(NULL, pipes->old_pipe[READ], STDIN_FILENO);
         if (outfile)
-        {
-            while (outfile)
-            {
-                if (outfile->last_in)
-                {
-                    if (dup2(outfile->fd, STDOUT_FILENO) == -1)
-                    {
-                        perror("dup2 outfile");
-                        exit(1);
-                    }
-                    break;
-                }
-                close(outfile->fd);
-                outfile = outfile->next;
-            }
-        }
-        // Cerrar descriptores no necesarios
+			replace_dup2(outfile, 0, STDOUT_FILENO);
         close(pipes->old_pipe[READ]);
         close(pipes->old_pipe[WRITE]);
         to_excve(cmd, mini);
     }
-    // En el proceso padre, cerrar descriptores de infile y outfile
-    if (cmd->infile)
-    {
-        while (cmd->infile)
-        {
-            close(cmd->infile->fd);
-            cmd->infile = cmd->infile->next;
-        }
-    }
-    if (cmd->outfile)
-    {
-        while (cmd->outfile)
-        {
-            close(cmd->outfile->fd);
-            cmd->outfile = cmd->outfile->next;
-        }
-    }
+	close_fds(cmd->infile);
+	close_fds(cmd->outfile);
     close(pipes->old_pipe[READ]);
 	pipes->last_pid = pid;
 }

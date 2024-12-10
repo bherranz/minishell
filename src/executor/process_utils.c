@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   processes_utils.c                                  :+:      :+:    :+:   */
+/*   process_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:10:06 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/09 10:53:08 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/10 10:24:57 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,12 @@ int	control(t_pipe *pipes)
 		return (1);
 	}
 	return (0);
+}
+void	create_pipe(t_pipe *pipes)
+{
+	if (pipe(pipes->new_pipe) < 0)
+	{
+		print_error("Error: Problem with pipe", "", 0, -1);
+		exit (-1);
+	}
 }
