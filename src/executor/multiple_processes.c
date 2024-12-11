@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiple_processes.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:27:55 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/10 10:55:57 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/11 10:42:14 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,7 @@ void	multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipes)
 	int		n_cmds;
 
 	n_cmds = mini->pipes + 1;
-	printf("->> Cmd Index == %d\n", cmd->index);
-	/*if (cmd->index == 0 && (is_builtin(mini->cmd[i]->args[0]) == 1))
-			//execute built_in in father*/
-	if (n_cmds == 1)
-	{
-		printf("---> SIngle process...\n");
-		single_process(cmd, mini);
-	}
+	
 	if (n_cmds > 1 && cmd->index == 0)
 	{
 		printf("---> First process...\n");
@@ -43,9 +36,10 @@ void	multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipes)
 }
 void	single_process(t_cmd *cmd, t_mini *mini)
 {
-	pid_t	pid;
-	t_io_file 	*infile;
-	t_io_file 	*outfile;
+	pid_t		pid;
+	t_io_file	*infile;
+	t_io_file	*outfile;
+	int			status;
 
 	infile = cmd->infile;
 	outfile = cmd->outfile;
@@ -56,11 +50,12 @@ void	single_process(t_cmd *cmd, t_mini *mini)
 			replace_dup2(infile, 0, STDIN_FILENO);
 		if (outfile)
 			replace_dup2(outfile, 0, STDOUT_FILENO);
-        to_excve(cmd, mini);
+		to_excve(cmd, mini);
 	}
 	close_fds(cmd->infile);
 	close_fds(cmd->outfile);
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &status, 0);
+	mini->last_status = WEXITSTATUS(status);
 }
 
 void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)

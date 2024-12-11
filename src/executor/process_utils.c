@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:10:06 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/10 10:24:57 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/11 10:34:34 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ pid_t	create_process(void)
 
 void	set_struct(t_pipe *t_struct)
 {
+	t_struct->last_pid = 0;
 	t_struct->cmds_num = 0;
 	t_struct->cmd_index = 0;
 	t_struct->old_pipe[0] = 0;

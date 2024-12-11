@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fds_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:06:12 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/09 10:52:15 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/11 10:12:27 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ int	open_files(t_cmd *cmd)
 {
 	if (cmd->infile)
 	{
-		print_list(cmd->infile);
 		if (infiles(cmd->infile))
 			return (-1);
 	}
 	if (cmd->outfile)
 	{
-		print_list(cmd->outfile);
 		if (outfiles(cmd->outfile))
 			return (-1);		
 	}

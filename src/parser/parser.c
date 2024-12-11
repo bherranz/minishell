@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/25 07:03:58 by codespace        ###   ########.fr       */
+/*   Updated: 2024/12/11 10:10:54 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,11 @@ void	parser(t_mini *mini)
 		return ;
 	if (tokenize(mini) == -1) // separar los comandos por pipes
 		return ;
-	/*NOTE - A sacar es para ver el input original*/
 	while (i <= mini->pipes)
 	{
 		if (expand(mini, mini->cmd[i]) == -1)
 			return ;
 		i++;
-	}
-	int x = 0;
-	while (x <= mini->pipes)
-	{
-		printf("---> Guardado: %s\n", mini->cmd[x]->full_cmd);
-		x++;
 	}
 	if (parse_cmds(mini) == -1)
 		return ;

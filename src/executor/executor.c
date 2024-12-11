@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:47:28 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/10 10:49:04 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/11 10:33:50 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,17 @@ int	executor(t_mini *mini)
 	{
 		if (open_files(mini->cmd[i]))
 			return (-1);
-		multiple_processes(mini->cmd[i], mini, pipes);
+		if (mini->pipes == 0)
+		{
+			printf("---> Single process...\n");
+			single_process(mini->cmd[0], mini);
+		}
+		else
+			multiple_processes(mini->cmd[i], mini, pipes);
 		i++;
+		process_status(pipes, mini);
 	}
 	//ver no se esta guardando bien el codigo de retorno del ultimo proceso
-	process_status(pipes, mini);
 	close(pipes->old_pipe[READ]);
 	free(pipes);
 	return (0);
@@ -38,24 +44,19 @@ int	executor(t_mini *mini)
 
 void process_status(t_pipe *pipes, t_mini *mini)
 {
-    int status;
-    pid_t current_child;
+	int		status;
+    pid_t	current_child;
 
     while (1)
 	{
         current_child = waitpid(-1, &status, 0);
-        if (current_child == -1)
+        if (current_child <= 0)
             break; // No hay más procesos para esperar
         // Identifica si este es el último proceso
-        if (current_child == pipes->last_pid)
+		if (current_child == pipes->last_pid)
 		{
             // Interpreta el estado del último proceso
-            if (WIFEXITED(status))
-                mini->last_status = WEXITSTATUS(status); // Código de salida normal
-			else if (WIFSIGNALED(status))
-                mini->last_status = 128 + WTERMSIG(status); // Terminación por señal
-			else
-                mini->last_status = 1; // Estado genérico si no se interpreta
+            mini->last_status = WEXITSTATUS(status); // Código de salida normal
         }
     }
 }

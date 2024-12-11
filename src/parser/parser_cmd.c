@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/28 10:24:24 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/11 10:08:22 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,10 +156,6 @@ int main_cmd(char *str, t_cmd *cmd)
 	cmd->args[space] = NULL;
 	if (parse_redir(str, cmd))
 		return (-1);
-	printf("Infiles: ");
-	print_list(cmd->infile);
-	printf("Outfiles: ");
-	print_list(cmd->outfile);
 	while (str && str[i])
 	{
 		skip_not_args(str, &i, cmd);
@@ -172,7 +168,6 @@ int main_cmd(char *str, t_cmd *cmd)
 			if (clean)
 			{
 				cmd->args[x] = clean;
-				printf("ARG[%i] = %s\n", x, cmd->args[x]);
 				x++;
 				i += ft_strlen(token) - 1;
 				free(token);
@@ -190,7 +185,6 @@ int	parse_cmds(t_mini *mini)
 	i = 0;
 	while (i <= mini->pipes)
 	{
-		printf("command: %s\n", mini->cmd[i]->full_cmd);
 		if (main_cmd(mini->cmd[i]->full_cmd, mini->cmd[i]) != 0)
 		 	return (-1);
 		i++;
