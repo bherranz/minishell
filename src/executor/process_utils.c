@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:10:06 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/11 10:34:34 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/11 11:45:28 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,16 @@ void	create_pipe(t_pipe *pipes)
 		print_error("Error: Problem with pipe", "", 0, -1);
 		exit (-1);
 	}
+}
+
+void	close_pipe_struct(t_pipe *pipes)
+{
+	if (pipes->old_pipe[0])
+		close(pipes->old_pipe[0]);
+	if (pipes->old_pipe[1])
+		close(pipes->old_pipe[1]);
+	if (pipes->new_pipe[0])
+		close(pipes->new_pipe[0]);
+	if (pipes->new_pipe[1])
+		close(pipes->new_pipe[1]);
 }

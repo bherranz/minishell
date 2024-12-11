@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2024/12/11 10:01:26 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/11 11:45:41 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void	close_fds(t_io_file *fds);
 void	replace_dup2(t_io_file *fds, int pipe_fd, int type);
 void	create_pipe(t_pipe *pipes);
 void	process_status(t_pipe *pipes, t_mini *mini);
-void 	close_all(t_pipe *pipes);
+void	close_pipe_struct(t_pipe *pipes);
 
 //Paths & args									
 char	*find_path(char *command, char *envp[]);

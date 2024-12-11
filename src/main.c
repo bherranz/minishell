@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42madrid.com>     +#+  +:+       +#+        */
+/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2024/12/09 10:48:10 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/11 11:46:18 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,15 @@ void	free_io_files(t_io_file *file_list)
 	while (file_list)
 	{
 		temp = file_list;
+		if (temp->fd)
+			close(temp->fd);
 		file_list = file_list->next;
 		free(temp->name);
 		free(temp);
 	}
 }
 
-void free_cmd(t_cmd *cmd)
+void	free_cmd(t_cmd *cmd)
 {
 	if (!cmd)
 		return ;
@@ -35,8 +37,6 @@ void free_cmd(t_cmd *cmd)
 		free_io_files(cmd->infile);
 	if (cmd->outfile)
 		free_io_files(cmd->outfile);
-	/*if (cmd->full_cmd)
-		free(cmd->full_cmd);*/
 	if (cmd->e_input)
 		free(cmd->e_input);
 	if (cmd->ex_var)
@@ -47,7 +47,7 @@ void free_cmd(t_cmd *cmd)
 		free(cmd);
 }
 
-void free_structs(t_mini *mini)
+void	free_structs(t_mini *mini)
 {
 	int	i;
 
@@ -60,13 +60,12 @@ void free_structs(t_mini *mini)
 		{
 			if (mini->cmd[i])
 				free_cmd(mini->cmd[i]);
-			i++;		
+			i++;
 		}
 		free(mini->cmd);
 	}
 	free(mini->input);
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -81,19 +80,21 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		mini.input = readline("MINICONCHAA > ");
-		if (!mini.input || ft_strcmp(mini.input, "exit") == 0)
+		if (!mini.input)
 		{
 			printf("exit\n");
-			if (mini.input)
-				free(mini.input);
+			/*if (mini.envp)
+				free(mini.envp);*/
 			break ;
 		}
 		if (mini.input)
 			add_history(mini.input);
 		parser(&mini);
 		executor(&mini);
-		free(mini.input);
+		if (mini.input[0] != '\0')
+			free_structs(&mini);
+		else
+			free(mini.input);
 	}
-	free_structs(&mini);
 	return (0);
 }

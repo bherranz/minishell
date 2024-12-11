@@ -6,11 +6,14 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:27:55 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/11 10:42:14 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/11 11:50:24 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+//hacer que todas las funciones devuelvan -1 en caso de 
+//error para liberar los recursos en executor
 
 void	multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipes)
 {
@@ -109,7 +112,7 @@ void	middle_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 		close(pipes->old_pipe[READ]);
 		close(pipes->new_pipe[READ]);
 		close(pipes->new_pipe[WRITE]);
-        to_excve(cmd, mini);
+		to_excve(cmd, mini);
 	}
 	close(pipes->old_pipe[READ]);
 	pipes->old_pipe[READ] = pipes->new_pipe[READ];
@@ -118,10 +121,12 @@ void	middle_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 
 void	last_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 {
-    pid_t pid;
-    t_io_file *infile = cmd->infile;
-    t_io_file *outfile = cmd->outfile;
+    pid_t		pid;
+    t_io_file	*infile;
+    t_io_file	*outfile;
 
+	infile = cmd->infile;
+	outfile = cmd->outfile;
     pid = create_process();
     if (pid == 0)
     {

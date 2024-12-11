@@ -6,7 +6,7 @@
 /*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:47:28 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/11 10:33:50 by miparis          ###   ########.fr       */
+/*   Updated: 2024/12/11 11:45:15 by miparis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	executor(t_mini *mini)
 		i++;
 		process_status(pipes, mini);
 	}
-	//ver no se esta guardando bien el codigo de retorno del ultimo proceso
-	close(pipes->old_pipe[READ]);
+	close_pipe_struct(pipes);
+	//close(pipes->old_pipe[READ]);
 	free(pipes);
 	return (0);
 }
@@ -45,18 +45,14 @@ int	executor(t_mini *mini)
 void process_status(t_pipe *pipes, t_mini *mini)
 {
 	int		status;
-    pid_t	current_child;
-
-    while (1)
+	pid_t	current_child;
+	
+	while (1)
 	{
-        current_child = waitpid(-1, &status, 0);
-        if (current_child <= 0)
-            break; // No hay más procesos para esperar
-        // Identifica si este es el último proceso
+		current_child = waitpid(-1, &status, 0);
+		if (current_child <= 0)
+			break;
 		if (current_child == pipes->last_pid)
-		{
-            // Interpreta el estado del último proceso
-            mini->last_status = WEXITSTATUS(status); // Código de salida normal
-        }
-    }
+			mini->last_status = WEXITSTATUS(status);
+	}
 }
