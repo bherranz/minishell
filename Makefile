@@ -6,9 +6,10 @@
 #    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2024/12/05 04:13:11 by codespace        ###   ########.fr        #
+#    Updated: 2025/01/03 16:30:56 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 NAME = minishell
 
@@ -21,6 +22,12 @@ SRCS = src/main.c \
 		src/signals/signals.c \
 		src/expansor/expansor.c \
 		src/expansor/expansor_utils.c \
+		src/executor/executor.c \
+		src/executor/fds_utils.c \
+		src/executor/multiple_processes.c \
+		src/executor/paths_args.c \
+		src/executor/process_utils.c \
+		src/executor/utils.c \
 		src/built-in/builtins.c \
 		src/built-in/ft_echo.c \
 		src/built-in/ft_cd.c \

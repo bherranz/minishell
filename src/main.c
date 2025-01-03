@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2024/12/06 06:05:28 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/03 16:32:02 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,15 @@ void	free_io_files(t_io_file *file_list)
 	while (file_list)
 	{
 		temp = file_list;
+		if (temp->fd)
+			close(temp->fd);
 		file_list = file_list->next;
 		free(temp->name);
 		free(temp);
 	}
 }
 
+void	free_cmd(t_cmd *cmd)
 void	free_cmd(t_cmd *cmd)
 {
 	if (!cmd)
@@ -46,6 +49,7 @@ void	free_cmd(t_cmd *cmd)
 }
 
 void	free_structs(t_mini *mini)
+void	free_structs(t_mini *mini)
 {
 	int	i;
 
@@ -58,6 +62,7 @@ void	free_structs(t_mini *mini)
 		{
 			if (mini->cmd[i])
 				free_cmd(mini->cmd[i]);
+			i++;
 			i++;
 		}
 		free(mini->cmd);
@@ -80,6 +85,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		mini.input = readline("MINICONCHAA > ");
 		if (!mini.input)
+		if (!mini.input)
 		{
 			printf("exit\n");
 			if (mini.envp)
@@ -89,7 +95,11 @@ int	main(int argc, char **argv, char **envp)
 		if (mini.input)
 			add_history(mini.input);
 		parser(&mini);
-		i = 0;
+		executor(&mini);
+		if (mini.input[0] != '\0')
+			free_structs(&mini);
+		else
+			i = 0;
 		while (i <= mini.pipes)
 		{
 			main_builtins(mini.cmd[i], &mini);

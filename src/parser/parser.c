@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2024/12/06 05:55:09 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/03 16:33:04 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	parser(t_mini *mini)
 		return ;
 	if (tokenize(mini) == -1) // separar los comandos por pipes
 		return ;
-	/*NOTE - A sacar es para ver el input original*/
 	while (i <= mini->pipes)
 	{
 		if (expand(mini, mini->cmd[i]) == -1)

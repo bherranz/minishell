@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/06 06:01:43 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/03 16:32:24 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,16 +158,10 @@ int	main_cmd(char *str, t_cmd *cmd)
 	space = 0;
 	x = 0;
 	space = count_arguments(str, cmd);
-	printf(" ------> Spaces = %i\n", space);
 	cmd->args = malloc(sizeof(char *) * (space + 1));
 	cmd->args[space] = NULL;
-	printf(" ------> Malloqueado = %i\n", space);
 	if (parse_redir(str, cmd))
 		return (-1);
-	printf("Infiles: ");
-	print_list(cmd->infile);
-	printf("Outfiles: ");
-	print_list(cmd->outfile);
 	while (str && str[i])
 	{
 		skip_not_args(str, &i, cmd);
@@ -180,7 +174,6 @@ int	main_cmd(char *str, t_cmd *cmd)
 			if (clean)
 			{
 				cmd->args[x] = clean;
-				printf("ARG[%i] = %s\n", x, cmd->args[x]);
 				x++;
 				i += ft_strlen(token) - 1;
 				free(token);
@@ -198,7 +191,6 @@ int	parse_cmds(t_mini *mini)
 	i = 0;
 	while (i <= mini->pipes)
 	{
-		printf("command: %s\n", mini->cmd[i]->full_cmd);
 		if (main_cmd(mini->cmd[i]->full_cmd, mini->cmd[i]) != 0)
 			return (-1);
 		i++;
