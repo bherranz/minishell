@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/03 16:30:18 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/06 16:57:55 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ char	*get_env_path(char *path, char *envp[]);
 
 /*						BUILT-INS					*/
 int			main_builtins(t_cmd *cmd, t_mini *mini);
-int			ft_echo(t_cmd *cmd);
+int			ft_echo(t_cmd *cmd, t_mini *mini);
 int			ft_cd(t_cmd *cmd, char **envp);
 char		*ft_getenv(char *name, char **envp);
 int			ft_pwd(void);

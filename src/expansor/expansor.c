@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/03 16:32:11 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/07 11:08:47 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2)
 		{
 			aux = cmd->full_cmd;
 			cmd->full_cmd = ft_strjoin(aux, str2);
+			free(aux);
 		}
 	}
 }
@@ -90,7 +91,7 @@ void	do_expansion(char *name, t_mini *mini, t_cmd *cmd)
 	{
 		if (ft_strncmp(name, mini->envp[x], ft_strlen(name)) == 0)
 		{
-			cmd->e_input = (ft_strrchr(mini->envp[x], '=') + 1);
+			cmd->e_input = ft_strdup((ft_strrchr(mini->envp[x], '=') + 1));
 			return ;
 		}
 		x++;
@@ -102,20 +103,18 @@ void	do_expansion(char *name, t_mini *mini, t_cmd *cmd)
 void	handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i)
 {
 	char	*str;
-	int		start;
 
-	start = 0;
-	str = ft_substr(cmd->full_cmd, start, i);
+	str = ft_substr(cmd->full_cmd, 0, i);
 	if (cmd->full_cmd[i + 1] == '?')
 	{
-		cmd->ex_var = "$?";
+		cmd->ex_var = ft_strdup("$?");
 		*str2 = rest_str(i, cmd->ex_var, *cmd);
 		do_expansion(cmd->ex_var, mini, cmd);
 		replace_input(cmd, str, cmd->e_input, *str2);
 	}
 	else if (cmd->full_cmd[i + 1] == ' ' || cmd->full_cmd[i + 1] == '\0')
 	{
-		cmd->ex_var = "$";
+		cmd->ex_var = ft_strdup("$");
 		*str2 = rest_str(i, cmd->ex_var, *cmd);
 		replace_input(cmd, str, cmd->e_input, *str2);
 	}
@@ -126,4 +125,5 @@ void	handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i)
 		do_expansion(cmd->ex_var, mini, cmd);
 		replace_input(cmd, str, cmd->e_input, *str2);
 	}
+	return (free(str), free(*str2));
 }

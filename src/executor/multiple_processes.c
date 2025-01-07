@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiple_processes.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:27:55 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/11 11:50:24 by miparis          ###   ########.fr       */
+/*   Updated: 2025/01/03 16:53:34 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipes)
 		last_process(cmd, pipes, mini);
 	}
 }
+
 void	single_process(t_cmd *cmd, t_mini *mini)
 {
 	pid_t		pid;

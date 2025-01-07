@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/03 16:33:04 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/06 17:38:56 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	tokenize(t_mini *mini)
 		mini->cmd[x] = init_tcmd();
 		if (!mini->cmd[x])
 			return (print_error("Error: Command string null", "", 0, 258), -1);
-		mini->cmd[x]->full_cmd = mini->cmds[x];
+		mini->cmd[x]->full_cmd = ft_strdup(mini->cmds[x]);
 		mini->cmd[x]->index = x;
 		x++;
 	}

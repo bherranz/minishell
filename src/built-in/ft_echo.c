@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 01:46:40 by codespace         #+#    #+#             */
-/*   Updated: 2024/11/30 11:50:30 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/06 16:58:35 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	check_nflag(char *arg)
 	return (0);
 }
 
-int	ft_echo(t_cmd *cmd)
+int	ft_echo(t_cmd *cmd, t_mini *mini)
 {
 	int	i;
 	int	n_flag;
@@ -49,5 +49,6 @@ int	ft_echo(t_cmd *cmd)
 	}
 	if (!n_flag)
 		ft_putstr_fd("\n", 1);
+	mini->last_status = 0;
 	return (0);
 }

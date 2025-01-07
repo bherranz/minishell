@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/03 16:32:02 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/07 10:52:26 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	free_io_files(t_io_file *file_list)
 }
 
 void	free_cmd(t_cmd *cmd)
-void	free_cmd(t_cmd *cmd)
 {
 	if (!cmd)
 		return ;
@@ -40,6 +39,8 @@ void	free_cmd(t_cmd *cmd)
 		free_io_files(cmd->outfile);
 	if (cmd->e_input)
 		free(cmd->e_input);
+	if (cmd->full_cmd)
+		free(cmd->full_cmd);
 	if (cmd->ex_var)
 		free(cmd->ex_var);
 	if (cmd->args)
@@ -48,7 +49,6 @@ void	free_cmd(t_cmd *cmd)
 		free(cmd);
 }
 
-void	free_structs(t_mini *mini)
 void	free_structs(t_mini *mini)
 {
 	int	i;
@@ -73,7 +73,6 @@ void	free_structs(t_mini *mini)
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	mini;
-	int		i;
 
 	ft_bzero(&mini, sizeof(t_mini));
 	set_envp(&mini, envp);
@@ -96,15 +95,6 @@ int	main(int argc, char **argv, char **envp)
 			add_history(mini.input);
 		parser(&mini);
 		executor(&mini);
-		if (mini.input[0] != '\0')
-			free_structs(&mini);
-		else
-			i = 0;
-		while (i <= mini.pipes)
-		{
-			main_builtins(mini.cmd[i], &mini);
-			i++;
-		}
 		if (mini.input[0] != '\0')
 			free_structs(&mini);
 		else
