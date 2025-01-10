@@ -6,13 +6,13 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 01:39:13 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/03 02:47:11 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/10 13:47:03 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	ft_pwd(void)
+int	ft_pwd(t_mini *mini)
 {
 	char	*path;
 
@@ -21,8 +21,10 @@ int	ft_pwd(void)
 	{
 		perror("pwd");
 		free(path);
+		mini->last_status = 1;
 		return (1);
 	}
+	mini->last_status = 0;
 	printf("%s\n", path);
 	free(path);
 	return (0);

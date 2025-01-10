@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 09:25:13 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/03 02:46:39 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/10 13:36:47 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_getenv(char *name, char **envp)
 	return (NULL);
 }
 
-int	update_env(char *value, char **envp)
+void	update_env(char *value, char **envp)
 {
 	if (ft_strncmp("PWD=", *envp, 4) == 0)
 	{
@@ -38,10 +38,9 @@ int	update_env(char *value, char **envp)
 		free(*envp);
 		*envp = ft_strjoin("OLDPWD=", value);
 	}
-	return (1);
 }
 
-int	update_pwd(char **envp)
+int	update_pwd(char **envp, t_mini *mini)
 {
 	char	pwd[PATH_MAX];
 	int		i;
@@ -49,6 +48,7 @@ int	update_pwd(char **envp)
 	if (!getcwd(pwd, sizeof(pwd)))
 	{
 		perror("cd");
+		mini->last_status = 1;
 		return (1);
 	}
 	i = 0;
@@ -63,7 +63,7 @@ int	update_pwd(char **envp)
 	return (0);
 }
 
-int	cd_home(char **envp)
+int	cd_home(char **envp, t_mini *mini)
 {
 	char	*home;
 
@@ -71,21 +71,23 @@ int	cd_home(char **envp)
 	if (!home)
 	{
 		ft_putstr_fd("cd: HOME not set\n", 2);
+		mini->last_status = 1;
 		return (1);
 	}
 	if (chdir(home) == -1)
 	{
 		perror("cd");
+		mini->last_status = 1;
 		return (1);
 	}
 	return (0);
 }
 
-int	ft_cd(t_cmd *cmd, char **envp)
+int	ft_cd(t_cmd *cmd, char **envp, t_mini *mini)
 {
 	if (!cmd->args[1]) //only cd
 	{
-		if (cd_home(envp))
+		if (cd_home(envp, mini))
 			return (1);
 	}
 	else
@@ -93,11 +95,13 @@ int	ft_cd(t_cmd *cmd, char **envp)
 		if (chdir(cmd->args[1]) == -1)
 		{
 			perror("cd");
+			mini->last_status = 1;
 			return (1);
 		}
 	}
-	if (update_pwd(envp))
+	if (update_pwd(envp, mini))
 		return (1);
+	mini->last_status = 0;
 	printf("PWD: %s\n", ft_getenv("PWD", envp));
 	printf("OLDPWD: %s\n", ft_getenv("OLDPWD", envp));
 	return (0);

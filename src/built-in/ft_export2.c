@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   ft_export2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 03:55:45 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/10 12:42:52 by codespace        ###   ########.fr       */
+/*   Created: 2025/01/10 15:08:12 by codespace         #+#    #+#             */
+/*   Updated: 2025/01/10 15:17:59 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	ft_env(char **envp, t_cmd *cmd, t_mini *mini)
+int	check_var(char *var)
 {
-	int	i;
+	int i;
 
 	i = 0;
-	if (cmd->args[1])
+	if ((!ft_isalpha(var[i]) && var[i] != '_') || !var[i])
+		return (0);
+	i++;
+	while (var[i])
 	{
-		ft_putstr_fd("MINICONCHAA > env: ", STDERR_FILENO);
-		ft_putstr_fd(cmd->args[1], STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		mini->last_status = 127;
-		return (127);
-	}
-	mini->last_status = 0;
-	while (envp[i])
-	{
-		printf("%s\n", envp[i]);
+		if (!ft_isalnum(var[i]) && var[i] != '_')
+			return (0);
 		i++;
 	}
-	return (0);
+	return (1);
 }

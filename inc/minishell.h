@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/06 16:57:55 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/10 15:18:19 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ typedef struct s_cmd
 
 typedef struct s_mini
 {
-	int 	stdin;
-	int 	stdout;
+	int		stdin;
+	int		stdout;
 	char	**envp;
 	char	*input;
 	int		here_doc;
@@ -151,43 +151,46 @@ void		free_array(char **array);
 
 /* 					EXECUTOR									*/
 
-int		executor(t_mini *mini);
-int		open_files(t_cmd *cmd);
-int 	infiles(t_io_file *infiles);
-int 	outfiles(t_io_file *outfiles);
-int 	fd_control(t_io_file *current);
-int		process_here_doc(t_io_file *current);
+int			executor(t_mini *mini);
+int			open_files(t_cmd *cmd);
+int			infiles(t_io_file *infiles);
+int			outfiles(t_io_file *outfiles);
+int			fd_control(t_io_file *current);
+int			process_here_doc(t_io_file *current);
 
-void	multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipe);
-void	set_struct(t_pipe *t_struct);
-void	set_cmds_num(t_pipe *t_struct, int argc);
-int		control(t_pipe *pipe);
-void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
-void	middle_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
-void	last_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
-void	single_process(t_cmd *cmd, t_mini *mini);
-void	to_excve(t_cmd *cmd, t_mini *mini);
-pid_t	create_process(void);
+void		multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipe);
+void		set_struct(t_pipe *t_struct);
+void		set_cmds_num(t_pipe *t_struct, int argc);
+int			control(t_pipe *pipe);
+void		first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
+void		middle_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
+void		last_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini);
+void		one_cmd(t_cmd *cmd, t_mini *mini);
+void		single_process(t_cmd *cmd, t_mini *mini);
+void		to_excve(t_cmd *cmd, t_mini *mini);
+pid_t		create_process(void);
 
-void	close_fds(t_io_file *fds);
-void	replace_dup2(t_io_file *fds, int pipe_fd, int type);
-void	create_pipe(t_pipe *pipes);
-void	process_status(t_pipe *pipes, t_mini *mini);
-void	close_pipe_struct(t_pipe *pipes);
+void		close_fds(t_io_file *fds);
+void		replace_dup2(t_io_file *fds, int pipe_fd, int type);
+void		create_pipe(t_pipe *pipes);
+void		process_status(t_pipe *pipes, t_mini *mini);
+void		close_pipe_struct(t_pipe *pipes);
 
 //Paths & args									
-char	*find_path(char *command, char *envp[]);
-char	**retrieve_paths(char *envp[]);
-char	*get_env_path(char *path, char *envp[]);
+char		*find_path(char *command, char *envp[]);
+char		**retrieve_paths(char *envp[]);
+char		*get_env_path(char *path, char *envp[]);
 
 /*						BUILT-INS					*/
 int			main_builtins(t_cmd *cmd, t_mini *mini);
+int			is_builtin(char *cmd);
 int			ft_echo(t_cmd *cmd, t_mini *mini);
-int			ft_cd(t_cmd *cmd, char **envp);
+int			ft_cd(t_cmd *cmd, char **envp, t_mini *mini);
 char		*ft_getenv(char *name, char **envp);
-int			ft_pwd(void);
-int			ft_env(char **envp);
+int			ft_pwd(t_mini *mini);
+int			ft_env(char **envp, t_cmd *cmd, t_mini *mini);
 void		ft_export(t_mini *mini, char **var);
+int			check_var(char *var);
 int			ft_exit(t_mini *mini, char **var);
 void		ft_unset(t_mini *mini, char **var);
 char		**new_envp(int count, t_mini *mini, char **var);

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/07 10:52:26 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/07 11:24:42 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		mini.input = readline("MINICONCHAA > ");
-		if (!mini.input)
 		if (!mini.input)
 		{
 			printf("exit\n");

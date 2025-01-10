@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miparis <miparis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:47:28 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/11 11:45:15 by miparis          ###   ########.fr       */
+/*   Updated: 2025/01/07 12:20:32 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	executor(t_mini *mini)
 		if (mini->pipes == 0)
 		{
 			printf("---> Single process...\n");
-			single_process(mini->cmd[0], mini);
+			one_cmd(mini->cmd[0], mini);
 		}
 		else
 			multiple_processes(mini->cmd[i], mini, pipes);

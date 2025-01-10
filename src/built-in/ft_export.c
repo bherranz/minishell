@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 02:47:51 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/06 05:44:57 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/10 17:33:45 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	is_in_envp(char **envp, char *var)
 		free_array(temp);
 		i++;
 	}
-	return (-1);
+	return (-2);
 }
 
 char	**add_new_vars(char **new, char **var, int i, t_mini *mini)
@@ -119,7 +119,7 @@ void	ft_export(t_mini *mini, char **var)
 	int		new;
 	char	**temp;
 
-	i = 0;
+	i = 1;
 	if (!var[1]) //export sin opciones
 	{
 		order_envp(mini->envp);
@@ -131,7 +131,7 @@ void	ft_export(t_mini *mini, char **var)
 		temp = ft_split(var[i], '=');
 		if (ft_strchr(var[i], '='))
 		{
-			if (*temp && is_in_envp(mini->envp, temp[0]))
+			if (*temp && is_in_envp(mini->envp, var[i]) == -2)
 				new++;
 		}
 		free_array(temp);
