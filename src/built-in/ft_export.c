@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 02:47:51 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/10 17:33:45 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/10 18:31:40 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,13 @@ char	**add_new_vars(char **new, char **var, int i, t_mini *mini)
 	int		j;
 	int		idx;
 
-	j = 0;
+	j = 1;
 	while (var[j])
 	{
-		if (ft_strchr(var[j], '=') && ft_isalpha(var[j][0]))
+		if (check_var(var[j], mini))
 		{
 			idx = is_in_envp(mini->envp, var[j]);
-			if (idx < 0)
+			if (idx == -2)
 			{
 				new[i] = ft_strdup(var[j]);
 				i++;
@@ -120,6 +120,7 @@ void	ft_export(t_mini *mini, char **var)
 	char	**temp;
 
 	i = 1;
+	mini->last_status = 0;
 	if (!var[1]) //export sin opciones
 	{
 		order_envp(mini->envp);
@@ -129,11 +130,8 @@ void	ft_export(t_mini *mini, char **var)
 	while (var[i])
 	{
 		temp = ft_split(var[i], '=');
-		if (ft_strchr(var[i], '='))
-		{
-			if (*temp && is_in_envp(mini->envp, var[i]) == -2)
-				new++;
-		}
+		if (*temp && is_in_envp(mini->envp, var[i]) == -2)
+			new++;
 		free_array(temp);
 		i++;
 	}

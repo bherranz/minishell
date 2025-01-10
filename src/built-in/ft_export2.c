@@ -6,25 +6,35 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 15:08:12 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/10 15:17:59 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/10 18:32:36 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	check_var(char *var)
+void	error_export(char *var, t_mini *mini)
 {
-	int i;
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(var, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	mini->last_status = 1;
+}
+
+int	check_var(char *var, t_mini *mini)
+{
+	int		i;
+	char	**temp;
 
 	i = 0;
-	if ((!ft_isalpha(var[i]) && var[i] != '_') || !var[i])
-		return (0);
+	temp = ft_split(var, '=');
+	if ((!ft_isalpha(temp[0][i]) && temp[0][i] != '_') || !temp[0][i])
+		return (free_array(temp), error_export(var, mini), 0);
 	i++;
-	while (var[i])
+	while (temp[0][i])
 	{
-		if (!ft_isalnum(var[i]) && var[i] != '_')
-			return (0);
+		if (!ft_isalnum(temp[0][i]) && temp[0][i] != '_')
+			return (free_array(temp), error_export(var, mini), 0);
 		i++;
 	}
-	return (1);
+	return (free_array(temp), 1);
 }
