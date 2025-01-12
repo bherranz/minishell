@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:30:16 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/07 12:21:21 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/12 22:33:38 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,37 @@
 
 void	exec_built_in(t_cmd *cmd, t_mini *mini)
 {
-	printf("built-in\n");
+	mini->stdin = dup(STDIN_FILENO);
+	mini->stdout = dup(STDOUT_FILENO);
+	if (cmd->infile)
+		replace_dup2(cmd->infile, 0, STDIN_FILENO, mini);
+	if (cmd->outfile)
+		replace_dup2(cmd->outfile, 0, STDOUT_FILENO, mini);
 	main_builtins(cmd, mini);
+	if (dup2(mini->stdin, STDIN_FILENO) == -1
+		|| dup2(mini->stdout, STDOUT_FILENO) == -1)
+	{
+		print_error("Error: dup2", "", 0, -1);
+		mini->last_status = 1;
+	}
+	close(mini->stdin);
+	close(mini->stdout);
+	close_fds(cmd->infile);
+	close_fds(cmd->outfile);
 }
 
 void	single_process(t_cmd *cmd, t_mini *mini)
 {
 	pid_t		pid;
-	t_io_file	*infile;
-	t_io_file	*outfile;
-	int			status; 
+	int			status;
 
-	infile = cmd->infile;
-	outfile = cmd->outfile;
 	pid = create_process();
 	if (pid == 0)
 	{
-		if (infile)
-			replace_dup2(infile, 0, STDIN_FILENO);
-		if (outfile)
-			replace_dup2(outfile, 0, STDOUT_FILENO);
+		if (cmd->infile)
+			replace_dup2(cmd->infile, 0, STDIN_FILENO, mini);
+		if (cmd->outfile)
+			replace_dup2(cmd->outfile, 0, STDOUT_FILENO, mini);
 		to_excve(cmd, mini);
 	}
 	close_fds(cmd->infile);

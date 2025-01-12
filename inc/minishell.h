@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/11 11:54:11 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/12 23:30:26 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,14 +148,14 @@ void		print_error(char *msg, char *var, int perr, int err);
 int			last_char(char str);
 t_cmd		*init_tcmd(void);
 void		free_array(char **array);
+void		free_structs(t_mini *mini);
 
 /* 					EXECUTOR									*/
-
-int			executor(t_mini *mini);
-int			open_files(t_cmd *cmd);
-int			infiles(t_io_file *infiles);
-int			outfiles(t_io_file *outfiles);
-int			fd_control(t_io_file *current);
+void		executor(t_mini *mini);
+int			open_files(t_cmd *cmd, t_mini *mini);
+int			infiles(t_io_file *infiles, t_mini *mini);
+int			outfiles(t_io_file *outfiles, t_mini *mini);
+int			fd_control(t_io_file *current, t_mini *mini);
 int			process_here_doc(t_io_file *current);
 
 void		multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipe);
@@ -171,7 +171,7 @@ void		to_excve(t_cmd *cmd, t_mini *mini);
 pid_t		create_process(void);
 
 void		close_fds(t_io_file *fds);
-void		replace_dup2(t_io_file *fds, int pipe_fd, int type);
+void		replace_dup2(t_io_file *fds, int pipe_fd, int type, t_mini *mini);
 void		create_pipe(t_pipe *pipes);
 void		process_status(t_pipe *pipes, t_mini *mini);
 void		close_pipe_struct(t_pipe *pipes);

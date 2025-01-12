@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:33:36 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/06 05:54:26 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/12 23:23:59 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	create_redir(int redir_type, char *str, int i, t_cmd *cmd)
 		return (-1);
 	redir->type = redir_type;
 	redir->next = NULL;
+	redir->fd = -1;
 	if (str[i + 1] == str[i])
 		file_token = get_token(&str[i + 2], cmd);
 	else

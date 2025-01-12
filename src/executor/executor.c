@@ -6,13 +6,13 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:47:28 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/07 12:20:32 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/12 23:39:00 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	executor(t_mini *mini)
+void	executor(t_mini *mini)
 {
 	t_pipe		*pipes;
 	int			i;
@@ -20,15 +20,15 @@ int	executor(t_mini *mini)
 	pipes = malloc(sizeof(*pipes));
 	set_struct(pipes);
 	if (control(pipes))
-			return (-1);
+			return ;
 	i = 0;
 	while (i < (mini->pipes + 1) && mini->cmd[i])
 	{
-		if (open_files(mini->cmd[i]))
-			return (-1);
 		if (mini->pipes == 0)
 		{
 			printf("---> Single process...\n");
+			if (open_files(mini->cmd[0], mini))
+				break ;
 			one_cmd(mini->cmd[0], mini);
 		}
 		else
@@ -37,9 +37,7 @@ int	executor(t_mini *mini)
 		process_status(pipes, mini);
 	}
 	close_pipe_struct(pipes);
-	//close(pipes->old_pipe[READ]);
 	free(pipes);
-	return (0);
 }
 
 void process_status(t_pipe *pipes, t_mini *mini)

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/07 11:24:42 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/12 23:14:29 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	free_io_files(t_io_file *file_list)
 	while (file_list)
 	{
 		temp = file_list;
-		if (temp->fd)
+		if (temp->fd > -1)
 			close(temp->fd);
 		file_list = file_list->next;
 		free(temp->name);
@@ -62,7 +62,6 @@ void	free_structs(t_mini *mini)
 		{
 			if (mini->cmd[i])
 				free_cmd(mini->cmd[i]);
-			i++;
 			i++;
 		}
 		free(mini->cmd);
