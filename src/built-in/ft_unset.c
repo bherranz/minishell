@@ -6,19 +6,46 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:13:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/05 07:45:09 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/12 13:23:10 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	index_envp(char **envp, char *var)
+void	error_unset(char *var, t_mini *mini)
+{
+	ft_putstr_fd("minishell: unset: `", 2);
+	ft_putstr_fd(var, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	mini->last_status = 1;
+}
+
+int	check_var_unset(char *var, t_mini *mini)
+{
+	int		i;
+
+	i = 0;
+	if ((!ft_isalpha(var[i]) && var[i] != '_') || !var[i])
+		return (error_unset(var, mini), 0);
+	i++;
+	while (var[i])
+	{
+		if (!ft_isalnum(var[i]) && var[i] != '_')
+			return (error_unset(var, mini), 0);
+		i++;
+	}
+	return (1);
+}
+
+int	index_envp(char **envp, char *var, t_mini *mini)
 {
 	int	i;
 	int	len;
 
 	i = 0;
 	len = ft_strlen(var);
+	if (check_var_unset(var, mini) == 0)
+		return (-1);
 	while (envp[i])
 	{
 		if (!ft_strncmp(envp[i], var, len) && envp[i][len] == '=')
@@ -61,7 +88,7 @@ void	ft_unset(t_mini *mini, char **var)
 	i = 1;
 	while (var[i])
 	{
-		idx = index_envp(mini->envp, var[i]);
+		idx = index_envp(mini->envp, var[i], mini);
 		if (idx >= 0)
 		{
 			temp = mini->envp;

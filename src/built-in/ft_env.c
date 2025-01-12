@@ -6,13 +6,13 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 03:55:45 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/10 12:42:52 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/11 11:59:24 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	ft_env(char **envp, t_cmd *cmd, t_mini *mini)
+void	ft_env(char **envp, t_cmd *cmd, t_mini *mini)
 {
 	int	i;
 
@@ -23,7 +23,7 @@ int	ft_env(char **envp, t_cmd *cmd, t_mini *mini)
 		ft_putstr_fd(cmd->args[1], STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 		mini->last_status = 127;
-		return (127);
+		return ;
 	}
 	mini->last_status = 0;
 	while (envp[i])
@@ -31,5 +31,4 @@ int	ft_env(char **envp, t_cmd *cmd, t_mini *mini)
 		printf("%s\n", envp[i]);
 		i++;
 	}
-	return (0);
 }
