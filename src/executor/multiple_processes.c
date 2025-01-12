@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:27:55 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/10 17:36:07 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/12 16:10:35 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,15 @@ void	multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipes)
 void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 {
 	pid_t		pid;
-	t_io_file 	*infile;
-	t_io_file 	*outfile;
 
-	infile = cmd->infile;
-	outfile = cmd->outfile;
 	pid = create_process();
 	if (pid == 0)
 	{
-		if (infile)
-			replace_dup2(infile, 0, STDIN_FILENO);
-		if (outfile)
-			replace_dup2(outfile, 0, STDOUT_FILENO);
-		else if (!outfile)
+		if (cmd->infile)
+			replace_dup2(cmd->infile, 0, STDIN_FILENO);
+		if (cmd->outfile)
+			replace_dup2(cmd->outfile, 0, STDOUT_FILENO);
+		else if (!cmd->outfile)
 			replace_dup2(NULL, pipes->old_pipe[WRITE], STDOUT_FILENO);
 		close(pipes->old_pipe[WRITE]);
 		close(pipes->old_pipe[READ]);
@@ -69,22 +65,18 @@ void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 void	middle_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 {
 	pid_t	pid;
-	t_io_file 	*infile;
-	t_io_file 	*outfile;
 
-	infile = cmd->infile;
-	outfile = cmd->outfile;
 	create_pipe(pipes);
 	pid = create_process();
 	if (pid == 0)
 	{
-		if (infile)
-			replace_dup2(infile, 0, STDIN_FILENO);
-		else if (!infile)
+		if (cmd->infile)
+			replace_dup2(cmd->infile, 0, STDIN_FILENO);
+		else if (!cmd->infile)
 			replace_dup2(NULL, pipes->old_pipe[READ], STDIN_FILENO);
-		if (outfile)
-			replace_dup2(outfile, 0, STDOUT_FILENO);
-		else if (!outfile)
+		if (cmd->outfile)
+			replace_dup2(cmd->outfile, 0, STDOUT_FILENO);
+		else if (!cmd->outfile)
 			replace_dup2(NULL, pipes->new_pipe[WRITE], STDOUT_FILENO);
 		close(pipes->old_pipe[READ]);
 		close(pipes->new_pipe[READ]);
@@ -99,20 +91,16 @@ void	middle_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 void	last_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 {
     pid_t		pid;
-    t_io_file	*infile;
-    t_io_file	*outfile;
 
-	infile = cmd->infile;
-	outfile = cmd->outfile;
     pid = create_process();
     if (pid == 0)
     {
-        if (infile)
-			replace_dup2(infile, 0, STDIN_FILENO);
-        else if (!infile)
+        if (cmd->infile)
+			replace_dup2(cmd->infile, 0, STDIN_FILENO);
+        else if (!cmd->infile)
 			replace_dup2(NULL, pipes->old_pipe[READ], STDIN_FILENO);
-        if (outfile)
-			replace_dup2(outfile, 0, STDOUT_FILENO);
+        if (cmd->outfile)
+			replace_dup2(cmd->outfile, 0, STDOUT_FILENO);
         close(pipes->old_pipe[READ]);
         close(pipes->old_pipe[WRITE]);
         to_excve(cmd, mini);
@@ -127,6 +115,11 @@ void	to_excve(t_cmd *cmd, t_mini *mini)
 {
 	char	*command_path;
 
+	if (is_builtin(cmd->args[0]))
+	{
+		main_builtins(cmd, mini);
+		exit(mini->last_status);
+	}
 	command_path = find_path(cmd->args[0], mini->envp);
 	if (!command_path)
 	{
@@ -135,9 +128,7 @@ void	to_excve(t_cmd *cmd, t_mini *mini)
 		close_fds(cmd->outfile);
 		exit(127);
 	}
-	/*if (is_builtin(cmd->args[0]))
-		main_builtins(cmd, mini);*/
-	else if (execve(command_path, cmd->args, mini->envp) == -1)
+	if (execve(command_path, cmd->args, mini->envp) == -1)
 	{
 		print_error("Error: command not found ", "", 0, 127);
 		close_fds(cmd->infile);
