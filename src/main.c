@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/12 23:14:29 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/13 18:21:07 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,16 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (mini.input)
 			add_history(mini.input);
-		parser(&mini);
-		executor(&mini);
-		if (mini.input[0] != '\0')
+		if (parser(&mini))
 			free_structs(&mini);
 		else
-			free(mini.input);
+		{
+			executor(&mini);
+			if (mini.input[0] != '\0')
+				free_structs(&mini);
+			else
+				free(mini.input);
+		}
 	}
 	return (0);
 }

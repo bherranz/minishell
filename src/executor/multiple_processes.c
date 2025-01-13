@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:27:55 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/12 23:47:31 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/13 12:15:49 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipes)
 	}
 	if (cmd->index > 0 && cmd->index < n_cmds - 1)
 	{
-		printf("---> Midle process...\n");
+		printf("---> Middle process...\n");
 		middle_process(cmd, pipes, mini);
 	}
 	if (n_cmds > 1 && cmd->index == n_cmds - 1)

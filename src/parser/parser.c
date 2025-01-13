@@ -6,26 +6,26 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/06 17:38:56 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/13 18:19:47 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	parser(t_mini *mini)
+int	parser(t_mini *mini)
 {
 	int	i;
 	int	x;
 
 	i = 0;
 	if (check_quotes(mini)) //check comillas cerradas
-		return ;
+		return (1);
 	if (tokenize(mini) == -1) // separar los comandos por pipes
-		return ;
+		return (1);
 	while (i <= mini->pipes)
 	{
 		if (expand(mini, mini->cmd[i]) == -1)
-			return ;
+			return (1);
 		i++;
 	}
 	x = 0;
@@ -35,7 +35,8 @@ void	parser(t_mini *mini)
 		x++;
 	}
 	if (parse_cmds(mini) == -1)
-		return ;
+		return (1);
+	return (0);
 }
 
 int	check_quotes(t_mini *mini)

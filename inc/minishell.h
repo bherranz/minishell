@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/12 23:30:26 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/13 18:19:04 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@
 # include <termcap.h>
 # include <string.h>
 # include "../libft/libft.h"
+
+# ifndef ECHOCTL
+#  define ECHOCTL 0x00000040
+# endif
 
 # ifndef READ
 #  define READ 0
@@ -105,9 +109,10 @@ typedef struct s_mini
 void		signals_handler(void);
 void		sigint_handler(int sig);
 void		sigquit_handler(int sig);
+void		no_see_ctrlC(void);
 
 /*			PARSER					*/
-void		parser(t_mini *mini);
+int			parser(t_mini *mini);
 int			check_quotes(t_mini *mini);
 int			count_pipes(t_mini *mini);
 int			tokenize(t_mini *mini);
