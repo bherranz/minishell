@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/15 12:18:47 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/15 15:33:48 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	main(int argc, char **argv, char **envp)
 			printf("exit\n");
 			if (mini.envp)
 				free_array(mini.envp);
+			rl_clear_history();
 			break ;
 		}
 		else if (mini.input[0] != '\0')

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 07:42:28 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/03 16:32:24 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/15 15:59:30 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,7 @@ int	main_cmd(char *str, t_cmd *cmd)
 	space = 0;
 	x = 0;
 	space = count_arguments(str, cmd);
-	cmd->args = malloc(sizeof(char *) * (space + 1));
-	cmd->args[space] = NULL;
+	cmd->args = ft_calloc(space + 1, sizeof(char *));
 	if (parse_redir(str, cmd))
 		return (-1);
 	while (str && str[i])

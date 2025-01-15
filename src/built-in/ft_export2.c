@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 15:08:12 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/10 18:32:36 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/15 16:09:55 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	check_var(char *var, t_mini *mini)
 	char	**temp;
 
 	i = 0;
+	if (var[i] == '=')
+		return (error_export(var, mini), 0);
 	temp = ft_split(var, '=');
 	if ((!ft_isalpha(temp[0][i]) && temp[0][i] != '_') || !temp[0][i])
 		return (free_array(temp), error_export(var, mini), 0);

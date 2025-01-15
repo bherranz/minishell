@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:14:04 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/12 13:29:03 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/15 15:43:30 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,13 @@ void	ft_exit(t_mini *mini, char **var)
 {
 	int	nb;
 
-	mini->last_status = 0;
 	if (!var[1])
-		exit(mini->last_status);
+	{
+		printf("exit\n");
+		rl_clear_history();
+		free_structs(mini);
+		exit(0);
+	}
 	check_nb(var[1]);
 	if (var[2])
 	{
@@ -48,6 +52,7 @@ void	ft_exit(t_mini *mini, char **var)
 	}
 	printf("exit\n");
 	nb = ft_atoi(var[1]);
-	mini->last_status = nb % 256;
-	exit(mini->last_status);
+	rl_clear_history();
+	free_structs(mini);
+	exit(nb % 256);
 }

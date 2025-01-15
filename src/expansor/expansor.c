@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/15 13:44:16 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/15 16:26:23 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*get_var(int i, char *cmd)
 
 	start = i;
 	name_len = 0;
-	while (cmd[i] && (ft_isalnum(cmd[i]) == 1))
+	while (cmd[i] && (ft_isalnum(cmd[i]) == 1 || cmd[i] == '_'))
 	{
 		name_len++;
 		i++;
