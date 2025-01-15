@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:27:55 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/13 12:15:49 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/14 15:49:11 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,27 +94,26 @@ void	middle_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 
 void	last_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 {
-    pid_t		pid;
+	pid_t		pid;
 
-
-    pid = create_process();
-    if (pid == 0)
-    {
+	pid = create_process();
+	if (pid == 0)
+	{
 		if (open_files(cmd, mini))
 			exit(mini->last_status);
-        if (cmd->infile)
+		if (cmd->infile)
 			replace_dup2(cmd->infile, 0, STDIN_FILENO, mini);
-        else if (!cmd->infile)
+		else if (!cmd->infile)
 			replace_dup2(NULL, pipes->old_pipe[READ], STDIN_FILENO, mini);
-        if (cmd->outfile)
+		if (cmd->outfile)
 			replace_dup2(cmd->outfile, 0, STDOUT_FILENO, mini);
-        close(pipes->old_pipe[READ]);
-        close(pipes->old_pipe[WRITE]);
-        to_excve(cmd, mini);
-    }
+		close(pipes->old_pipe[READ]);
+		close(pipes->old_pipe[WRITE]);
+		to_excve(cmd, mini);
+	}
 	close_fds(cmd->infile);
 	close_fds(cmd->outfile);
-    close(pipes->old_pipe[READ]);
+	close(pipes->old_pipe[READ]);
 	pipes->last_pid = pid;
 }
 

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/07 11:08:47 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/15 13:44:16 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	expand(t_mini *mini, t_cmd *cmd)
 {
-	int		i;
+	size_t	i;
 	char	*str2;
 
 	i = 0;
@@ -28,7 +28,10 @@ int	expand(t_mini *mini, t_cmd *cmd)
 		if (cmd->full_cmd[i] == '$'
 			&& (!cmd->simple || (cmd->simple && cmd->doble)))
 			handle_expansion(mini, cmd, &str2, i);
-		i++;
+		if (i < ft_strlen(cmd->full_cmd))
+			i++;
+		else
+			break ;
 	}
 	if (cmd->simple == 1)
 		cmd->simple = !cmd->simple;
@@ -53,6 +56,12 @@ void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2)
 			cmd->full_cmd = ft_strjoin(aux, str2);
 			free(aux);
 		}
+	}
+	else
+	{
+		aux = cmd->full_cmd;
+		cmd->full_cmd = ft_strdup(str);
+		free(aux);
 	}
 }
 
@@ -97,7 +106,7 @@ void	do_expansion(char *name, t_mini *mini, t_cmd *cmd)
 		x++;
 	}
 	if (!cmd->e_input)
-		cmd->e_input = "";
+		cmd->e_input = NULL;
 }
 
 void	handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i)

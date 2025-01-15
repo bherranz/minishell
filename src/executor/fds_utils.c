@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:06:12 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/12 23:04:57 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/14 17:17:21 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,15 @@ int 	infiles(t_io_file *infiles, t_mini *mini)
 	current = infiles;
 	while (current)
 	{
-		if (current->type == 2) // <<
+		/*if (current->type == 2) // <<
 		{
 			if (process_here_doc(current))
 				return (-1);
 			if (fd_control(current, mini))
 				return (-1);
 			unlink("/tmp/temp_file"); //-> agregado por si quitan permisos
-		}
-		else
+		}*/
+		if (current->type == 1) // <
 		{
 			current->fd = open(current->name, O_RDONLY); // <
 			if (fd_control(current, mini))
@@ -89,32 +89,52 @@ int 	infiles(t_io_file *infiles, t_mini *mini)
 	return (0);
 }
 
-int	process_here_doc(t_io_file *current)
+int	process_here_doc(t_io_file *current, t_mini *mini)
 {
-	char	*line;
-	int		temp_file;
-	char	*delimiter;
+    pid_t   pid;
+    int     temp_file;
+    char    *delimiter;
+    int     status;
 
-	temp_file = open("/tmp/temp_file", O_WRONLY | O_CREAT | O_APPEND, 0777);
-	if (temp_file == -1)
-		return(printf("Error creando archivo temporal"), 1);
-	delimiter = ft_strjoin(current->name, "\n");
-	while (1)
-	{
-		write(1, "> ", 2); // Mostrar prompt
-		line = get_next_line(0);
-		if (!line)
-			break; // Entrada estándar cerrada o error
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
-		{
-			free(line);
-			break ;
-		}
-		write(temp_file, line, ft_strlen(line));
-		free(line);
-	}
-	free(delimiter);
-	close(temp_file);
-	current->fd = open("/tmp/temp_file", O_RDONLY);
-	return (0);
+    delimiter = ft_strjoin(current->name, "\n");
+    temp_file = open("/tmp/temp_file", O_WRONLY | O_CREAT | O_APPEND, 0777);
+    if (temp_file == -1)
+    {
+        free(delimiter);
+        return (printf("Error creando archivo temporal\n"), 1);
+    }
+    pid = fork();
+    if (pid == 0)
+    {
+        char *line;
+
+		signals_here_doc();
+        while (1)
+        {
+            write(1, "> ", 2);
+            line = get_next_line(0);
+            if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+            {
+                free(line);
+                free(delimiter);
+                close(temp_file);
+                exit(0); // Salir del proceso hijo al finalizar
+            }
+            write(temp_file, line, ft_strlen(line));
+            free(line);
+        }
+    }
+    waitpid(pid, &status, 0);
+    free(delimiter);
+    close(temp_file);
+    if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+    {
+        unlink("/tmp/temp_file");
+		mini->last_status = 130;
+        return (1);
+    }
+    current->fd = open("/tmp/temp_file", O_RDONLY);
+    if (current->fd == -1)
+        return (printf("Error abriendo archivo temporal\n"), 1);
+    return (0);
 }

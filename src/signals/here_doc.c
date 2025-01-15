@@ -1,37 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 05:02:34 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/15 12:11:15 by codespace        ###   ########.fr       */
+/*   Created: 2025/01/14 11:35:50 by codespace         #+#    #+#             */
+/*   Updated: 2025/01/14 16:26:19 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-void	free_array(char **array)
+static void	sigint_here_doc(int sig)
 {
-	int	i;
-
-	i = 0;
-	if (!array)
-		return ;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
+	(void)sig;
+	exit(130);
 }
 
-void	print_error(char *msg, char *var, int perr, int err)
+void	signals_here_doc(void)
 {
-	if (perr)
-		perror(msg);
-	else
-		ft_putendl_fd(msg, var, 2);
-	(void)err;
+	signal(SIGINT, sigint_here_doc);
 }

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:10:27 by miparis           #+#    #+#             */
-/*   Updated: 2024/12/06 05:47:09 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/15 11:52:02 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_cmd	*init_tcmd(void)
 {
 	t_cmd	*cmd;
 
-	cmd = (t_cmd *)malloc(sizeof(t_cmd)); //leak
+	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	cmd->index = 0;
 	cmd->full_cmd = NULL;
 	cmd->simple = 0;
@@ -106,8 +106,6 @@ int	get_cmds(char const *s, char c, t_mini *mini)
 	}
 	if (!ft_fill(s, c, mini->cmds, mini->pipes + 1))
 	{
-		ft_free(mini->cmds);
-		mini->cmds = NULL;
 		print_error("Error: Problem getting commands", "", 0, 258);
 		return (-1);
 	}

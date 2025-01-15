@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/13 18:19:04 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/15 12:26:16 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ typedef struct s_io_file
 	struct s_io_file	*next;
 }	t_io_file;
 
-//ver donde ponemos referencias de stdin y stdout
-
 typedef struct s_cmd
 {
 	int			index;
@@ -110,16 +108,18 @@ void		signals_handler(void);
 void		sigint_handler(int sig);
 void		sigquit_handler(int sig);
 void		no_see_ctrlC(void);
+void		signals_here_doc(void);
 
 /*			PARSER					*/
 int			parser(t_mini *mini);
+void		init_mini(t_mini *mini);
 int			check_quotes(t_mini *mini);
 int			count_pipes(t_mini *mini);
 int			tokenize(t_mini *mini);
 int			get_cmds(char const *s, char c, t_mini *mini);
 int			is_quote(char c, int *quote);
 int			parse_cmds(t_mini *mini);
-void		count_err(char *input);
+int			count_err(char *input);
 void		set_envp(t_mini *mini, char **envp);
 
 /*				EXPANSOR				*/
@@ -161,7 +161,7 @@ int			open_files(t_cmd *cmd, t_mini *mini);
 int			infiles(t_io_file *infiles, t_mini *mini);
 int			outfiles(t_io_file *outfiles, t_mini *mini);
 int			fd_control(t_io_file *current, t_mini *mini);
-int			process_here_doc(t_io_file *current);
+int			process_here_doc(t_io_file *current, t_mini *mini);
 
 void		multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipe);
 void		set_struct(t_pipe *t_struct);

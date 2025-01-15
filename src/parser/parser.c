@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/13 18:19:47 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/15 12:22:27 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	parser(t_mini *mini)
 	int	x;
 
 	i = 0;
+	init_mini(mini);
 	if (check_quotes(mini)) //check comillas cerradas
 		return (1);
 	if (tokenize(mini) == -1) // separar los comandos por pipes
@@ -65,13 +66,12 @@ int	check_quotes(t_mini *mini)
 	return (0);
 }
 
-/*REVIEW - Se necesita modificar??*/
-void	count_err(char *input)
+int	count_err(char *input)
 {
 	if (ft_strrchr(input, '|') == NULL)
-		return ;
+		return (0);
 	print_error("Error: syntax error near '|'", "", 0, 258);
-	return ;
+	return (-1);
 }
 
 int	count_pipes(t_mini *mini)
@@ -91,14 +91,14 @@ int	count_pipes(t_mini *mini)
 		if (mini->input[i] == '|' && quote == 0)
 		{
 			if (prev == '|')
-				return (count_err(mini->input), -1);
+				return (count_err(mini->input));
 			p_count++;
 		}
 		if (mini->input[i] != ' ')
 			prev = mini->input[i];
 	}
 	if (prev == '|')
-		return (count_err(mini->input), -1);
+		return (count_err(mini->input));
 	return (p_count);
 }
 

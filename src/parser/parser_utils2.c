@@ -1,37 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   parser_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 05:02:34 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/15 12:11:15 by codespace        ###   ########.fr       */
+/*   Created: 2025/01/15 12:24:36 by codespace         #+#    #+#             */
+/*   Updated: 2025/01/15 12:52:05 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-void	free_array(char **array)
+void	init_mini(t_mini *mini)
 {
-	int	i;
-
-	i = 0;
-	if (!array)
-		return ;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
-void	print_error(char *msg, char *var, int perr, int err)
-{
-	if (perr)
-		perror(msg);
-	else
-		ft_putendl_fd(msg, var, 2);
-	(void)err;
+	mini->stdin = 0;
+	mini->stdout = 1;
+	mini->here_doc = 0;
+	mini->cmds = NULL;
+	mini->pipes = 0;
+	mini->cmd = NULL;
 }

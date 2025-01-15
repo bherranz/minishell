@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:30:16 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/13 18:15:39 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/14 17:00:30 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	exec_built_in(t_cmd *cmd, t_mini *mini)
 {
+	if (open_files(cmd, mini))
+		return ;
 	mini->stdin = dup(STDIN_FILENO);
 	mini->stdout = dup(STDOUT_FILENO);
 	if (cmd->infile)
@@ -41,6 +43,8 @@ void	single_process(t_cmd *cmd, t_mini *mini)
 	pid = create_process();
 	if (pid == 0)
 	{
+		if (open_files(cmd, mini))
+			exit(mini->last_status);
 		if (cmd->infile)
 			replace_dup2(cmd->infile, 0, STDIN_FILENO, mini);
 		if (cmd->outfile)
@@ -62,6 +66,7 @@ void	single_process(t_cmd *cmd, t_mini *mini)
 
 void	one_cmd(t_cmd *cmd, t_mini *mini)
 {
+	printf("---> Single process...\n");
 	if (is_builtin(cmd->args[0]))
 		exec_built_in(cmd, mini);
 	else

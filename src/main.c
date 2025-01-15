@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/13 18:21:07 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/15 12:18:47 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	free_structs(t_mini *mini)
 		}
 		free(mini->cmd);
 	}
-	free(mini->input);
+	if (mini->input)
+		free(mini->input);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -89,17 +90,19 @@ int	main(int argc, char **argv, char **envp)
 				free_array(mini.envp);
 			break ;
 		}
-		if (mini.input)
+		else if (mini.input[0] != '\0')
 			add_history(mini.input);
-		if (parser(&mini))
-			free_structs(&mini);
+		if (mini.input[0] == '\0')
+			free(mini.input);
 		else
 		{
-			executor(&mini);
-			if (mini.input[0] != '\0')
+			if (parser(&mini))
 				free_structs(&mini);
 			else
-				free(mini.input);
+			{
+				executor(&mini);
+				free_structs(&mini);
+			}
 		}
 	}
 	return (0);

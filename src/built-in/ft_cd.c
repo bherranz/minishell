@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 09:25:13 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/11 11:57:43 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/15 12:43:59 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	cd_home(char **envp, t_mini *mini)
 
 void	ft_cd(t_cmd *cmd, char **envp, t_mini *mini)
 {
+	mini->last_status = 0;
 	if (!cmd->args[1]) //only cd
 	{
 		if (cd_home(envp, mini))
@@ -94,14 +95,15 @@ void	ft_cd(t_cmd *cmd, char **envp, t_mini *mini)
 	{
 		if (chdir(cmd->args[1]) == -1)
 		{
-			perror("cd");
+			write(2, "MINICHONCHAA: cd: ", 18);
+			write(2, cmd->args[1], ft_strlen(cmd->args[1]));
+			write(2, ": No such file or directory\n", 28);
 			mini->last_status = 1;
 			return ;
 		}
 	}
 	if (update_pwd(envp, mini))
 		return ;
-	mini->last_status = 0;
 	printf("PWD: %s\n", ft_getenv("PWD", envp));
 	printf("OLDPWD: %s\n", ft_getenv("OLDPWD", envp));
 }

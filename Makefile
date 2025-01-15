@@ -6,7 +6,7 @@
 #    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2025/01/10 15:18:42 by codespace        ###   ########.fr        #
+#    Updated: 2025/01/15 12:26:30 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,12 @@ NAME = minishell
 SRCS = src/main.c \
 		src/parser/parser.c \
 		src/parser/parser_utils.c \
+		src/parser/parser_utils2.c \
 		src/parser/parser_cmd.c \
 		src/parser/parser_fds.c \
 		src/utils.c \
 		src/signals/signals.c \
+		src/signals/here_doc.c \
 		src/expansor/expansor.c \
 		src/expansor/expansor_utils.c \
 		src/executor/executor.c \
