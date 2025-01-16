@@ -60,3 +60,9 @@ void	replace_dup2(t_io_file *fds, int pipe_fd, int type, t_mini *mini)
 	}
 	redir_pipe(pipe_fd, type, current);
 }
+
+void	close_std_fd(t_mini *mini)
+{
+	close(mini->stdin);
+	close(mini->stdout);
+}

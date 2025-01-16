@@ -85,25 +85,27 @@ int	cd_home(char **envp, t_mini *mini)
 
 void	ft_cd(t_cmd *cmd, char **envp, t_mini *mini)
 {
-	mini->last_status = 0;
-	if (!cmd->args[1]) //only cd
+	if (!cmd->args[1] || (ft_strcmp(cmd->args[1], "~") == 0)) //only cd
 	{
 		if (cd_home(envp, mini))
 			return ;
 	}
 	else
 	{
+		if (ft_strcmp(cmd->args[1], "-") == 0)
+		{
+			//if (cd_hyphen())
+				return ;
+		}
 		if (chdir(cmd->args[1]) == -1)
 		{
 			write(2, "MINICHONCHAA: cd: ", 18);
 			write(2, cmd->args[1], ft_strlen(cmd->args[1]));
-			write(2, ": No such file or directory\n", 28);
+			write(2, ": Cannot open that file or directory\n", 38);
 			mini->last_status = 1;
 			return ;
 		}
 	}
 	if (update_pwd(envp, mini))
 		return ;
-	printf("PWD: %s\n", ft_getenv("PWD", envp));
-	printf("OLDPWD: %s\n", ft_getenv("OLDPWD", envp));
 }

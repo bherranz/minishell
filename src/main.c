@@ -58,7 +58,7 @@ void	free_structs(t_mini *mini)
 	i = 0;
 	if (mini->cmd)
 	{
-		while (i <= mini->pipes)
+		while (i <= mini->pipes_n)
 		{
 			if (mini->cmd[i])
 				free_cmd(mini->cmd[i]);
@@ -89,6 +89,7 @@ int	main(int argc, char **argv, char **envp)
 			if (mini.envp)
 				free_array(mini.envp);
 			rl_clear_history();
+			close_std_fd(&mini);
 			break ;
 		}
 		else if (mini.input[0] != '\0')
@@ -98,7 +99,10 @@ int	main(int argc, char **argv, char **envp)
 		else
 		{
 			if (parser(&mini))
+			{
+				mini.last_status = 1;
 				free_structs(&mini);
+			}
 			else
 			{
 				executor(&mini);

@@ -41,6 +41,7 @@ void	ft_exit(t_mini *mini, char **var)
 		printf("exit\n");
 		rl_clear_history();
 		free_structs(mini);
+		close_std_fd(mini);
 		exit(0);
 	}
 	check_nb(var[1]);
@@ -54,5 +55,6 @@ void	ft_exit(t_mini *mini, char **var)
 	nb = ft_atoi(var[1]);
 	rl_clear_history();
 	free_structs(mini);
+	close_std_fd(mini);
 	exit(nb % 256);
 }

@@ -43,16 +43,16 @@ void	executor(t_mini *mini)
 	if (control(pipes))
 			return (free_structs(mini));
 	i = 0;
-	while (i < (mini->pipes + 1) && mini->cmd[i])
+	while (i < (mini->pipes_n + 1) && mini->cmd[i])
 	{
 		if (process_here_docs(mini->cmd[i], mini))
 			return ;
 		i++;
 	}
 	i = 0;
-	while (i < (mini->pipes + 1) && mini->cmd[i])
+	while (i < (mini->pipes_n + 1) && mini->cmd[i])
 	{
-		if (mini->pipes == 0)
+		if (mini->pipes_n == 0)
 			one_cmd(mini->cmd[0], mini);
 		else
 			multiple_processes(mini->cmd[i], mini, pipes);

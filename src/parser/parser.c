@@ -23,14 +23,14 @@ int	parser(t_mini *mini)
 		return (1);
 	if (tokenize(mini) == -1) // separar los comandos por pipes
 		return (1);
-	while (i <= mini->pipes)
+	while (i <= mini->pipes_n)
 	{
 		if (expand(mini, mini->cmd[i]) == -1)
 			return (1);
 		i++;
 	}
 	x = 0;
-	while (x <= mini->pipes)
+	while (x <= mini->pipes_n)
 	{
 		printf("---> Guardado: %s\n", mini->cmd[x]->full_cmd);
 		x++;
@@ -107,15 +107,15 @@ int	tokenize(t_mini *mini)
 	int		x;
 
 	x = 0;
-	mini->pipes = count_pipes(mini);
-	if (mini->pipes < 0)
+	mini->pipes_n = count_pipes(mini);
+	if (mini->pipes_n < 0)
 		return (-1);
-	mini->cmd = (t_cmd **)malloc((mini->pipes + 1) * sizeof(t_cmd *));
+	mini->cmd = (t_cmd **)malloc((mini->pipes_n + 1) * sizeof(t_cmd *));
 	if (!mini->cmd)
 		return (print_error("Error: Problem allocating structs", "", 0, 258), -1);
 	if (get_cmds(mini->input, '|', mini) == -1)
 		return (-1);
-	while (x <= mini->pipes)
+	while (x <= mini->pipes_n)
 	{
 		mini->cmd[x] = init_tcmd();
 		if (!mini->cmd[x])

@@ -19,7 +19,7 @@ void	multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipes)
 {
 	int		n_cmds;
 
-	n_cmds = mini->pipes + 1;
+	n_cmds = mini->pipes_n + 1;
 	
 	if (n_cmds > 1 && cmd->index == 0)
 	{

@@ -188,7 +188,7 @@ int	parse_cmds(t_mini *mini)
 	int	i;
 
 	i = 0;
-	while (i <= mini->pipes)
+	while (i <= mini->pipes_n)
 	{
 		if (main_cmd(mini->cmd[i]->full_cmd, mini->cmd[i]) != 0)
 			return (-1);

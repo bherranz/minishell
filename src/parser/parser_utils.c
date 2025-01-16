@@ -98,13 +98,13 @@ int	get_cmds(char const *s, char c, t_mini *mini)
 {
 	if (!s)
 		return (-1);
-	mini->cmds = (char **)malloc(sizeof(char *) * (mini->pipes + 2));
+	mini->cmds = (char **)malloc(sizeof(char *) * (mini->pipes_n + 2));
 	if (!mini->cmds)
 	{
 		print_error("Error: Memory allocation failed", "", 0, 258);
 		return (-1);
 	}
-	if (!ft_fill(s, c, mini->cmds, mini->pipes + 1))
+	if (!ft_fill(s, c, mini->cmds, mini->pipes_n + 1))
 	{
 		print_error("Error: Problem getting commands", "", 0, 258);
 		return (-1);

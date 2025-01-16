@@ -70,7 +70,7 @@ typedef enum e_type
 
 typedef struct s_io_file
 {
-	int					fd; //esto no sé si hará falta
+	int					fd;
 	char				*name;
 	t_type				type;
 	bool				last_in;
@@ -98,7 +98,7 @@ typedef struct s_mini
 	char	*input;
 	int		here_doc;
 	char	**cmds;
-	int		pipes;
+	int		pipes_n;
 	t_cmd	**cmd;
 	int		last_status;
 }	t_mini;
@@ -154,6 +154,7 @@ int			last_char(char str);
 t_cmd		*init_tcmd(void);
 void		free_array(char **array);
 void		free_structs(t_mini *mini);
+void		close_std_fd(t_mini *mini);
 
 /* 					EXECUTOR									*/
 void		executor(t_mini *mini);

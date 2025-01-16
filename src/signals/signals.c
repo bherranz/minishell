@@ -38,6 +38,7 @@ void	sigint_handler(int sig)
 		write(1, "\n", 1);
 		rl_on_new_line(); // Marca que hay una nueva línea
 		rl_replace_line("", 0); // Borra la línea actual en readline
+		rl_redisplay();
 	}
 	if (g_signal == 2) //procesos en segundo plano, no debe interrumpir nada
 		return ;
