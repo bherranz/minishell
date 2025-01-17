@@ -18,7 +18,6 @@ int	parser(t_mini *mini)
 	int	x;
 
 	i = 0;
-	init_mini(mini);
 	if (check_quotes(mini)) //check comillas cerradas
 		return (1);
 	if (tokenize(mini) == -1) // separar los comandos por pipes

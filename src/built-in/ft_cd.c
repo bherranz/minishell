@@ -44,6 +44,7 @@ int	update_pwd(char **envp, t_mini *mini)
 {
 	char	pwd[PATH_MAX];
 	int		i;
+	char	*oldpwd;
 
 	if (!getcwd(pwd, sizeof(pwd)))
 	{
@@ -52,14 +53,16 @@ int	update_pwd(char **envp, t_mini *mini)
 		return (1);
 	}
 	i = 0;
+	oldpwd = ft_strdup(ft_getenv("PWD", envp));
 	while (envp[i])
 	{
 		if (ft_strncmp("OLDPWD=", envp[i], 7) == 0)
-			update_env(ft_getenv("PWD", envp), &envp[i]);
+			update_env(oldpwd, &envp[i]);
 		else if (ft_strncmp("PWD=", envp[i], 4) == 0)
 			update_env(pwd, &envp[i]);
 		i++;
 	}
+	free(oldpwd);
 	return (0);
 }
 
@@ -94,10 +97,10 @@ void	ft_cd(t_cmd *cmd, char **envp, t_mini *mini)
 	{
 		if (ft_strcmp(cmd->args[1], "-") == 0)
 		{
-			//if (cd_hyphen())
+			if (cd_hyphen(mini->envp, mini))
 				return ;
 		}
-		if (chdir(cmd->args[1]) == -1)
+		else if (chdir(cmd->args[1]) == -1)
 		{
 			write(2, "MINICHONCHAA: cd: ", 18);
 			write(2, cmd->args[1], ft_strlen(cmd->args[1]));
@@ -106,6 +109,5 @@ void	ft_cd(t_cmd *cmd, char **envp, t_mini *mini)
 			return ;
 		}
 	}
-	if (update_pwd(envp, mini))
-		return ;
+	update_pwd(envp, mini);
 }

@@ -82,17 +82,10 @@ int	main(int argc, char **argv, char **envp)
 	signals_handler();
 	while (1)
 	{
-		mini.input = readline("MINICONCHAA > ");
-		if (!mini.input)
-		{
-			printf("exit\n");
-			if (mini.envp)
-				free_array(mini.envp);
-			rl_clear_history();
-			close_std_fd(&mini);
+		init_mini(&mini);
+		if (new_input(&mini))	
 			break ;
-		}
-		else if (mini.input[0] != '\0')
+		if (mini.input[0] != '\0')
 			add_history(mini.input);
 		if (mini.input[0] == '\0')
 			free(mini.input);

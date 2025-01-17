@@ -155,6 +155,7 @@ t_cmd		*init_tcmd(void);
 void		free_array(char **array);
 void		free_structs(t_mini *mini);
 void		close_std_fd(t_mini *mini);
+int			new_input(t_mini *mini);
 
 /* 					EXECUTOR									*/
 void		executor(t_mini *mini);
@@ -192,6 +193,9 @@ void		main_builtins(t_cmd *cmd, t_mini *mini);
 int			is_builtin(char *cmd);
 void		ft_echo(t_cmd *cmd, t_mini *mini);
 void		ft_cd(t_cmd *cmd, char **envp, t_mini *mini);
+int			cd_hyphen(char **envp, t_mini *mini);
+char		*ft_getenv(char *name, char **envp);
+int			update_pwd(char **envp, t_mini *mini);
 char		*ft_getenv(char *name, char **envp);
 void		ft_pwd(t_mini *mini);
 void		ft_env(char **envp, t_cmd *cmd, t_mini *mini);

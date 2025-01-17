@@ -91,50 +91,50 @@ int 	infiles(t_io_file *infiles, t_mini *mini)
 
 int	process_here_doc(t_io_file *current, t_mini *mini)
 {
-    pid_t   pid;
-    int     temp_file;
-    char    *delimiter;
-    int     status;
+	pid_t   pid;
+	int     temp_file;
+	char    *delimiter;
+	int     status;
 
-    delimiter = ft_strjoin(current->name, "\n");
-    temp_file = open("/tmp/temp_file", O_WRONLY | O_CREAT | O_APPEND, 0777);
-    if (temp_file == -1)
-    {
-        free(delimiter);
-        return (printf("Error creando archivo temporal\n"), 1);
-    }
-    pid = fork();
-    if (pid == 0)
-    {
-        char *line;
+	delimiter = ft_strjoin(current->name, "\n");
+	temp_file = open("/tmp/temp_file", O_WRONLY | O_CREAT | O_APPEND, 0777);
+	if (temp_file == -1)
+	{
+		free(delimiter);
+		return (printf("Error creando archivo temporal\n"), 1);
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		char *line;
 
 		signals_here_doc();
-        while (1)
-        {
-            write(1, "> ", 2);
-            line = get_next_line(0);
-            if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
-            {
-                free(line);
-                free(delimiter);
-                close(temp_file);
-                exit(0); // Salir del proceso hijo al finalizar
-            }
-            write(temp_file, line, ft_strlen(line));
-            free(line);
-        }
-    }
-    waitpid(pid, &status, 0);
-    free(delimiter);
-    close(temp_file);
-    if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-    {
-        unlink("/tmp/temp_file");
+		while (1)
+		{
+			write(1, "> ", 2);
+			line = get_next_line(0);
+			if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+			{
+				free(line);
+				free(delimiter);
+				close(temp_file);
+				exit(0); // Salir del proceso hijo al finalizar
+			}
+			write(temp_file, line, ft_strlen(line));
+			free(line);
+		}
+	}
+	wait(&status);
+	free(delimiter);
+	close(temp_file);
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		unlink("/tmp/temp_file");
 		mini->last_status = 130;
-        return (1);
-    }
-    current->fd = open("/tmp/temp_file", O_RDONLY);
-    if (current->fd == -1)
-        return (printf("Error abriendo archivo temporal\n"), 1);
-    return (0);
+		return (1);
+	}
+	current->fd = open("/tmp/temp_file", O_RDONLY);
+	if (current->fd == -1)
+		return (printf("Error opening temporal file\n"), 1);
+	return (0);
 }

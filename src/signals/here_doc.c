@@ -12,10 +12,11 @@
 
 #include "../../inc/minishell.h"
 
-static void	sigint_here_doc(int sig)
+void	sigint_here_doc(int sig)
 {
 	(void)sig;
-	exit(130);
+	g_signal = 130;
+	exit(128 + SIGINT);
 }
 
 void	signals_here_doc(void)

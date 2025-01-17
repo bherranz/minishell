@@ -127,14 +127,6 @@ void	to_excve(t_cmd *cmd, t_mini *mini)
 		exit(mini->last_status);
 	}
 	command_path = find_path(cmd->args[0], mini->envp);
-	if (!command_path)
-	{
-		print_error("Error: command not found ", "", 0, 127);
-		close_fds(cmd->infile);
-		close_fds(cmd->outfile);
-		mini->last_status = 127;
-		exit(mini->last_status);
-	}
 	if (execve(command_path, cmd->args, mini->envp) == -1)
 	{
 		print_error("Error: command not found ", "", 0, 127);
