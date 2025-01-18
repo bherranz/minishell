@@ -6,13 +6,13 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 09:52:24 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/13 18:13:53 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 17:02:11 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	no_see_ctrlC(void)
+void	no_see_ctrlc(void)
 {
 	struct termios	termios;
 
@@ -66,5 +66,5 @@ void	signals_handler(void)
 {
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
-	no_see_ctrlC();
+	no_see_ctrlc();
 }

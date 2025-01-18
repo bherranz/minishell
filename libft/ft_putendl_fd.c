@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 13:10:02 by bherranz          #+#    #+#             */
-/*   Updated: 2024/11/25 07:01:20 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 17:00:59 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_putendl_fd(char *s, char *var, int fd)
 	}
 	if (*var)
 	{
-		while(*var != '\0')
+		while (*var != '\0')
 		{
 			write(fd, var, 1);
 			var++;

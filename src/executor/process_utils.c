@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:10:06 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/18 15:46:44 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 16:53:45 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	control(t_pipe *pipes)
 	}
 	return (0);
 }
+
 void	create_pipe(t_pipe *pipes)
 {
 	if (pipe(pipes->new_pipe) < 0)

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:14:04 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/18 13:24:48 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 16:16:25 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	check_nb(char *var)
 	}
 }
 
-void do_exit(t_mini *mini, int status)
+void	do_exit(t_mini *mini, int status)
 {
 	printf("exit\n");
 	rl_clear_history();

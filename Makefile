@@ -6,7 +6,7 @@
 #    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2025/01/15 12:26:30 by codespace        ###   ########.fr        #
+#    Updated: 2025/01/18 16:27:58 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS = src/main.c \
 		src/expansor/expansor_utils.c \
 		src/executor/executor.c \
 		src/executor/fds_utils.c \
+		src/executor/here_doc.c \
 		src/executor/single_process.c \
 		src/executor/multiple_processes.c \
 		src/executor/paths_args.c \

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:49:59 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/18 16:09:48 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 16:53:30 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,6 @@ void	try_open(t_cmd *cmd, t_mini *mini)
 	if (open_files(cmd, mini))
 	{
 		close_pipe_struct(mini->pipes);
-		exit(mini->last_status);		
+		exit(mini->last_status);
 	}
 }

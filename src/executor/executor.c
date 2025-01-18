@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:47:28 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/18 15:45:28 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 16:57:21 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	process_here_docs(t_cmd *cmd, t_mini *mini)
 {
-	t_io_file *current;
+	t_io_file	*current;
 
 	current = cmd->infile;
 	while (current)
@@ -25,7 +25,7 @@ int	process_here_docs(t_cmd *cmd, t_mini *mini)
 				return (-1);
 			if (fd_control(current, mini))
 				return (-1);
-			unlink("/tmp/temp_file"); 
+			unlink("/tmp/temp_file");
 		}
 		current->last_in = (current->next == NULL);
 		current = current->next;
@@ -45,11 +45,8 @@ void	executor(t_mini *mini)
 		return (free_structs(mini));
 	i = 0;
 	while (i < (mini->pipes_n + 1) && mini->cmd[i])
-	{
-		if (process_here_docs(mini->cmd[i], mini))
+		if (process_here_docs(mini->cmd[i++], mini))
 			return ;
-		i++;
-	}
 	i = 0;
 	while (i < (mini->pipes_n + 1) && mini->cmd[i])
 	{

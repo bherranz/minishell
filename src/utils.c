@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 05:02:34 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/18 15:12:03 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 17:01:43 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	new_input(t_mini *mini)
 {
 	char	*input;
 	int		i;
-	
+
 	input = readline("MINICONCHAA > ");
 	if (!input)
 	{

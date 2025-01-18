@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/18 15:29:41 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 17:01:21 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		init_mini(&mini);
-		if (new_input(&mini))	
+		if (new_input(&mini))
 			break ;
 		if (mini.input[0] != '\0')
 			add_history(mini.input);
