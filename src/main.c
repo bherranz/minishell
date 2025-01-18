@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/15 15:33:48 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 15:29:41 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	free_structs(t_mini *mini)
 	}
 	if (mini->input)
 		free(mini->input);
+	if (mini->pipes)
+		free(mini->pipes);
 }
 
 int	main(int argc, char **argv, char **envp)

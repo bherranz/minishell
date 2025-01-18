@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:30:16 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/14 17:00:30 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 16:09:37 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void	single_process(t_cmd *cmd, t_mini *mini)
 	pid = create_process();
 	if (pid == 0)
 	{
-		if (open_files(cmd, mini))
-			exit(mini->last_status);
+		try_open(cmd, mini);
 		if (cmd->infile)
 			replace_dup2(cmd->infile, 0, STDIN_FILENO, mini);
 		if (cmd->outfile)
 			replace_dup2(cmd->outfile, 0, STDOUT_FILENO, mini);
+		close_pipe_struct(mini->pipes);
 		to_excve(cmd, mini);
 	}
 	close_fds(cmd->infile);

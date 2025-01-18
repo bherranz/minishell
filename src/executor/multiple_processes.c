@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 12:27:55 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/14 15:49:11 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 16:10:14 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ void	first_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 	pid = create_process();
 	if (pid == 0)
 	{
-		if (open_files(cmd, mini))
-			exit(mini->last_status);
+		try_open(cmd, mini);
 		if (cmd->infile)
 			replace_dup2(cmd->infile, 0, STDIN_FILENO, mini);
 		if (cmd->outfile)
@@ -72,8 +71,7 @@ void	middle_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 	pid = create_process();
 	if (pid == 0)
 	{
-		if (open_files(cmd, mini))
-			exit(mini->last_status);
+		try_open(cmd, mini);
 		if (cmd->infile)
 			replace_dup2(cmd->infile, 0, STDIN_FILENO, mini);
 		else if (!cmd->infile)
@@ -99,8 +97,7 @@ void	last_process(t_cmd *cmd, t_pipe *pipes, t_mini *mini)
 	pid = create_process();
 	if (pid == 0)
 	{
-		if (open_files(cmd, mini))
-			exit(mini->last_status);
+		try_open(cmd, mini);
 		if (cmd->infile)
 			replace_dup2(cmd->infile, 0, STDIN_FILENO, mini);
 		else if (!cmd->infile)
@@ -127,13 +124,15 @@ void	to_excve(t_cmd *cmd, t_mini *mini)
 		exit(mini->last_status);
 	}
 	command_path = find_path(cmd->args[0], mini->envp);
-	if (execve(command_path, cmd->args, mini->envp) == -1)
+	if (!command_path || (execve(command_path, cmd->args, mini->envp) == -1))
 	{
 		print_error("Error: command not found ", "", 0, 127);
+		close_pipe_struct(mini->pipes);
+		close_std_fd(mini);
 		close_fds(cmd->infile);
 		close_fds(cmd->outfile);
+		ft_free(cmd->args);
 		mini->last_status = 127;
 		exit(mini->last_status);
 	}
-	ft_free(cmd->args);
 }

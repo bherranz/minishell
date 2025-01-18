@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/15 12:26:16 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 16:09:28 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ typedef struct s_mini
 	int		here_doc;
 	char	**cmds;
 	int		pipes_n;
+	t_pipe	*pipes;
 	t_cmd	**cmd;
 	int		last_status;
 }	t_mini;
@@ -164,6 +165,8 @@ int			infiles(t_io_file *infiles, t_mini *mini);
 int			outfiles(t_io_file *outfiles, t_mini *mini);
 int			fd_control(t_io_file *current, t_mini *mini);
 int			process_here_doc(t_io_file *current, t_mini *mini);
+void		try_open(t_cmd *cmd, t_mini *mini);
+
 
 void		multiple_processes(t_cmd *cmd, t_mini *mini, t_pipe *pipe);
 void		set_struct(t_pipe *t_struct);

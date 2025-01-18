@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 05:02:34 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/15 12:11:15 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 15:12:03 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	new_input(t_mini *mini)
 			free_array(mini->envp);
 		rl_clear_history();
 		close_std_fd(mini);
+		free_structs(mini);
 		return (1);
 	}
 	i = 0;

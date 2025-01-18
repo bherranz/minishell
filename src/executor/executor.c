@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:47:28 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/15 12:51:18 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 15:45:28 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@ int	process_here_docs(t_cmd *cmd, t_mini *mini)
 
 void	executor(t_mini *mini)
 {
-	t_pipe		*pipes;
 	int			i;
 
-	pipes = malloc(sizeof(*pipes));
-	set_struct(pipes);
-	if (control(pipes))
-			return (free_structs(mini));
+	mini->pipes = malloc(sizeof(*(mini->pipes)));
+	if (!mini->pipes)
+		return (print_error("Error: malloc", "", 0, -1));
+	set_struct(mini->pipes);
+	if (control(mini->pipes))
+		return (free_structs(mini));
 	i = 0;
 	while (i < (mini->pipes_n + 1) && mini->cmd[i])
 	{
@@ -55,12 +56,11 @@ void	executor(t_mini *mini)
 		if (mini->pipes_n == 0)
 			one_cmd(mini->cmd[0], mini);
 		else
-			multiple_processes(mini->cmd[i], mini, pipes);
+			multiple_processes(mini->cmd[i], mini, mini->pipes);
 		i++;
 	}
-	process_status(pipes, mini);
-	close_pipe_struct(pipes);
-	free(pipes);
+	process_status(mini->pipes, mini);
+	close_pipe_struct(mini->pipes);
 }
 
 void	process_status(t_pipe *pipes, t_mini *mini)

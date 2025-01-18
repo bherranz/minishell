@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 12:24:36 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/15 12:52:05 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 15:13:33 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,6 @@ void	init_mini(t_mini *mini)
 	mini->cmds = NULL;
 	mini->pipes_n = 0;
 	mini->cmd = NULL;
+	mini->pipes = NULL;
+	mini->input = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 10:49:59 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/12 23:13:22 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/18 16:09:48 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ void	redir_pipe(int pipe_fd, int type, t_io_file *current)
 	{
 		if (dup2(pipe_fd, type) == -1)
 		{
+			close(pipe_fd);
 			print_error("Error: dup2", "", 0, -1);
 			exit(-1);
 		}
+		close(pipe_fd);
 	}
 }
 
@@ -53,6 +55,7 @@ void	replace_dup2(t_io_file *fds, int pipe_fd, int type, t_mini *mini)
 				mini->last_status = 1;
 				exit(mini->last_status);
 			}
+			close(current->fd);
 			break ;
 		}
 		close(current->fd);
@@ -65,4 +68,13 @@ void	close_std_fd(t_mini *mini)
 {
 	close(mini->stdin);
 	close(mini->stdout);
+}
+
+void	try_open(t_cmd *cmd, t_mini *mini)
+{
+	if (open_files(cmd, mini))
+	{
+		close_pipe_struct(mini->pipes);
+		exit(mini->last_status);		
+	}
 }
