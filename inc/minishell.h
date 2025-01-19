@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/19 12:30:27 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/19 13:20:08 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void		print_error(char *msg, char *var, int perr, int err);
 int			last_char(char str);
 t_cmd		*init_tcmd(void);
 void		free_array(char **array);
+void		free_io_files(t_io_file *file_list);
 void		free_structs(t_mini *mini);
 void		close_std_fd(t_mini *mini);
 int			new_input(t_mini *mini);

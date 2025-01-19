@@ -6,7 +6,7 @@
 #    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2025/01/19 11:46:06 by codespace        ###   ########.fr        #
+#    Updated: 2025/01/19 13:16:15 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRCS =  src/main.c \
 		src/parser/parser_cmd.c \
 		src/parser/parser_cmd2.c \
 		src/parser/parser_fds.c \
+		src/parser/parser_fds2.c \
 		src/utils.c \
 		src/signals/signals.c \
 		src/signals/here_doc.c \

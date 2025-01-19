@@ -6,56 +6,35 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 11:33:36 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/12 23:23:59 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/19 15:16:21 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	is_redir(char *str)
+char	*get_clean_token(char *str, int i, t_cmd *cmd)
 {
-	if (ft_strncmp(str, "<<", 2) == 0)
-		return (2);
-	else if (ft_strncmp(str, "<", 1) == 0)
-		return (1);
-	else if (ft_strncmp(str, ">>", 2) == 0)
-		return (4);
-	else if (ft_strncmp(str, ">", 1) == 0)
-		return (3);
-	return (0);
-}
+	char	*file_token;
+	char	*clean_name;
 
-void	print_list(t_io_file *list)
-{
-	while (list)
+	if (str[i + 1] == str[i])
+		file_token = get_token(&str[i + 2], cmd);
+	else
+		file_token = get_token(&str[i + 1], cmd);
+	if (!file_token)
 	{
-		printf("%s ", list->name);
-		list = list->next;
+		print_error("Error: syntax error near unexpected token 'newline'",
+			"", 0, 258);
+		return (NULL);
 	}
-	printf("\n");
-}
-
-void	list_addback(t_io_file *node, t_io_file **list)
-{
-	t_io_file	*tmp;
-
-	if (!list || !node)
-		return ;
-	if (!(*list))
-	{
-		*list = node;
-		return ;
-	}
-	tmp = *list;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = node;
+	clean_name = clear_token(file_token, cmd, ft_strlen(file_token));
+	free(file_token);
+	return (clean_name);
 }
 
 int	create_redir(int redir_type, char *str, int i, t_cmd *cmd)
 {
 	t_io_file	*redir;
-	char		*file_token;
 	char		*clean_name;
 
 	redir = malloc(sizeof(t_io_file));
@@ -64,25 +43,14 @@ int	create_redir(int redir_type, char *str, int i, t_cmd *cmd)
 	redir->type = redir_type;
 	redir->next = NULL;
 	redir->fd = -1;
-	if (str[i + 1] == str[i])
-		file_token = get_token(&str[i + 2], cmd);
-	else
-		file_token = get_token(&str[i + 1], cmd);
-	if (!file_token)
+	clean_name = get_clean_token(str, i, cmd);
+	if (!clean_name)
+		return (free(redir), -1);
+	if (is_redir(clean_name))
 	{
-		print_error("Error: syntax error near unexpected token 'newline\'", "", 0, 258);
-		free(redir);
-		free(file_token);
-		return (-1);
-	}
-	clean_name = clear_token(file_token, cmd, ft_strlen(file_token));
-	free(file_token);
-	if (!clean_name || is_redir(clean_name))
-	{
-		print_error("Error: syntax error near unexpected token ", clean_name, 0, 258);
-		free(redir);
-		free(clean_name);
-		return (-1);
+		print_error("Error: syntax error near unexpected token ",
+			clean_name, 0, 258);
+		return (free(redir), free(clean_name), -1);
 	}
 	redir->name = clean_name;
 	if (redir->type < 3)
@@ -109,14 +77,11 @@ int	parse_redir(char *str, t_cmd *cmd)
 			if (redir_type > 0)
 			{
 				if (create_redir(redir_type, str, i, cmd))
-					return (-1);// Llamamos a create_redir para manejar la redirección
-				if (redir_type == 2 || redir_type == 4) // Avanzamos `i` según el tipo de redirección detectado
-					i += 2; // Avanzar dos posiciones para `<<` o `>>`
-				else
-					i += 1; // Avanzar una posición para `<` o `>`
+					return (-1); // Llamamos a create_redir para manejar la redirección
+				if (redir_type == 2 || redir_type == 4) // Avanzamos `i` según el tipo de redirección
+					i += 1; // Avanzar una posición más para `<<` o `>>`
 			}
-			else
-				i++;
+			i++;
 		}
 		else
 			i++;
