@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 10:10:27 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/15 11:52:02 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/19 11:43:11 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,7 @@ static char	**ft_fill(const char *s, char c, char **array, size_t substrings)
 	quote = 0;
 	while (i < substrings)
 	{
-		// Avanzar mientras encuentras separadores
-		while (s[j] && s[j] == c && !quote)
+		while (s[j] && s[j] == c && !quote) // Avanzar mientras encuentras separadores
 			j++;
 		array[i] = ft_substr(s, j, ft_customstrlen((s + j), c));
 		if (!array[i])
@@ -82,12 +81,8 @@ static char	**ft_fill(const char *s, char c, char **array, size_t substrings)
 			ft_free(array); // Liberar en caso de error
 			return (NULL);
 		}
-		// Avanzar hasta el próximo separador fuera de comillas
-		while (s[j] && (s[j] != c || quote))
-		{
-			is_quote(s[j], &quote);
-			j++;
-		}
+		while (s[j] && (s[j] != c || quote)) // Avanzar hasta el próximo separador fuera de comillas
+			is_quote(s[j++], &quote);
 		i++;
 	}
 	array[i] = NULL;

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/18 16:44:50 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/19 12:30:27 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,6 @@
 # include <termcap.h>
 # include <string.h>
 # include "../libft/libft.h"
-
-# ifndef ECHOCTL
-#  define ECHOCTL 0x00000040
-# endif
 
 # ifndef READ
 #  define READ 0
@@ -137,7 +133,7 @@ int			main_cmd(char *str, t_cmd *cmd);
 void		process_quotes(char c, t_cmd *cmd);
 char		*get_token(char *str, t_cmd *cmd);
 void		skip_not_args(char *str, int *i, t_cmd *cmd);
-int			count_arguments(char *str, t_cmd *cmd);
+void		count_arguments(char *str, t_cmd *cmd, int *count);
 void		add_arg_to_cmd(t_cmd *cmd, char *arg);
 char		*clear_token(char *str, t_cmd *cmd, int len);
 

@@ -6,28 +6,11 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 09:52:24 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/18 17:02:11 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/19 11:08:33 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-void	no_see_ctrlc(void)
-{
-	struct termios	termios;
-
-	if (tcgetattr(0, &termios) != 0)
-	{
-		perror("MINICONCHAA: tcgetattr error\n");
-		exit (1);
-	}
-	termios.c_lflag &= ~ECHOCTL;
-	if (tcsetattr(0, 0, &termios) != 0)
-	{
-		perror("MINICONCHAA: tcsetattr error\n");
-		exit (1);
-	}
-}
 
 //Ctrl + C
 void	sigint_handler(int sig)
@@ -66,5 +49,4 @@ void	signals_handler(void)
 {
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
-	no_see_ctrlc();
 }

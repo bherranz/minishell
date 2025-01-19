@@ -6,18 +6,20 @@
 #    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2025/01/18 16:27:58 by codespace        ###   ########.fr        #
+#    Updated: 2025/01/19 11:46:06 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = minishell
 
-SRCS = src/main.c \
+SRCS =  src/main.c \
+		src/free_utils.c \
 		src/parser/parser.c \
 		src/parser/parser_utils.c \
 		src/parser/parser_utils2.c \
 		src/parser/parser_cmd.c \
+		src/parser/parser_cmd2.c \
 		src/parser/parser_fds.c \
 		src/utils.c \
 		src/signals/signals.c \

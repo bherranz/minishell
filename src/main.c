@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:12 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/18 17:01:21 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/19 12:21:36 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,62 +14,18 @@
 
 int	g_signal; //variable global
 
-void	free_io_files(t_io_file *file_list)
+void	process_commands(t_mini *mini)
 {
-	t_io_file	*temp;
-
-	while (file_list)
+	if (parser(mini))
 	{
-		temp = file_list;
-		if (temp->fd > -1)
-			close(temp->fd);
-		file_list = file_list->next;
-		free(temp->name);
-		free(temp);
+		mini->last_status = 1;
+		free_structs(mini);
 	}
-}
-
-void	free_cmd(t_cmd *cmd)
-{
-	if (!cmd)
-		return ;
-	if (cmd->infile)
-		free_io_files(cmd->infile);
-	if (cmd->outfile)
-		free_io_files(cmd->outfile);
-	if (cmd->e_input)
-		free(cmd->e_input);
-	if (cmd->full_cmd)
-		free(cmd->full_cmd);
-	if (cmd->ex_var)
-		free(cmd->ex_var);
-	if (cmd->args)
-		free_array(cmd->args);
-	if (cmd)
-		free(cmd);
-}
-
-void	free_structs(t_mini *mini)
-{
-	int	i;
-
-	if (mini->cmds)
-		free_array(mini->cmds);
-	i = 0;
-	if (mini->cmd)
+	else
 	{
-		while (i <= mini->pipes_n)
-		{
-			if (mini->cmd[i])
-				free_cmd(mini->cmd[i]);
-			i++;
-		}
-		free(mini->cmd);
+		executor(mini);
+		free_structs(mini);
 	}
-	if (mini->input)
-		free(mini->input);
-	if (mini->pipes)
-		free(mini->pipes);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -92,18 +48,7 @@ int	main(int argc, char **argv, char **envp)
 		if (mini.input[0] == '\0')
 			free(mini.input);
 		else
-		{
-			if (parser(&mini))
-			{
-				mini.last_status = 1;
-				free_structs(&mini);
-			}
-			else
-			{
-				executor(&mini);
-				free_structs(&mini);
-			}
-		}
+			process_commands(&mini);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 05:02:34 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/18 17:01:43 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/19 11:14:26 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,6 @@ int	new_input(t_mini *mini)
 	mini->input = ft_substr(input, i, ft_strlen(input));
 	free(input);
 	return (0);
-}
-
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	if (!array)
-		return ;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
 }
 
 void	print_error(char *msg, char *var, int perr, int err)

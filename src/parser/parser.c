@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 02:17:39 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/15 12:22:27 by codespace        ###   ########.fr       */
+/*   Updated: 2025/01/19 11:44:36 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	tokenize(t_mini *mini)
 		return (-1);
 	mini->cmd = (t_cmd **)malloc((mini->pipes_n + 1) * sizeof(t_cmd *));
 	if (!mini->cmd)
-		return (print_error("Error: Problem allocating structs", "", 0, 258), -1);
+		return (print_error("Error: Fail allocating structs", "", 0, 258), -1);
 	if (get_cmds(mini->input, '|', mini) == -1)
 		return (-1);
 	while (x <= mini->pipes_n)
