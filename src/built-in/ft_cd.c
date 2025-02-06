@@ -23,6 +23,8 @@ char	*ft_getenv(char *name, char **envp)
 			return (envp[i] + ft_strlen(name) + 1);
 		i++;
 	}
+	if (ft_strcmp("PWD", name) == 0)
+		return (getcwd(NULL, 0));
 	return (NULL);
 }
 
