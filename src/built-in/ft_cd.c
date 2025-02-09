@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 09:25:13 by codespace         #+#    #+#             */
-/*   Updated: 2025/02/09 21:42:49 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/09 21:44:17 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ int	update_pwd(char **envp, t_mini *mini)
 			update_env(pwd, &envp[i]);
 		i++;
 	}
-	free(oldpwd);
-	return (0);
+	return (free(oldpwd), 0);
 }
 
 int	cd_home(char **envp, t_mini *mini)

@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:13:39 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/12 13:23:10 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/09 21:54:36 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	check_var_unset(char *var, t_mini *mini)
 			return (error_unset(var, mini), 0);
 		i++;
 	}
+	if (ft_strcmp(var, "_") == 0)
+		return (0);
 	return (1);
 }
 
