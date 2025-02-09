@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2025/01/15 16:26:23 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/09 23:07:07 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ void	do_expansion(char *name, t_mini *mini, t_cmd *cmd)
 	{
 		if (ft_strncmp(name, mini->envp[x], ft_strlen(name)) == 0)
 		{
-			cmd->e_input = ft_strdup((ft_strrchr(mini->envp[x], '=') + 1));
+			if (ft_strchr(mini->envp[x], '='))
+				cmd->e_input = ft_strdup((ft_strrchr(mini->envp[x], '=') + 1));
 			return ;
 		}
 		x++;
