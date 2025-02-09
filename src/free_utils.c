@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 11:12:06 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/19 11:19:37 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/09 23:45:58 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ void	free_cmd(t_cmd *cmd)
 		free(cmd->e_input);
 	if (cmd->full_cmd)
 		free(cmd->full_cmd);
-	if (cmd->ex_var)
-		free(cmd->ex_var);
 	if (cmd->args)
 		free_array(cmd->args);
 	if (cmd)

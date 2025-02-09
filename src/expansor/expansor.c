@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2025/02/09 23:07:07 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/09 23:47:47 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2)
 	else
 	{
 		aux = cmd->full_cmd;
-		cmd->full_cmd = ft_strdup(str);
+		if (str2 != NULL)
+			cmd->full_cmd = ft_strjoin(str, str2);
+		else
+			cmd->full_cmd = ft_strdup(str);
 		free(aux);
 	}
 }
@@ -135,5 +138,5 @@ void	handle_expansion(t_mini *mini, t_cmd *cmd, char **str2, int i)
 		do_expansion(cmd->ex_var, mini, cmd);
 		replace_input(cmd, str, cmd->e_input, *str2);
 	}
-	return (free(str), free(*str2));
+	return (free(str), free(*str2), free(cmd->ex_var));
 }
