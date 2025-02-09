@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 09:25:13 by codespace         #+#    #+#             */
-/*   Updated: 2025/02/09 21:39:40 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/09 21:42:49 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ char	*ft_getenv(char *name, char **envp)
 			return (envp[i] + ft_strlen(name) + 1);
 		i++;
 	}
-	if (ft_strcmp("PWD", name) == 0)
-		return (getcwd(NULL, 0));
 	return (NULL);
 }
 
