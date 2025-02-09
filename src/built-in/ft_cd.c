@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 09:25:13 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/15 12:43:59 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/09 21:39:40 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,11 @@ int	update_pwd(char **envp, t_mini *mini)
 		return (1);
 	}
 	i = 0;
-	oldpwd = ft_strdup(ft_getenv("PWD", envp));
+	oldpwd = ft_getenv("PWD", envp);
+	if (!oldpwd)
+		oldpwd = ft_strdup("\0");
+	else
+		oldpwd = ft_strdup(oldpwd);
 	while (envp[i])
 	{
 		if (ft_strncmp("OLDPWD=", envp[i], 7) == 0)
