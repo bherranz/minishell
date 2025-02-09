@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 15:08:12 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/15 16:09:55 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/09 22:50:44 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,30 @@ int	check_var(char *var, t_mini *mini)
 		i++;
 	}
 	return (free_array(temp), 1);
+}
+
+void	print_export(char **envp)
+{
+	int		i;
+	char	*temp;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "_=", 2) != 0)
+		{
+			temp = ft_strchr(envp[i], '=');
+			write(1, "declare -x ", 11);
+			if (temp)
+			{
+				write(1, envp[i], temp - envp[i] + 1);
+				write(1, "\"", 1);
+				write(1, temp + 1, ft_strlen(temp + 1));
+				write(1, "\"\n", 2);
+			}
+			else
+				printf("%s\n", envp[i]);
+		}
+		i++;
+	}
 }

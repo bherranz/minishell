@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2025/01/19 13:20:08 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/09 22:07:23 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,7 @@ char		*ft_getenv(char *name, char **envp);
 void		ft_pwd(t_mini *mini);
 void		ft_env(char **envp, t_cmd *cmd, t_mini *mini);
 void		ft_export(t_mini *mini, char **var);
+void		print_export(char **envp);
 int			check_var(char *var, t_mini *mini);
 void		ft_exit(t_mini *mini, char **var);
 void		ft_unset(t_mini *mini, char **var);

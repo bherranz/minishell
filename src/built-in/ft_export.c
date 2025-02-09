@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 02:47:51 by codespace         #+#    #+#             */
-/*   Updated: 2025/01/10 18:31:40 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/09 22:47:38 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@ void	order_envp(char **envp)
 		}
 		i++;
 	}
-	i = 0;
-	while (envp[i])
-		printf("declare -x \"%s\"\n", envp[i++]);
+	print_export(envp);
 }
 
 int	is_in_envp(char **envp, char *var)
@@ -51,15 +49,12 @@ int	is_in_envp(char **envp, char *var)
 		temp = ft_split(var, '=');
 		if (!temp || !temp[0])
 			return (free_array(temp), -1);
-		if (ft_strchr(var, '='))
-		{
-			e_temp = ft_split(envp[i], '=');
-			if (!e_temp || !e_temp[0])
-				return (free_array(temp), free_array(e_temp), -1);
-			if (ft_strcmp(e_temp[0], temp[0]) == 0)
-				return (free_array(temp), free_array(e_temp), i);
-			free_array(e_temp);
-		}
+		e_temp = ft_split(envp[i], '=');
+		if (!e_temp || !e_temp[0])
+			return (free_array(temp), free_array(e_temp), -1);
+		if (ft_strcmp(e_temp[0], temp[0]) == 0)
+			return (free_array(temp), free_array(e_temp), i);
+		free_array(e_temp);
 		free_array(temp);
 		i++;
 	}
@@ -82,7 +77,7 @@ char	**add_new_vars(char **new, char **var, int i, t_mini *mini)
 				new[i] = ft_strdup(var[j]);
 				i++;
 			}
-			else
+			else if (ft_strchr(var[j], '='))
 			{
 				free(new[idx]);
 				new[idx] = ft_strdup(var[j]);
@@ -121,7 +116,7 @@ void	ft_export(t_mini *mini, char **var)
 
 	i = 1;
 	mini->last_status = 0;
-	if (!var[1]) //export sin opciones
+	if (!var[1])
 	{
 		order_envp(mini->envp);
 		return ;
