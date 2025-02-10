@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 14:46:38 by bherranz          #+#    #+#             */
-/*   Updated: 2025/02/09 22:07:23 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/10 17:30:17 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,12 @@ int			get_cmds(char const *s, char c, t_mini *mini);
 int			is_quote(char c, int *quote);
 int			parse_cmds(t_mini *mini);
 int			count_err(char *input);
+
+/*				SET ENVP				*/
 void		set_envp(t_mini *mini, char **envp);
+void		unset_shlvl(char **envp);
+char		*shell_level(char *envp, int start);
+void		env_print_shlvl(char *shlvl);
 
 /*				EXPANSOR				*/
 int			expand(t_mini *mini, t_cmd *cmd);

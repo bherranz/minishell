@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:40:02 by miparis           #+#    #+#             */
-/*   Updated: 2025/02/09 23:47:47 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/10 17:32:25 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	replace_input(t_cmd *cmd, char *str, char *e_str, char *str2)
 {
 	char	*aux;
 
-	aux = NULL;
 	if (e_str)
 	{
 		if (cmd->doble || !cmd->simple)

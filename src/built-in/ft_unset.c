@@ -6,7 +6,7 @@
 /*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 04:13:39 by codespace         #+#    #+#             */
-/*   Updated: 2025/02/09 21:54:36 by codespace        ###   ########.fr       */
+/*   Updated: 2025/02/10 15:28:47 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	index_envp(char **envp, char *var, t_mini *mini)
 	len = ft_strlen(var);
 	if (check_var_unset(var, mini) == 0)
 		return (-1);
+	if (ft_strncmp(var, "SHLVL", 5) == 0)
+		return (unset_shlvl(envp), -1);
 	while (envp[i])
 	{
 		if (!ft_strncmp(envp[i], var, len) && envp[i][len] == '=')

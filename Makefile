@@ -6,7 +6,7 @@
 #    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/20 11:55:30 by miparis           #+#    #+#              #
-#    Updated: 2025/01/19 13:16:15 by codespace        ###   ########.fr        #
+#    Updated: 2025/02/10 15:31:51 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ SRCS =  src/main.c \
 		src/built-in/ft_env.c \
 		src/built-in/ft_unset.c \
 		src/built-in/ft_exit.c \
-		src/parser/config_envp.c \
+		src/config_envp.c \
+		src/shell_level.c \
 
 # Define Colors
 GREEN  := \033[1;32m  # Bold Green
