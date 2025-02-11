@@ -52,7 +52,7 @@ int	index_envp(char **envp, char *var, t_mini *mini)
 		return (unset_shlvl(envp), -1);
 	while (envp[i])
 	{
-		if (!ft_strncmp(envp[i], var, len) && envp[i][len] == '=')
+		if (!ft_strncmp(envp[i], var, len))
 			return (i);
 		i++;
 	}
@@ -68,7 +68,7 @@ char	**rm_var(char **envp, int idx)
 	i = 0;
 	while (envp[i])
 		i++;
-	new_envp = (char **)calloc(sizeof(char *), i); //no se suma 1 para el NULL porque se va a restar un elemento
+	new_envp = (char **)calloc(sizeof(char *), i);
 	i = 0;
 	j = 0;
 	while (envp[i])

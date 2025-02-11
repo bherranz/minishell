@@ -32,21 +32,8 @@ void	sigint_handler(int sig)
 	}
 }
 
-void	sigquit_handler(int sig)
-{
-	(void)sig;
-	if (g_signal == 2)
-		return ;
-	else if (g_signal == 1)
-	{
-		write(STDERR_FILENO, "Quit (core dumped)\n", 20);
-		g_signal = 131; //salida sigquit
-	}
-	return ;
-}
-
 void	signals_handler(void)
 {
 	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigquit_handler);
+	signal(SIGQUIT, SIG_IGN);
 }

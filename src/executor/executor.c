@@ -65,9 +65,11 @@ void	process_status(t_pipe *pipes, t_mini *mini)
 	int		status;
 	pid_t	current_child;
 
+	(void)pipes;
 	current_child = waitpid(-1, &status, 0);
 	while (current_child != -1)
 	{
+		current_child = waitpid(-1, &status, 0);
 		if (current_child > 0)
 		{
 			if (WIFSIGNALED(status))
@@ -75,15 +77,10 @@ void	process_status(t_pipe *pipes, t_mini *mini)
 				if (WTERMSIG(status) == SIGINT)
 					mini->last_status = 130;
 				else if (WTERMSIG(status) == SIGQUIT)
-				{
 					mini->last_status = 131;
-					if (current_child == pipes->last_pid)
-						write(STDERR_FILENO, "Quit (core dumped)\n", 20);
-				}
 			}
-			else if (WIFEXITED(status))
+			if (WIFEXITED(status))
 				mini->last_status = WEXITSTATUS(status);
 		}
-		current_child = waitpid(-1, &status, 0);
 	}
 }

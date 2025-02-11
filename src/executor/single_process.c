@@ -57,11 +57,7 @@ void	single_process(t_cmd *cmd, t_mini *mini)
 	if (WIFEXITED(status))
 		mini->last_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == SIGQUIT)
-			write(STDERR_FILENO, "Quit (core dumped)\n", 20);
 		mini->last_status = 128 + WTERMSIG(status);
-	}
 }
 
 void	one_cmd(t_cmd *cmd, t_mini *mini)
