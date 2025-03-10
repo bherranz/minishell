@@ -2,9 +2,9 @@
 
 Minishell is a minimalist shell implementation in C that replicates basic Bash behavior. This project was developed as part of the 42 programming school to deepen understanding of process management, signals, and system interaction.
 
-## 📖 Table of Contents
+## Table of Contents
 1. [Features](#features)
-2. [Installation & Usage](#installation-&-usage)
+2. [Installation & Usage](#installation--usage)
 3. [Project Structure](#project-structure)
 4. [Usage Example](#usage-example)
 5. [Dependencies](#dependencies)
